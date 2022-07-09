@@ -1,0 +1,28 @@
+{
+  "env": {
+    "es2021": true,
+    "browser": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "standard",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["import"],
+  "rules": {
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "jsxSingleQuote": true
+      }
+    ]
+  }
+}
