@@ -1,13 +1,10 @@
-import Head from 'next/head'
+import Page from '../components/page'
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>TECNOPOR S.A.</title>
-      </Head>
+    <Page>
       <h1>TECNOPOR S.A.</h1>
       <h4>Sistema de mantenimiento</h4>
-    </>
+    </Page>
   )
 }

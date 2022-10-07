@@ -1,29 +1,45 @@
-import prisma from '../../../libs/db'
-import {
-  cleanBody,
-  validateError,
-  validateMethods,
-} from '../../../libs/validation'
+import axios from 'redaxios'
+import nc from 'next-connect'
+import fileParser from '../../../middlewares/fileParser'
+import FormData from 'form-data'
+import fs from 'fs-extra'
 
-export default async function addMachine(req, res) {
-  try {
-    validateMethods(req, 'POST')
-    const data = cleanBody(
-      req,
-      'code',
-      'name',
-      'maker',
-      'location',
-      'technicalData',
-      'specificData',
-      'function',
-      'criticality',
-      'imageUrl'
-    )
-    const newMachine = await prisma.machines.create({ data })
-    return res.status(201).json(newMachine)
-  } catch (error) {
-    const { status, message } = validateError(error)
-    return res.status(status).json({ message })
-  }
+const API_URL = process.env.API_URL
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 }
+
+const addMachine = nc()
+addMachine.use(fileParser)
+
+addMachine.post(async (req, res) => {
+  const { body, files } = req
+  const formData = new FormData()
+  const keys = Object.keys(body)
+  keys.forEach((key) => {
+    formData.append(key, body[key][0])
+  })
+  const { path } = files.image[0]
+  const stream = fs.createReadStream(path)
+  formData.append('image', stream)
+  try {
+    const {
+      data: {
+        image: { url },
+        ...rest
+      },
+    } = await axios.post(`${API_URL}/machines/create`, formData, {
+      headers: formData.getHeaders(),
+    })
+
+    return res.status(201).json({ ...rest, image: url })
+  } catch (error) {
+    console.log({ error })
+    return res.status(500).json(error)
+  }
+})
+
+export default addMachine

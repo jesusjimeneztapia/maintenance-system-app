@@ -1,0 +1,30 @@
+.button {
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.625rem 1.25rem;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button.primary {
+  color: #fff;
+  background-color: #1d4ed8;
+}
+.button.primary:hover {
+  background-color: #1e40af;
+}
+
+.button.success {
+  color: #fff;
+  background-color: #15803d;
+}
+.button.success:hover {
+  background-color: #166534;
+}
