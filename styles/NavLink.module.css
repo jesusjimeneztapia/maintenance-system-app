@@ -1,0 +1,63 @@
+.link {
+  list-style: none;
+}
+
+.link a {
+  position: relative;
+  height: 50px;
+  margin-bottom: 0.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  text-decoration: none;
+  padding-left: 1.25rem;
+  border-radius: 25px 0 0px 25px;
+  color: rgb(var(--color-white) / var(--tw-text-opacity));
+}
+
+.link:hover a {
+  --tw-bg-opacity: 0.16;
+  background-color: rgb(var(--color-white) / var(--tw-bg-opacity));
+}
+.link:hover a::before {
+  content: '';
+  position: absolute;
+  width: 1.25rem;
+  height: 50px;
+  left: 100%;
+  background-color: rgb(var(--color-white) / var(--tw-bg-opacity));
+}
+
+.link.active a {
+  background-color: var(--slate-100);
+  color: rgb(var(--color-primary) / var(--tw-text-opacity));
+}
+.link.active a::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 25px;
+  top: -100%;
+  left: calc(100% - 25px);
+  box-shadow: 25px 25px 0 var(--slate-100), 0 50px 0 var(--slate-100);
+}
+.link.active a::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 25px;
+  bottom: -100%;
+  left: calc(100% - 25px);
+  box-shadow: 25px -25px 0 var(--slate-100);
+}
+.link.active a svg path {
+  fill: rgb(var(--color-primary) / var(--tw-text-opacity));
+}
+.link.active:hover a {
+  cursor: default;
+  background-color: var(--slate-100);
+}

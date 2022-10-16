@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 67px;
+  z-index: 51;
+  position: relative;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.options {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.options div {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  background-color: var(--slate-800);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.options div span {
+  color: var(--white);
+}

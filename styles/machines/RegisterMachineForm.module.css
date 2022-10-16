@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form footer {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.failed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.failed h4 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.failed p {
+  font-size: 0.875rem;
+}

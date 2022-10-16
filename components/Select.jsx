@@ -1,26 +1,30 @@
+import styles from '../styles/Input.module.css'
+
 export default function Select({
   children,
   id,
   label,
   onChange,
+  error,
   required = false,
   value = '',
+  disabled,
 }) {
   return (
-    <div>
-      <label htmlFor={id} className='text-sm font-medium text-gray-900'>
-        {label}
-      </label>
+    <div className={`${styles.group} ${error && styles.error}`}>
+      <label htmlFor={id}>{label}</label>
       <select
         id={id}
         name={id}
-        className='mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+        className={styles.input}
         value={value}
         onChange={onChange}
         required={required}
+        disabled={disabled}
       >
         {children}
       </select>
+      {error && <small>{error}</small>}
     </div>
   )
 }

@@ -1,0 +1,30 @@
+.table {
+  width: 100%;
+  text-align: left;
+  display: table;
+  text-indent: 0;
+  border-collapse: collapse;
+  border-spacing: 2px;
+  font-size: 0.875rem;
+  color: var(--slate-900);
+}
+
+.table th,
+.table td {
+  border-style: solid;
+  border-width: 1px 1px 0 1px;
+  padding: 0.75rem 1.25rem;
+  --tw-border-opacity: 0.4;
+  border-color: rgb(var(--color-primary) / var(--tw-border-opacity));
+}
+
+.table th {
+  border-bottom-width: 2px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.table td {
+  border-bottom-width: 1px;
+}

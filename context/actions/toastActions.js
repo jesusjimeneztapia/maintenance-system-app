@@ -5,8 +5,6 @@ export const toastActions = {
     return toastInitialState
   },
   show(state, payload) {
-    return { ...state, payload, show: true }
+    return { ...state, ...payload, show: true }
   },
 }
-
-export default toastActions

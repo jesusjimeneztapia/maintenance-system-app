@@ -1,3 +1,5 @@
+import styles from '../styles/Input.module.css'
+
 export default function Input({
   id,
   label,
@@ -6,23 +8,25 @@ export default function Input({
   onChange,
   type = 'text',
   required = false,
+  error,
+  disabled,
 }) {
   return (
-    <div>
-      <label htmlFor={id} className='text-sm font-medium text-gray-900'>
-        {label}
-      </label>
+    <div className={`${styles.group} ${error && styles.error}`}>
+      <label htmlFor={id}>{label}</label>
       <input
         type={type}
         id={id}
         name={id}
-        className='mt-2 bg-gray-50 border border-gray-300 placeholder:text-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+        className={styles.input}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         required={required}
         autoComplete='off'
+        disabled={disabled}
       />
+      {error && <small>{error}</small>}
     </div>
   )
 }

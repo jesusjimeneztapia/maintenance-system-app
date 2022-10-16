@@ -1,3 +1,5 @@
+import styles from '../styles/Input.module.css'
+
 export default function Textarea({
   id,
   label,
@@ -5,23 +7,25 @@ export default function Textarea({
   value,
   onChange,
   rows = 4,
+  error,
   required = false,
+  disabled,
 }) {
   return (
-    <div>
-      <label htmlFor={id} className='text-sm font-medium text-gray-900'>
-        {label}
-      </label>
+    <div className={`${styles.group} ${error && styles.error}`}>
+      <label htmlFor={id}>{label}</label>
       <textarea
         id={id}
         name={id}
         rows={rows}
-        className='mt-2 block resize-none p-2.5 w-full text-sm text-gray-900 placeholder:text-gray-500 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+        className={`${styles.input} ${styles.textarea}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         required={required}
+        disabled={disabled}
       />
+      {error && <small>{error}</small>}
     </div>
   )
 }

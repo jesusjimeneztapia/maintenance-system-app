@@ -37,8 +37,10 @@ addMachine.post(async (req, res) => {
 
     return res.status(201).json({ ...rest, image: url })
   } catch (error) {
-    console.log({ error })
-    return res.status(500).json(error)
+    const { data, status } = error
+    return res
+      .status(status ?? 500)
+      .json(data ?? { message: 'Ocurrió algún error' })
   }
 })
 

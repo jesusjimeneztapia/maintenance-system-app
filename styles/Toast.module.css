@@ -1,0 +1,14 @@
+.toast {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.toast > div {
+  width: 100%;
+}
+
+.close {
+  cursor: pointer;
+  margin-left: auto;
+}

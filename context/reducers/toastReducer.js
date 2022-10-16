@@ -1,11 +1,12 @@
-import toastActions from '../actions/toastActions'
+import { toastActions } from '../actions/toastActions'
 
 export const toastInitialState = {
-  message: null,
+  children: null,
   color: null,
   show: false,
   close: true,
   autoClose: true,
+  position: 'center',
 }
 
 export const toastReducer = (state, { action, payload }) => {

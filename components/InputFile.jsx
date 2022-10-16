@@ -1,27 +1,67 @@
+import { useState } from 'react'
+import styles from '../styles/Input.module.css'
+
 export default function InputFile({
   id,
-  label,
+  label = 'Subir archivo',
+  message = 'Arrastre aquí el archivo o haz click para seleccionar un archivo.',
   onChange,
+  file,
   accept = '*',
+  error,
   required = false,
+  disabled,
 }) {
+  const [active, setActive] = useState(false)
+
+  const getImagePreview = () => {
+    // const reader = new FileReader()
+    // reader.readAsDataURL(file)
+    let image = file
+    const { src } = file
+    if (!src) {
+      image = {
+        src: URL.createObjectURL(file),
+        alt: file.name,
+      }
+    }
+    return <img {...image} />
+  }
+
+  const createHandleActive = (value) => () => {
+    setActive(value)
+  }
+
   return (
-    <div>
-      <label
-        className='block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300'
-        htmlFor={id}
+    <>
+      <div
+        className={`${styles['group-file']} ${active && styles.active} ${
+          error && styles.error
+        } ${disabled && styles.disabled}`}
       >
-        {label}
-      </label>
-      <input
-        className='file:p-2.5 file:rounded-l-lg file:border-none file:bg-gray-900 file:cursor-pointer file:text-gray-50 block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none'
-        id={id}
-        name={id}
-        type='file'
-        onChange={onChange}
-        accept={accept}
-        required={required}
-      />
-    </div>
+        {file ? (
+          <>{getImagePreview()}</>
+        ) : (
+          <label className={styles['label-file']}>
+            {label}
+            <span>{message}</span>
+          </label>
+        )}
+        <input
+          className={styles['input-file']}
+          id={id}
+          name={id}
+          type='file'
+          onChange={onChange}
+          accept={accept}
+          required={required}
+          onDragLeaveCapture={createHandleActive(false)}
+          onDragEnterCapture={createHandleActive(true)}
+          onDropCapture={createHandleActive(false)}
+          disabled={disabled}
+        />
+      </div>
+      {error && <small>{error}</small>}
+    </>
   )
 }

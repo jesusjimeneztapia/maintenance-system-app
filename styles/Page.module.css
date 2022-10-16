@@ -1,0 +1,50 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  padding: 1.25rem 2rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  color: rgb(var(--color-white) / var(--tw-text-opacity));
+  padding-right: 1.25rem;
+  overflow-x: hidden;
+  min-width: 230px;
+}
+
+.nav h1 {
+  padding: 1rem 1.25rem 0 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  cursor: default;
+}
+
+.nav h1 span {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+  width: max-content;
+}
+
+.divider {
+  position: relative;
+  z-index: 10;
+  height: 1px;
+  width: 100%;
+  --tw-bg-opacity: 0.16;
+  background-color: rgb(var(--color-white) / var(--tw-bg-opacity));
+  margin: 1.25rem 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-radius: 30px;
+  padding: 0 22px;
+  padding-bottom: 2.5rem;
+  background-color: var(--slate-100);
+  width: 100%;
+}

@@ -1,0 +1,29 @@
+.navigation {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.navigation li,
+.navigation li a {
+  text-decoration: none;
+  position: relative;
+  list-style: none;
+  color: rgb(var(--color-primary) / var(--tw-text-opacity));
+  font-size: 0.875rem;
+}
+.navigation li a:hover {
+  text-decoration: underline;
+}
+
+.navigation li::before {
+  content: '>';
+  position: absolute;
+  left: -0.9rem;
+}
+.navigation li:first-child::before {
+  content: '';
+}
+.navigation li:last-child {
+  --tw-text-opacity: 0.7;
+  color: rgb(var(--color-primary) / var(--tw-text-opacity));
+}

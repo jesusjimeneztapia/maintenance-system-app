@@ -4,8 +4,8 @@ import { toastInitialState, toastReducer } from '../reducers/toastReducer'
 const ToastContext = createContext({
   ...toastInitialState,
   reset() {},
-  showToast({ color, message, close, autoClose }) {},
-  async request(callback, { color, message, close, autoClose }) {},
+  showToast({ color, children, close, autoClose, position }) {},
+  async request(callback, { color, message, close, autoClose, children }) {},
 })
 
 export function useToast() {
@@ -40,7 +40,17 @@ export default function ToastProvider({ children }) {
       }
       return response
     } catch (error) {
-      console.log({ error })
+      const {
+        data: { message },
+        status,
+      } = error
+      showToast({
+        autoClose: false,
+        close: true,
+        color: status >= 500 ? 'danger' : 'warning',
+        position: 'center',
+        children: message,
+      })
     }
   }
 
