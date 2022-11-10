@@ -1,65 +1,33 @@
-import Button from '../../Button'
 import Input from '../../Input'
 import InputFile from '../../InputFile'
 import Select from '../../Select'
 import Textarea from '../../Textarea'
-import styles from '../../../styles/machines/RegisterMachineForm.module.css'
-import { useFormikContext } from 'formik'
-import { useToast } from '../../../context/providers/ToastContext'
 import CheckboxList from '../../CheckboxList'
+import { useForm } from '../../../context/providers/FormContext'
 
 export default function RegisterMachineForm() {
   const {
-    handleChange,
-    touched,
     errors,
-    values,
-    handleSubmit,
+    handleChange,
     setValues,
-    resetForm,
-    isValid,
-  } = useFormikContext()
-
-  const { showToast } = useToast()
-
-  const createHandleChange = () => (e) => {
-    const {
-      target: { value },
-    } = e
-    e.target.value = value.toUpperCase()
-    handleChange(e)
-  }
+    touched,
+    upperCaseHandleChange,
+    values,
+  } = useForm()
 
   const fileHandleChange = ({ target: { files } }) => {
     const [file] = files
     setValues((values) => ({ ...values, image: file }))
   }
 
-  const handleClick = () => {
-    if (!isValid) {
-      showToast({
-        autoClose: false,
-        close: true,
-        color: 'danger',
-        position: 'right',
-        children: (
-          <section className={styles.failed}>
-            <h4>Fallo al registrar la máquina</h4>
-            <p>Por favor verifique los campos.</p>
-          </section>
-        ),
-      })
-    }
-  }
-
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <>
       <Input
         id='code'
         label='Código'
         placeholder='Código de la máquina'
         value={values.code}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.code ? errors.code : undefined}
       />
       <Input
@@ -67,7 +35,7 @@ export default function RegisterMachineForm() {
         label='Nombre'
         placeholder='Nombre de la máquina'
         value={values.name}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.name ? errors.name : undefined}
       />
       <Input
@@ -75,7 +43,7 @@ export default function RegisterMachineForm() {
         label='Fabricante'
         placeholder='Fabricante de la máquina'
         value={values.maker}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.maker ? errors.maker : undefined}
       />
       <Input
@@ -83,7 +51,7 @@ export default function RegisterMachineForm() {
         label='Ubicación'
         placeholder='Ubicación de la máquina'
         value={values.location}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.location ? errors.location : undefined}
       />
       <Input
@@ -91,7 +59,7 @@ export default function RegisterMachineForm() {
         label='Modelo'
         placeholder='Modelo de la máquina'
         value={values.model}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.model ? errors.model : undefined}
       />
       <Input
@@ -99,7 +67,7 @@ export default function RegisterMachineForm() {
         label='Función'
         placeholder='Función de la máquina'
         value={values.function}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.function ? errors.function : undefined}
       />
       <Textarea
@@ -108,7 +76,7 @@ export default function RegisterMachineForm() {
         placeholder='Datos específicos de la máquina...'
         rows={3}
         value={values.specificData}
-        onChange={createHandleChange()}
+        onChange={upperCaseHandleChange()}
         error={touched.specificData ? errors.specificData : undefined}
       />
       <CheckboxList
@@ -146,14 +114,6 @@ export default function RegisterMachineForm() {
         accept='image/*'
         error={touched.image ? errors.image : undefined}
       />
-      <footer>
-        <Button onClick={resetForm} type='button' variant='secondary'>
-          Reiniciar
-        </Button>
-        <Button onClick={handleClick} type='submit'>
-          Registrar
-        </Button>
-      </footer>
-    </form>
+    </>
   )
 }

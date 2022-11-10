@@ -4,6 +4,7 @@ import { AiOutlineHome } from 'react-icons/ai'
 import { CgDatabase } from 'react-icons/cg'
 import Header from './Header'
 import styles from '../../styles/Page.module.css'
+import { FiActivity } from 'react-icons/fi'
 
 export default function Page({ children, title = 'TECNOPOR S.A.' }) {
   return (
@@ -29,6 +30,12 @@ export default function Page({ children, title = 'TECNOPOR S.A.' }) {
               <>
                 <CgDatabase size={24} />
                 Máquinas
+              </>
+            </NavLink>
+            <NavLink href='/activities'>
+              <>
+                <FiActivity size={24} />
+                Actividades
               </>
             </NavLink>
           </ul>

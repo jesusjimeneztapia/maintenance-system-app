@@ -1,28 +1,8 @@
 import Link from 'next/link'
-import { FiArrowDown, FiArrowUp, FiArrowUpRight, FiEdit } from 'react-icons/fi'
+import { FiActivity, FiEdit } from 'react-icons/fi'
 import { CgDatabase } from 'react-icons/cg'
 import styles from '../../styles/machines/MachineCard.module.css'
-
-const CRITICALITY = {
-  HIGH: (
-    <div className={`${styles.container} ${styles.high}`}>
-      <FiArrowUp />
-      <span>Alta</span>
-    </div>
-  ),
-  MEDIUM: (
-    <div className={`${styles.container} ${styles.medium}`}>
-      <FiArrowUpRight />
-      <span>Media</span>
-    </div>
-  ),
-  LOW: (
-    <div className={`${styles.container} ${styles.low}`}>
-      <FiArrowDown />
-      <span>Baja</span>
-    </div>
-  ),
-}
+import Criticality from './Criticality'
 
 export default function MachineCard({
   image,
@@ -43,13 +23,27 @@ export default function MachineCard({
         <span>{name}</span>
       </td>
       <td>{location}</td>
-      <td>{CRITICALITY[criticality]}</td>
+      <td>
+        <div className={styles.container}>
+          <Criticality criticality={criticality} />
+        </div>
+      </td>
       <td>
         <div className={styles.container}>
           <Link href={{ pathname: '/machines/[code]/edit', query: { code } }}>
             <a className={styles.edit}>
               <FiEdit />
               Editar
+            </a>
+          </Link>
+        </div>
+      </td>
+      <td>
+        <div className={styles.container}>
+          <Link href={{ pathname: '/activities/[code]', query: { code } }}>
+            <a className={styles.activity}>
+              <FiActivity />
+              Ver actividades
             </a>
           </Link>
         </div>

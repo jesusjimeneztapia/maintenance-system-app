@@ -7,7 +7,7 @@ export default async function getMachineByCode(req, res) {
     query: { code },
   } = req
   try {
-    const { data } = await axios.get(`${API_URL}/machines/${code}`)
+    const { data } = await axios.get(`${API_URL}/machines/${code}/engines`)
     const { image } = data
     if (image) {
       const { url } = image

@@ -1,8 +1,7 @@
 import axios from 'redaxios'
 import nc from 'next-connect'
 import fileParser from '../../../middlewares/fileParser'
-import FormData from 'form-data'
-import fs from 'fs-extra'
+import { createFormDataForApi } from '../../../libs/machine'
 
 const API_URL = process.env.API_URL
 
@@ -17,18 +16,8 @@ addMachine.use(fileParser)
 
 addMachine.put(async (req, res) => {
   const { body, files } = req
-  const formData = new FormData()
   const { code, ...rest } = body
-  const keys = Object.keys(rest)
-  keys.forEach((key) => {
-    formData.append(key, body[key][0])
-  })
-  const { image } = files
-  if (image) {
-    const { path } = image[0]
-    const stream = fs.createReadStream(path)
-    formData.append('image', stream)
-  }
+  const formData = createFormDataForApi(rest, files)
   try {
     const {
       data: {

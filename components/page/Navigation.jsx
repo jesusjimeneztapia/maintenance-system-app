@@ -6,11 +6,17 @@ import styles from '../../styles/Navigation.module.css'
 const ROUTES = {
   '/': { href: '/', name: 'Inicio' },
   machines: { href: '/machines', name: 'Máquinas' },
+  activities: { href: '/activities', name: 'Actividades' },
   register: { href: '/machines/register', name: 'Registro' },
 }
 
 const ROUTES_NAME = {
   edit: { name: 'Editar' },
+  activities: { name: 'Actividades' },
+  'add-engine': { name: 'Agregar motor' },
+  'edit-engine': { name: 'Editar motor' },
+  'create-activity': { name: 'Crear actividad' },
+  'edit-activity': { name: 'Editar actividad' },
 }
 
 function generateRoute(pathname, current) {
@@ -31,6 +37,7 @@ function useNavigation() {
     let history = []
     let current = routes.pop() ?? 'Inicio'
     if (current !== 'Inicio') {
+      current = current.split('?')[0]
       const route = ROUTES[current] ?? ROUTES_NAME[current]
       current = route ? route.name : decodeURI(current)
     }

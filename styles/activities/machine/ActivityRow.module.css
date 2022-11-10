@@ -1,0 +1,48 @@
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.edit {
+  text-decoration: none;
+  display: flex;
+  gap: 0.25rem;
+  color: var(--slate-500);
+}
+.edit:hover {
+  color: var(--slate-900);
+}
+
+.delete {
+  cursor: pointer;
+  display: flex;
+  gap: 0.25rem;
+  --tw-text-opacity: 0.8;
+  color: rgb(var(--color-danger) / var(--tw-text-opacity));
+}
+
+.delete:hover {
+  --tw-text-opacity: 1;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.modal h4 {
+  font-size: 1rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+.modal p {
+  font-size: 0.875rem;
+}
+.modal div {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}

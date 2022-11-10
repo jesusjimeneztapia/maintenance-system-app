@@ -28,3 +28,25 @@
 .table td {
   border-bottom-width: 1px;
 }
+
+.container {
+  overflow-x: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+
+.container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
+  --tw-bg-opacity: 0.16;
+  background-color: rgb(var(--color-primary) / var(--tw-bg-opacity));
+  background-color: var(--slate-200);
+}
+
+.container::-webkit-scrollbar-thumb {
+  border-radius: 0.25rem;
+  background-color: rgb(var(--color-primary));
+}

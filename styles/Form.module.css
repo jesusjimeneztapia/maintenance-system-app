@@ -1,0 +1,52 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form footer {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.failed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.failed h4 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.failed p {
+  font-size: 0.875rem;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.modal h4 {
+  font-size: 1rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+.modal p {
+  font-size: 0.875rem;
+}
+.modal div {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}

@@ -59,19 +59,12 @@
 .container {
   display: flex;
   justify-content: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
   gap: 0.5rem;
-}
-
-.high {
-  color: rgb(var(--color-danger) / var(--tw-text-opacity));
-}
-
-.medium {
-  color: rgb(var(--color-warning) / var(--tw-text-opacity));
-}
-
-.low {
-  color: rgb(var(--color-success) / var(--tw-text-opacity));
 }
 
 .edit {
@@ -82,4 +75,15 @@
 }
 .edit:hover {
   color: var(--slate-900);
+}
+
+.activity {
+  text-decoration: none;
+  display: flex;
+  gap: 0.25rem;
+  --tw-text-opacity: 0.7;
+  color: rgb(var(--color-warning) / var(--tw-text-opacity));
+}
+.activity:hover {
+  --tw-text-opacity: 1;
 }

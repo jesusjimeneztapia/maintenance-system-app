@@ -15,8 +15,6 @@ export default function InputFile({
   const [active, setActive] = useState(false)
 
   const getImagePreview = () => {
-    // const reader = new FileReader()
-    // reader.readAsDataURL(file)
     let image = file
     const { src } = file
     if (!src) {
