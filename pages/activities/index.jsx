@@ -1,16 +1,20 @@
 import { getAPIURL } from '../../libs/origin'
 import axios from 'redaxios'
-import Page from '../../components/page'
 import styles from '../../styles/machines/Machines.module.css'
 import MachineListProvider from '../../context/providers/MachineListContext'
 import { FcAddDatabase } from 'react-icons/fc'
 import Button from '../../components/Button'
 import Link from 'next/link'
 import MachineContainer from '../../components/machines/MachineContainer'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../libs/documentTitle'
 
 export default function Activities({ machines }) {
   return (
-    <Page title='Actividades | TECNOPOR S.A.'>
+    <>
+      <Head>
+        <title>{createDocumentTitle('Actividades')}</title>
+      </Head>
       <h2 className={styles.title}>Actividades</h2>
       {machines.length ? (
         <MachineListProvider machines={machines}>
@@ -28,7 +32,7 @@ export default function Activities({ machines }) {
           </Button>
         </section>
       )}
-    </Page>
+    </>
   )
 }
 

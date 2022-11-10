@@ -1,4 +1,3 @@
-import Page from '../../../components/page'
 import axios from 'redaxios'
 import { getAPIURL } from '../../../libs/origin'
 import Box from '../../../components/Box'
@@ -6,6 +5,8 @@ import Button from '../../../components/Button'
 import TableActivities from '../../../components/activities/machine/TableActivities'
 import Link from 'next/link'
 import { useState } from 'react'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 function useMachineActivities({
   CONDITION_CHECK,
@@ -56,7 +57,12 @@ export default function MachineActivities({
   })
 
   return (
-    <Page title={`Actividades - Máquina ${machineCode} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>
+          {createDocumentTitle('Actividades', `Máquina ${machineCode}`)}
+        </title>
+      </Head>
       <header
         style={{
           display: 'flex',
@@ -127,7 +133,7 @@ export default function MachineActivities({
           />
         </Box>
       </div>
-    </Page>
+    </>
   )
 }
 

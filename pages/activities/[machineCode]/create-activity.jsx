@@ -1,7 +1,8 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import CreateActivityForm from '../../../components/activities/machine/create-activity/CreateActivityForm'
 import Form from '../../../components/Form'
-import Page from '../../../components/page'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 import {
   activityInitialValues,
   createActivityDto,
@@ -17,7 +18,12 @@ export default function CreateActivity() {
   } = useRouter()
 
   return (
-    <Page title={`Crear actividad ~ Máquina ${machineCode} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>
+          {createDocumentTitle('Crear actividad', `Máquina ${machineCode}`)}
+        </title>
+      </Head>
       <Form
         title={`Crear actividad para la máquina ${machineCode}`}
         dtoValidation={createActivityDto}
@@ -41,6 +47,6 @@ export default function CreateActivity() {
       >
         <CreateActivityForm />
       </Form>
-    </Page>
+    </>
   )
 }

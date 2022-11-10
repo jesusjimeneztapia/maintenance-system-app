@@ -1,7 +1,8 @@
 import AddEngineForm from '../../../components/machines/code/add-engine/AddEngineForm'
-import Page from '../../../components/page'
 import { createEngineDto } from '../../../schemas/engine'
 import Form from '../../../components/Form'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 const dataInitialValue = {
   function: '',
@@ -22,7 +23,10 @@ const dataInitialValue = {
 
 export default function AddEngine({ code }) {
   return (
-    <Page title={`Máquina ${code} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>{createDocumentTitle(`Máquina ${code}`, 'Agregar motor')}</title>
+      </Head>
       <Form
         title='Agregar motor'
         dtoValidation={createEngineDto}
@@ -41,7 +45,7 @@ export default function AddEngine({ code }) {
       >
         <AddEngineForm />
       </Form>
-    </Page>
+    </>
   )
 }
 

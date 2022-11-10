@@ -1,7 +1,8 @@
-import Page from '../../components/page'
 import RegisterMachineForm from '../../components/machines/register/RegisterMachineForm'
 import { createMachineDto } from '../../schemas/machine'
 import Form from '../../components/Form'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../libs/documentTitle'
 
 const dataInitialValue = {
   name: '',
@@ -32,7 +33,10 @@ export default function RegisterMachine() {
   }
 
   return (
-    <Page title='Registro de máquinas | TECNOPOR S.A.'>
+    <>
+      <Head>
+        <title>{createDocumentTitle('Registro de máquinas')}</title>
+      </Head>
       <Form
         title='Registro de Máquina'
         dtoValidation={createMachineDto}
@@ -52,6 +56,6 @@ export default function RegisterMachine() {
       >
         <RegisterMachineForm />
       </Form>
-    </Page>
+    </>
   )
 }

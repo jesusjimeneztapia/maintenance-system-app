@@ -1,5 +1,4 @@
 import Button from '../../../components/Button'
-import Page from '../../../components/page'
 import { getAPIURL } from '../../../libs/origin'
 import axios from 'redaxios'
 import Link from 'next/link'
@@ -7,6 +6,8 @@ import EnginesTable from '../../../components/machines/code/EnginesTable'
 import GeneralInformationTable from '../../../components/machines/code/GeneralInformationTable'
 import TechnicalDocumentationTable from '../../../components/machines/code/TechnicalDocumentationTable'
 import ImageMachineTable from '../../../components/machines/code/ImageMachineTable'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 export default function Machine({
   code,
@@ -16,7 +17,10 @@ export default function Machine({
   image,
 }) {
   return (
-    <Page title={`Máquina ${code} - Editar | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>{createDocumentTitle(`Máquina ${code}`, 'Editar')}</title>
+      </Head>
       <header
         style={{
           display: 'flex',
@@ -87,7 +91,7 @@ export default function Machine({
           <EnginesTable engines={engines} machineCode={code} />
         </div>
       </div>
-    </Page>
+    </>
   )
 }
 

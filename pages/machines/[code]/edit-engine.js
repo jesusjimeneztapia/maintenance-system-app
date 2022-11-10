@@ -1,13 +1,17 @@
-import Page from '../../../components/page'
 import { getAPIURL } from '../../../libs/origin'
 import axios from 'redaxios'
 import Form from '../../../components/Form'
 import { updateEngineDto } from '../../../schemas/engine'
 import EditEngineForm from '../../../components/machines/code/edit-engine/EditEngineForm'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 export default function editEngine({ code, machineCode, engine }) {
   return (
-    <Page title={`Motor ${code} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>{createDocumentTitle(`Motor ${code}`)}</title>
+      </Head>
       <Form
         title={`Motor ${code}`}
         dtoValidation={updateEngineDto}
@@ -27,7 +31,7 @@ export default function editEngine({ code, machineCode, engine }) {
       >
         <EditEngineForm />
       </Form>
-    </Page>
+    </>
   )
 }
 

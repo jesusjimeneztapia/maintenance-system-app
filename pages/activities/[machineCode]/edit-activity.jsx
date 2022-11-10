@@ -1,13 +1,17 @@
 import EditActivityForm from '../../../components/activities/machine/edit-activity/EditActivityForm'
 import Form from '../../../components/Form'
-import Page from '../../../components/page'
 import { getAPIURL } from '../../../libs/origin'
 import { updateActivityDto } from '../../../schemas/activity'
 import axios from 'redaxios'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 export default function EditActivity({ code, machineCode, ...props }) {
   return (
-    <Page title={`Actividad ${code} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>{createDocumentTitle(`Actividad ${code}`)}</title>
+      </Head>
       <Form
         title={`Actividad ${code}`}
         dtoValidation={updateActivityDto}
@@ -27,7 +31,7 @@ export default function EditActivity({ code, machineCode, ...props }) {
       >
         <EditActivityForm />
       </Form>
-    </Page>
+    </>
   )
 }
 

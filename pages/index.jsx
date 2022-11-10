@@ -2,11 +2,15 @@ import { CgDatabase } from 'react-icons/cg'
 import { FiActivity } from 'react-icons/fi'
 import { FcAddDatabase } from 'react-icons/fc'
 import HomeLink from '../components/home/HomeLink'
-import Page from '../components/page'
+import Head from 'next/head'
+import { createDocumentTitle } from '../libs/documentTitle'
 
 export default function Home() {
   return (
-    <Page title='Sistema de mantenimiento | TECNOPOR S.A.'>
+    <>
+      <Head>
+        <title>{createDocumentTitle('Sistema de mantenimiento')}</title>
+      </Head>
       <h2>
         TECNOPOR S.A.{' '}
         <span style={{ display: 'block', fontSize: '1rem' }}>
@@ -37,6 +41,6 @@ export default function Home() {
           Actividades
         </HomeLink>
       </div>
-    </Page>
+    </>
   )
 }

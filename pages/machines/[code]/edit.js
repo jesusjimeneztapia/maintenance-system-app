@@ -1,9 +1,10 @@
-import Page from '../../../components/page'
 import { getAPIURL } from '../../../libs/origin'
 import axios from 'redaxios'
 import EditMachineForm from '../../../components/machines/code/EditMachineForm'
 import { updateMachineDto } from '../../../schemas/machine'
 import Form from '../../../components/Form'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../../libs/documentTitle'
 
 export default function EditMachine({ code, machine, ...rest }) {
   const mutateValues = (values) => {
@@ -24,7 +25,10 @@ export default function EditMachine({ code, machine, ...rest }) {
   }
 
   return (
-    <Page title={`Máquina ${code} | TECNOPOR S.A.`}>
+    <>
+      <Head>
+        <title>{createDocumentTitle(`Máquina ${code}`)}</title>
+      </Head>
       {machine && (
         <Form
           title={`Máquina ${code}`}
@@ -49,7 +53,7 @@ export default function EditMachine({ code, machine, ...rest }) {
           <EditMachineForm />
         </Form>
       )}
-    </Page>
+    </>
   )
 }
 

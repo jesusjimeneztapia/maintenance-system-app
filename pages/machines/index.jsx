@@ -1,16 +1,20 @@
 import Link from 'next/link'
 import Button from '../../components/Button'
-import Page from '../../components/page'
 import { FcAddDatabase } from 'react-icons/fc'
 import axios from 'redaxios'
 import styles from '../../styles/machines/Machines.module.css'
 import { getAPIURL } from '../../libs/origin'
 import MachineListProvider from '../../context/providers/MachineListContext'
 import MachineContainer from '../../components/machines/MachineContainer'
+import Head from 'next/head'
+import { createDocumentTitle } from '../../libs/documentTitle'
 
 export default function Machines({ machines = [] }) {
   return (
-    <Page title='Máquinas | TECNOPOR S.A.'>
+    <>
+      <Head>
+        <title>{createDocumentTitle('Máquinas')}</title>
+      </Head>
       <h2 className={styles.title}>Máquinas</h2>
       {machines.length ? (
         <MachineListProvider machines={machines}>
@@ -28,7 +32,7 @@ export default function Machines({ machines = [] }) {
           </Button>
         </section>
       )}
-    </Page>
+    </>
   )
 }
 
