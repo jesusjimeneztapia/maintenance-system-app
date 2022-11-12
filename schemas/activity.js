@@ -7,6 +7,7 @@ export const activityInitialValues = {
 }
 
 const weekly = 24 * 7
+const biweekly = weekly * 2
 const monthly = 24 * 30
 const bimonthly = monthly * 2
 const quarterly = monthly * 3
@@ -20,6 +21,10 @@ export const frequencyValues = [
   {
     label: 'SEMANAL',
     value: weekly,
+  },
+  {
+    label: 'QUINCENAL',
+    value: biweekly,
   },
   {
     label: 'MENSUAL',
@@ -45,6 +50,13 @@ export const frequencyValues = [
   { label: '2 AÑOS', value: twoAnnual },
   { label: '4 AÑOS', value: fourAnnual },
 ]
+
+export function getFrequencyLabel(frequency) {
+  const foundFrequency = frequencyValues.find(
+    ({ value }) => value === frequency
+  )
+  return foundFrequency ? foundFrequency.label : `${frequency} hrs.`
+}
 
 const activityTypeValues = [
   'CONDITION_CHECK',

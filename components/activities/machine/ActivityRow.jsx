@@ -5,6 +5,7 @@ import { useToast } from '../../../context/providers/ToastContext'
 import styles from '../../../styles/activities/machine/ActivityRow.module.css'
 import Button from '../../Button'
 import axios from 'redaxios'
+import { getFrequencyLabel } from '../../../schemas/activity'
 
 export default function ActivityRow({
   code,
@@ -64,7 +65,7 @@ export default function ActivityRow({
     <tr>
       <td style={{ textAlign: 'center' }}>{code}</td>
       <td>{name}</td>
-      <td style={{ textAlign: 'center' }}>{frequency}</td>
+      <td style={{ textAlign: 'center' }}>{getFrequencyLabel(frequency)}</td>
       <td>
         <div className={styles.actions}>
           <Link
