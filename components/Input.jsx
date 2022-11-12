@@ -10,10 +10,12 @@ export default function Input({
   required = false,
   error,
   disabled,
+  onBlurCapture,
+  onFocusCapture,
 }) {
   return (
     <div className={`${styles.group} ${error && styles.error}`}>
-      <label htmlFor={id}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
       <input
         type={type}
         id={id}
@@ -25,6 +27,8 @@ export default function Input({
         required={required}
         autoComplete='off'
         disabled={disabled}
+        onBlurCapture={onBlurCapture}
+        onFocusCapture={onFocusCapture}
       />
       {error && <small>{error}</small>}
     </div>

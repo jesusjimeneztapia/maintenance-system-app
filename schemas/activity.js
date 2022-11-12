@@ -6,6 +6,46 @@ export const activityInitialValues = {
   activityType: '',
 }
 
+const weekly = 24 * 7
+const monthly = 24 * 30
+const bimonthly = monthly * 2
+const quarterly = monthly * 3
+const fourMonth = monthly * 4
+const biannual = monthly * 6
+const annual = monthly * 12
+const twoAnnual = annual * 2
+const fourAnnual = annual * 4
+
+export const frequencyValues = [
+  {
+    label: 'SEMANAL',
+    value: weekly,
+  },
+  {
+    label: 'MENSUAL',
+    value: monthly,
+  },
+  {
+    label: 'BIMESTRAL',
+    value: bimonthly,
+  },
+  {
+    label: 'TRIMESTRAL',
+    value: quarterly,
+  },
+  {
+    label: 'CUATRIMESTRE',
+    value: fourMonth,
+  },
+  {
+    label: 'SEMESTRAL',
+    value: biannual,
+  },
+  { label: 'ANUAL', value: annual },
+  { label: '2 AÑOS', value: twoAnnual },
+  { label: '4 AÑOS', value: fourAnnual },
+]
+
 const activityTypeValues = [
   'CONDITION_CHECK',
   'VISUAL_INSPECTIONS',
@@ -31,7 +71,10 @@ const activityShapeUpdate = {
       message: 'El nombre de la actividad debe tener al menos un caracter',
     }),
   frequency: z
-    .number({ required_error: 'La frequencia de la actividad es requerida' })
+    .number({
+      required_error: 'La frequencia de la actividad es requerida',
+      invalid_type_error: 'La frequencia de la actividad es requerida',
+    })
     .int({ message: 'La frequencia de la actividad debe ser número entero' }),
   activityType: z.enum(
     [

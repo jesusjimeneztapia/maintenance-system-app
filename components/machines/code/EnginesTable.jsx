@@ -39,11 +39,7 @@ export default function EnginesTable({ engines, machineCode }) {
             </thead>
             <tbody>
               <tr style={{ fontWeight: '500', textAlign: 'center' }}>
-                <td>
-                  {/* <span style={{ minWidth: '152px', display: 'block' }}> */}
-                  Código
-                  {/* </span> */}
-                </td>
+                <td>Código</td>
                 <td>Función</td>
                 <td>Marca</td>
                 <td>Tipo</td>
