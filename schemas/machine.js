@@ -19,8 +19,9 @@ export const AREA_VALUES_MAP = {
   RECYCLED: 'RECICLADO',
   LOCKED: 'BLOQUEADO',
   CUTTING: 'CORTE',
-  PRESTRESSED_JOISTS: 'VIGUETAS PRETENSADAS',
+  JOISTS: 'VIGUETAS',
   SERVICES: 'SERVICIOS',
+  GENERAL: 'GENERAL',
 }
 
 export const TECHNICAL_DOCUMENTATION_VALUES_MAP = {
@@ -65,8 +66,9 @@ const machineShapeUpdate = {
       'RECYCLED',
       'LOCKED',
       'CUTTING',
-      'PRESTRESSED_JOISTS',
+      'JOISTS',
       'SERVICES',
+      'GENERAL',
     ],
     {
       errorMap: () => {
