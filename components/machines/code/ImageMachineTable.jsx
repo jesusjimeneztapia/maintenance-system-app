@@ -1,6 +1,7 @@
 import { CgDatabase } from 'react-icons/cg'
 import Box from '../../Box'
 import TableBordered from '../../TableBordered'
+import styles from '../../../styles/machines/code/ImageMachineTable.module.css'
 
 export default function ImageMachineTable({ code, image }) {
   return (
@@ -16,25 +17,15 @@ export default function ImageMachineTable({ code, image }) {
           <tr>
             <td colSpan={2}>
               {image ? (
+                // eslint-disable-next-line
                 <img
-                  style={{ maxWidth: '100%' }}
+                  className={styles.image}
                   src={image.src}
                   alt={image.name}
                 />
               ) : (
-                <div
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CgDatabase
-                    style={{
-                      width: 'calc(100% - 12rem)',
-                      height: 'auto',
-                    }}
-                  />
+                <div className={styles.container}>
+                  <CgDatabase className={styles.icon} />
                 </div>
               )}
             </td>

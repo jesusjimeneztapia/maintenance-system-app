@@ -1,17 +1,20 @@
-import axios from 'redaxios'
-
-const API_URL = process.env.API_URL
+import { HTTP_METHODS } from '../../../services'
+import { MACHINE_URL_EXTERNAL } from '../../../services/machineServices'
+import { requestExternalApi } from '../../../services/requestApi'
 
 export default async function getAllMachines(_req, res) {
-  try {
-    let { data } = await axios.get(`${API_URL}/machines`)
-    data = data.map(({ image, ...rest }) => ({
-      ...rest,
-      image: image ? image.url : null,
-    }))
-    return res.json(data)
-  } catch (error) {
-    console.log({ error })
-    return res.json([])
+  const { data, message, status } = await requestExternalApi({
+    method: HTTP_METHODS.GET,
+    url: MACHINE_URL_EXTERNAL,
+  })
+  if (message) {
+    return res.status(status).json({ message })
   }
+
+  const machines = data.map(({ image, ...rest }) => ({
+    ...rest,
+    image: image ? image.url : null,
+  }))
+
+  return res.status(status).json(machines)
 }

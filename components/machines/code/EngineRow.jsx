@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { FiEdit } from 'react-icons/fi'
 import styles from '../../../styles/machines/MachineCard.module.css'
+import ActionLink from '../../ActionLink'
 
 const ENGINE_VALUES = {
   DIRECT: 'DIRECTO',
@@ -10,15 +10,7 @@ const ENGINE_VALUES = {
 function Row({ children }) {
   return (
     <td>
-      <span
-        style={{
-          minWidth: 'max-content',
-          display: 'block',
-          textAlign: 'center',
-        }}
-      >
-        {children}
-      </span>
+      <span className={styles.row}>{children}</span>
     </td>
   )
 }
@@ -43,17 +35,16 @@ export default function EngineRow({ engine, machineCode }) {
       <Row>{ENGINE_VALUES[engine.boot]}</Row>
       <Row>
         <div className={styles.container}>
-          <Link
+          <ActionLink
             href={{
               pathname: '/machines/[code]/edit-engine',
               query: { code: machineCode, engineCode: engine.code },
             }}
+            variant='primary'
           >
-            <a className={styles.edit}>
-              <FiEdit />
-              Editar
-            </a>
-          </Link>
+            <FiEdit />
+            Editar
+          </ActionLink>
         </div>
       </Row>
     </tr>

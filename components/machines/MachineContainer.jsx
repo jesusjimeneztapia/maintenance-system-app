@@ -5,18 +5,13 @@ import MachineList from './MachineList'
 import styles from '../../styles/machines/MachineContainer.module.css'
 import { useMachineList } from '../../context/providers/MachineListContext'
 
-export default function MachineContainer() {
+export default function MachineContainer({ page }) {
   const { filterByName, filteredMachines, searchHandleChange } =
     useMachineList()
 
   return (
     <>
       <header className={styles.header}>
-        <Button variant='primary'>
-          <Link href='/machines/register'>
-            <a>Registrar Máquina</a>
-          </Link>
-        </Button>
         <div className={styles.search}>
           <Input
             placeholder='Buscar máquina por nombre...'
@@ -24,8 +19,15 @@ export default function MachineContainer() {
             onChange={searchHandleChange}
           />
         </div>
+        {page === 'machines' && (
+          <Button variant='primary'>
+            <Link href='/machines/register'>
+              <a>Registrar Máquina</a>
+            </Link>
+          </Button>
+        )}
       </header>
-      <MachineList machines={filteredMachines} />
+      <MachineList machines={filteredMachines} page={page} />
       {!filteredMachines.length && (
         <p className={styles.caption}>
           No existe la máquina <span>{filterByName}</span>

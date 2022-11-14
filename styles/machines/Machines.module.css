@@ -2,7 +2,6 @@
   font-weight: 500;
   line-height: 1.75rem;
   font-size: 1.125rem;
-  color: var(--slate-900);
 }
 
 .new {
@@ -10,13 +9,12 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: var(--slate-900);
 }
 .new svg > g path {
   fill: rgb(var(--color-primary));
 }
 .new svg g:last-child {
-  fill: var(--slate-100);
+  fill: rgb(var(--color-slate-100));
 }
 .new svg circle {
   fill: rgb(var(--color-success));

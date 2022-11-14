@@ -10,7 +10,10 @@ export default function Page({ children }) {
     <div className={styles.page}>
       <nav className={styles.nav}>
         <h1>
-          <img src='/favicon.ico' alt='Logo' height={22.44} />
+          {
+            // eslint-disable-next-line
+            <img src='/favicon.ico' alt='Logo' height={22.44} />
+          }
           <span>TECNOPOR S.A.</span>
         </h1>
         <div className={styles.divider} />

@@ -1,9 +1,21 @@
 import { z } from 'zod'
 
-export const activityInitialValues = {
+const ACTIVITY_INITIAL_VALUES = {
   name: '',
   frequency: '',
   activityType: '',
+}
+
+function createActivityCodeInitial(machineCode) {
+  return machineCode.split('-')[2]
+}
+
+export function activityInitialValues(machineCode) {
+  return {
+    ...ACTIVITY_INITIAL_VALUES,
+    code: createActivityCodeInitial(machineCode),
+    machineCode,
+  }
 }
 
 const weekly = 24 * 7
@@ -17,57 +29,25 @@ const annual = monthly * 12
 const twoAnnual = annual * 2
 const fourAnnual = annual * 4
 
-export const frequencyValues = [
-  {
-    label: 'SEMANAL',
-    value: weekly,
-  },
-  {
-    label: 'QUINCENAL',
-    value: biweekly,
-  },
-  {
-    label: 'MENSUAL',
-    value: monthly,
-  },
-  {
-    label: 'BIMESTRAL',
-    value: bimonthly,
-  },
-  {
-    label: 'TRIMESTRAL',
-    value: quarterly,
-  },
-  {
-    label: 'CUATRIMESTRE',
-    value: fourMonth,
-  },
-  {
-    label: 'SEMESTRAL',
-    value: biannual,
-  },
-  { label: 'ANUAL', value: annual },
-  { label: '2 AÑOS', value: twoAnnual },
-  { label: '4 AÑOS', value: fourAnnual },
-]
-
-export function getFrequencyLabel(frequency) {
-  const foundFrequency = frequencyValues.find(
-    ({ value }) => value === frequency
-  )
-  return foundFrequency ? foundFrequency.label : `${frequency} hrs.`
+export const FREQUENCY_VALUES_MAP = {
+  [weekly]: 'SEMANAL',
+  [biweekly]: 'QUINCENAL',
+  [monthly]: 'MENSUAL',
+  [bimonthly]: 'BIMESTRAL',
+  [quarterly]: 'TRIMESTRAL',
+  [fourMonth]: 'CUATRIMESTRE',
+  [biannual]: 'SEMESTRAL',
+  [annual]: 'ANUAL',
+  [twoAnnual]: '2 AÑOS',
+  [fourAnnual]: '4 AÑOS',
 }
 
-const activityTypeValues = [
-  'CONDITION_CHECK',
-  'VISUAL_INSPECTIONS',
-  'LUBRICATION',
-  'AUTONOMOUS_MAINTENANCE',
-  'PERIODIC_MAINTENANCE',
-  'CORRECTIVE_MAINTENANCE',
-]
+export function getFrequencyName(frequency) {
+  const foundFrequencyName = FREQUENCY_VALUES_MAP[frequency]
+  return foundFrequencyName ?? `${frequency} hrs.`
+}
 
-export const activityType = {
+export const ACTIVITY_TYPE_VALUES_MAP = {
   CONDITION_CHECK: 'VERIFICACIÓN DE CONDICIÓN',
   VISUAL_INSPECTIONS: 'INSPECCIONES VISUALES',
   LUBRICATION: 'LUBRICACIÓN',
@@ -100,7 +80,9 @@ const activityShapeUpdate = {
     {
       errorMap: () => {
         return {
-          message: `El tipo de actividad solo puede tener los valores: ${activityTypeValues
+          message: `El tipo de actividad solo puede tener los valores: ${Object.keys(
+            ACTIVITY_TYPE_VALUES_MAP
+          )
             .map((t) => `'${t}'`)
             .join(' | ')}`,
         }
@@ -116,8 +98,9 @@ const activityShapeCreate = {
   ...activityShapeUpdate,
   code: z
     .string({ required_error: 'El código de la actividad es requerido' })
-    .length(5, {
-      message: 'El código de la actividad debe tener 5 caracteres',
+    .regex(/^[A-Z]{3}[0-9]{2}$/, {
+      message:
+        "El código de la actividad debe tener el formato: LLLNN (donde 'L' es letra mayúscula y 'N' es número)",
     }),
 }
 

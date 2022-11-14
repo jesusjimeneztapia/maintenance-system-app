@@ -1,6 +1,6 @@
-import axios from 'redaxios'
-
-const API_URL = process.env.API_URL
+import { HTTP_METHODS } from '../../../../services'
+import { getEngineByCodeUrlExternal } from '../../../../services/engineServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
 export default async function editEngine(req, res) {
   const {
@@ -8,16 +8,11 @@ export default async function editEngine(req, res) {
     body,
   } = req
 
-  try {
-    const { data } = await axios.put(
-      `${API_URL}/machines/${machineCode}/engines/${engineCode}`,
-      body
-    )
-    return res.json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+  const { data, message, status } = await requestExternalApi({
+    data: body,
+    method: HTTP_METHODS.PUT,
+    url: getEngineByCodeUrlExternal(machineCode, engineCode),
+  })
+
+  return res.status(status).json(message ? { message } : data)
 }

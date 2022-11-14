@@ -33,13 +33,13 @@
 }
 
 .button.primary {
-  color: var(--white);
+  color: rgb(var(--color-white));
   background-color: rgb(var(--color-primary) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-primary) / var(--tw-border-opacity));
 }
 
 .button.secondary {
-  color: var(--slate-600);
+  color: rgb(var(--color-slate-600));
   --tw-bg-opacity: 0.7;
   --tw-border-opacity: 0.7;
   background-color: rgb(var(--color-secondary) / var(--tw-bg-opacity));
@@ -55,19 +55,19 @@
 }
 
 .button.success {
-  color: var(--slate-900);
+  color: rgb(var(--color-slate-900));
   background-color: rgb(var(--color-success) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-success) / var(--tw-border-opacity));
 }
 
 .button.warning {
-  color: var(--slate-900);
+  color: rgb(var(--color-slate-900));
   background-color: rgb(var(--color-warning) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-warning) / var(--tw-border-opacity));
 }
 
 .button.danger {
-  color: var(--white);
+  color: rgb(var(--color-white));
   background-color: rgb(var(--color-danger) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-danger) / var(--tw-border-opacity));
 }
@@ -85,7 +85,7 @@
 }
 
 .button.soft-secondary {
-  color: var(--slate-600);
+  color: rgb(var(--color-slate-600));
   --tw-bg-opacity: 0.2;
   --tw-border-opacity: 1;
   background-color: rgb(var(--color-secondary) / var(--tw-bg-opacity));

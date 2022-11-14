@@ -6,7 +6,6 @@
   border-collapse: collapse;
   border-spacing: 2px;
   font-size: 0.875rem;
-  color: var(--slate-900);
 }
 
 .table th,
@@ -43,7 +42,6 @@
   border-radius: 0.25rem;
   --tw-bg-opacity: 0.16;
   background-color: rgb(var(--color-primary) / var(--tw-bg-opacity));
-  background-color: var(--slate-200);
 }
 
 .container::-webkit-scrollbar-thumb {

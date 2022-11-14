@@ -1,7 +1,7 @@
 import MachineCard from './MachineCard'
 import styles from '../../styles/machines/MachineList.module.css'
 
-export default function MachineList({ machines }) {
+export default function MachineList({ machines, page }) {
   return (
     <div>
       <table className={styles.table}>
@@ -9,14 +9,14 @@ export default function MachineList({ machines }) {
           <tr>
             <th>Imagen</th>
             <th>Máquina</th>
-            <th>Ubicación</th>
+            <th>{page === 'machines' ? 'Ubicación' : 'Área'}</th>
             <th className={styles['text-center']}>Criticidad</th>
             <th className={styles['text-center']}>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {machines.map(({ code, ...rest }) => (
-            <MachineCard key={code} code={code} {...rest} />
+            <MachineCard key={code} code={code} page={page} {...rest} />
           ))}
         </tbody>
       </table>

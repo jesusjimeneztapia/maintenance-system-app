@@ -1,9 +1,9 @@
-import axios from 'redaxios'
 import nc from 'next-connect'
 import fileParser from '../../../middlewares/fileParser'
 import { createFormDataForApi } from '../../../libs/machine'
-
-const API_URL = process.env.API_URL
+import { requestExternalApi } from '../../../services/requestApi'
+import { HTTP_METHODS } from '../../../services'
+import { getMachineByCodeUrlExternal } from '../../../services/machineServices'
 
 export const config = {
   api: {
@@ -11,30 +11,32 @@ export const config = {
   },
 }
 
-const addMachine = nc()
-addMachine.use(fileParser)
+const updateMachine = nc()
+updateMachine.use(fileParser)
 
-addMachine.put(async (req, res) => {
+updateMachine.put(async (req, res) => {
   const { body, files } = req
   const { code, ...rest } = body
   const formData = createFormDataForApi(rest, files)
-  try {
-    const {
-      data: {
-        image: { url },
-        ...rest
-      },
-    } = await axios.put(`${API_URL}/machines/${code}`, formData, {
-      headers: formData.getHeaders(),
-    })
 
-    return res.status(201).json({ ...rest, image: url })
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
+  const { data, message, status } = await requestExternalApi({
+    data: formData,
+    headers: formData.getHeaders(),
+    method: HTTP_METHODS.PUT,
+    url: getMachineByCodeUrlExternal(code),
+  })
+
+  if (message) {
+    return res.status(status).json({ message })
   }
+
+  const {
+    image: { url },
+    ...machineRest
+  } = data
+
+  const updatedMachine = { ...machineRest, image: url }
+  return res.status(status).json(updatedMachine)
 })
 
-export default addMachine
+export default updateMachine

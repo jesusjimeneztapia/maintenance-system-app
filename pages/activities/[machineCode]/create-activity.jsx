@@ -1,52 +1,52 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import ActivityForm from '../../../components/activities/ActivityForm'
 import CreateActivityForm from '../../../components/activities/machine/create-activity/CreateActivityForm'
-import Form from '../../../components/Form'
+import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import { createDocumentTitle } from '../../../libs/documentTitle'
-import {
-  activityInitialValues,
-  createActivityDto,
-} from '../../../schemas/activity'
+import { activityInitialValues } from '../../../schemas/activity'
+import { HTTP_METHODS } from '../../../services'
+import { CREATE_ACTIVITY_CONFIG } from '../../../services/activityServices'
+import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
+import { requestInternalApi } from '../../../services/requestApi'
 
-function createStartCode(machineCode) {
-  return machineCode.split('-')[2]
-}
-
-export default function CreateActivity() {
-  const {
-    query: { machineCode },
-  } = useRouter()
+export default function CreateActivity({ name, machineCode, message }) {
+  const { component, title } = useBeforeRenderPage({
+    message,
+    title: ['Crear actividad', `Máquina ${name ?? machineCode}`],
+  })
 
   return (
     <>
       <Head>
-        <title>
-          {createDocumentTitle('Crear actividad', `Máquina ${machineCode}`)}
-        </title>
+        <title>{createDocumentTitle(title)}</title>
       </Head>
-      <Form
-        title={`Crear actividad para la máquina ${machineCode}`}
-        dtoValidation={createActivityDto}
-        initialValues={{
-          ...activityInitialValues,
-          code: createStartCode(machineCode),
-          machineCode,
-        }}
-        onSubmit={{
-          method: 'POST',
-          url: `/api/activities/create`,
-          message: 'Crear',
-          preSubmit: {
-            title: `Crear actividad para la máquina ${machineCode}`,
-            question: `¿Seguro que quiere crear la actividad?`,
-          },
-          duringSubmit: { message: 'La actividad se está creando...' },
-          successSubmit: { message: 'La actividad se creó exitósamente' },
-          reset: true,
-        }}
-      >
-        <CreateActivityForm />
-      </Form>
+      {component ? (
+        <>{component}</>
+      ) : (
+        <ActivityForm
+          {...CREATE_ACTIVITY_CONFIG}
+          machineCode={machineCode}
+          initialValues={activityInitialValues(machineCode)}
+          title={title}
+        >
+          <CreateActivityForm />
+        </ActivityForm>
+      )}
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const {
+    query: { machineCode },
+  } = context
+
+  const { data, message } = await requestInternalApi(context, {
+    method: HTTP_METHODS.GET,
+    url: getMachineByCodeUrlRegular(machineCode),
+  })
+
+  return {
+    props: { ...data, machineCode, message },
+  }
 }

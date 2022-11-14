@@ -1,13 +1,14 @@
 import styles from '../styles/Input.module.css'
 
 export default function Select({
-  children,
   id,
   label,
   onChange,
   error,
   required = false,
   value = '',
+  placeholder,
+  optionsMap,
   disabled,
 }) {
   return (
@@ -22,7 +23,16 @@ export default function Select({
         required={required}
         disabled={disabled}
       >
-        {children}
+        {placeholder && (
+          <option value='' disabled>
+            {placeholder}
+          </option>
+        )}
+        {Object.entries(optionsMap).map(([value, name]) => (
+          <option key={value} value={value}>
+            {name}
+          </option>
+        ))}
       </select>
       {error && <small>{error}</small>}
     </div>

@@ -1,12 +1,15 @@
+import { AREA_VALUES_MAP } from '../../../schemas/machine'
 import Box from '../../Box'
 import TableBordered from '../../TableBordered'
 import Criticality from '../Criticality'
+import styles from '../../../styles/machines/code/EnginesTable.module.css'
 
 export default function GeneralInformationTable({
   name,
   maker,
   model,
   location,
+  area,
   criticality,
   function: fn,
   specificData,
@@ -16,7 +19,7 @@ export default function GeneralInformationTable({
       <TableBordered>
         <thead>
           <tr>
-            <th style={{ textAlign: 'center' }} colSpan={2}>
+            <th className={styles['text-center']} colSpan={2}>
               Información general
             </th>
           </tr>
@@ -37,6 +40,10 @@ export default function GeneralInformationTable({
           <tr>
             <td>Ubicación</td>
             <td>{location}</td>
+          </tr>
+          <tr>
+            <td>Área</td>
+            <td>{AREA_VALUES_MAP[area]}</td>
           </tr>
           <tr>
             <td>Criticidad</td>

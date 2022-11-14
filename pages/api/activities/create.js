@@ -1,16 +1,15 @@
-import axios from 'redaxios'
-import { API_URL } from '../../../libs/environment'
+import { HTTP_METHODS } from '../../../services'
+import { ACTIVITY_URL_EXTERNAL } from '../../../services/activityServices'
+import { requestExternalApi } from '../../../services/requestApi'
 
-export default async function editActivity(req, res) {
+export default async function createActivity(req, res) {
   const { body } = req
 
-  try {
-    const { data, status } = await axios.post(`${API_URL}/activities/`, body)
-    return res.status(status).json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+  const { data, message, status } = await requestExternalApi({
+    data: body,
+    method: HTTP_METHODS.POST,
+    url: ACTIVITY_URL_EXTERNAL,
+  })
+
+  return res.status(status).json(message ? { message } : data)
 }

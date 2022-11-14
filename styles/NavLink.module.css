@@ -29,7 +29,7 @@
 }
 
 .link.active a {
-  background-color: var(--slate-100);
+  background-color: rgb(var(--color-slate-100));
   color: rgb(var(--color-primary) / var(--tw-text-opacity));
 }
 .link.active a::before {
@@ -41,7 +41,8 @@
   border-radius: 25px;
   top: -100%;
   left: calc(100% - 25px);
-  box-shadow: 25px 25px 0 var(--slate-100), 0 50px 0 var(--slate-100);
+  box-shadow: 25px 25px 0 rgb(var(--color-slate-100)),
+    0 50px 0 rgb(var(--color-slate-100));
 }
 .link.active a::after {
   content: '';
@@ -52,12 +53,12 @@
   border-radius: 25px;
   bottom: -100%;
   left: calc(100% - 25px);
-  box-shadow: 25px -25px 0 var(--slate-100);
+  box-shadow: 25px -25px 0 rgb(var(--color-slate-100));
 }
 .link.active a svg path {
   fill: rgb(var(--color-primary) / var(--tw-text-opacity));
 }
 .link.active:hover a {
   cursor: default;
-  background-color: var(--slate-100);
+  background-color: rgb(var(--color-slate-100));
 }

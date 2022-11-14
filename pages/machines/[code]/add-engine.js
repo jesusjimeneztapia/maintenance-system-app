@@ -1,60 +1,52 @@
 import AddEngineForm from '../../../components/machines/code/add-engine/AddEngineForm'
-import { createEngineDto } from '../../../schemas/engine'
-import Form from '../../../components/Form'
+import { engineInitialValues } from '../../../schemas/engine'
 import Head from 'next/head'
 import { createDocumentTitle } from '../../../libs/documentTitle'
+import EngineForm from '../../../components/machines/code/EngineForm'
+import { addEngineConfig } from '../../../services/engineServices'
+import { requestInternalApi } from '../../../services/requestApi'
+import { HTTP_METHODS } from '../../../services'
+import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
+import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 
-const dataInitialValue = {
-  function: '',
-  mark: '',
-  type: '',
-  powerHp: 0,
-  powerKw: 0,
-  voltage: '',
-  current: '',
-  rpm: 0,
-  cosPhi: 0,
-  performance: 0,
-  frequency: 0,
-  poles: 0,
-  ip: 0,
-  boot: '',
-}
+export default function AddEngine({ name, machineCode, message }) {
+  const { component, title } = useBeforeRenderPage({
+    message,
+    title: [`Máquina ${name ?? machineCode}`, 'Agregar motor'],
+  })
 
-export default function AddEngine({ code }) {
   return (
     <>
       <Head>
-        <title>{createDocumentTitle(`Máquina ${code}`, 'Agregar motor')}</title>
+        <title>{createDocumentTitle(title)}</title>
       </Head>
-      <Form
-        title='Agregar motor'
-        dtoValidation={createEngineDto}
-        initialValues={{ ...dataInitialValue, code: `${code}-MOT-` }}
-        onSubmit={{
-          method: 'POST',
-          url: `/api/machines/${code}/add-engine`,
-          message: 'Agregar',
-          preSubmit: {
-            title: `Agregar motor a la máquina ${code}`,
-            question: `¿Seguro que quiere agregar el motor a la máquina ${code}?`,
-          },
-          duringSubmit: { message: 'El motor se está agregando...' },
-          successSubmit: { message: 'El motor se agregó exitósamente' },
-        }}
-      >
-        <AddEngineForm />
-      </Form>
+      {component ? (
+        <>{component}</>
+      ) : (
+        <EngineForm
+          {...addEngineConfig(machineCode)}
+          machineCode={machineCode}
+          initialValues={engineInitialValues(machineCode)}
+          title={title}
+        >
+          <AddEngineForm />
+        </EngineForm>
+      )}
     </>
   )
 }
 
 export async function getServerSideProps(context) {
   const {
-    query: { code },
+    query: { code: machineCode },
   } = context
 
+  const { data, message } = await requestInternalApi(context, {
+    method: HTTP_METHODS.GET,
+    url: getMachineByCodeUrlRegular(machineCode),
+  })
+
   return {
-    props: { code },
+    props: { ...data, machineCode, message },
   }
 }

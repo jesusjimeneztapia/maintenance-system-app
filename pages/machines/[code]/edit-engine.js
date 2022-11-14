@@ -1,57 +1,65 @@
-import { getAPIURL } from '../../../libs/origin'
-import axios from 'redaxios'
-import Form from '../../../components/Form'
-import { updateEngineDto } from '../../../schemas/engine'
 import EditEngineForm from '../../../components/machines/code/edit-engine/EditEngineForm'
 import Head from 'next/head'
 import { createDocumentTitle } from '../../../libs/documentTitle'
+import { requestInternalApi } from '../../../services/requestApi'
+import { HTTP_METHODS } from '../../../services'
+import {
+  editEngineConfig,
+  getEngineUrlRegular,
+} from '../../../services/engineServices'
+import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
+import EngineForm from '../../../components/machines/code/EngineForm'
 
-export default function editEngine({ code, machineCode, engine }) {
+export default function EditEngine({ code, machineCode, engine, message }) {
+  const { component, title } = useBeforeRenderPage({
+    message,
+    title: [`Motor ${code}`, 'Editar'],
+  })
+
   return (
     <>
       <Head>
-        <title>{createDocumentTitle(`Motor ${code}`)}</title>
+        <title>{createDocumentTitle(title)}</title>
       </Head>
-      <Form
-        title={`Motor ${code}`}
-        dtoValidation={updateEngineDto}
-        initialValues={engine}
-        onSubmit={{
-          method: 'PUT',
-          url: `/api/machines/${machineCode}/edit-engine?engineCode=${code}`,
-          message: 'Guardar',
-          preSubmit: {
-            title: 'Editar motor',
-            question: '¿Seguro que quiere guardar los cambios?',
-          },
-          duringSubmit: { message: 'El motor se está actualizando...' },
-          successSubmit: { message: 'El motor se actualizó exitósamente' },
-          reset: false,
-        }}
-      >
-        <EditEngineForm />
-      </Form>
+      {component ? (
+        <>{component}</>
+      ) : (
+        <EngineForm
+          {...editEngineConfig(machineCode, code)}
+          code={code}
+          initialValues={engine}
+          title={title}
+        >
+          <EditEngineForm />
+        </EngineForm>
+      )}
     </>
   )
 }
 
 export async function getServerSideProps(context) {
   const {
-    query: { code: machineCodeUrl, engineCode },
+    query: { code: machineCode, engineCode },
   } = context
 
-  const api = getAPIURL(context)
+  const { data, message } = await requestInternalApi(context, {
+    method: HTTP_METHODS.GET,
+    params: { engineCode },
+    url: getEngineUrlRegular(machineCode),
+  })
 
-  const { data } = await axios.get(
-    `${api}/machines/${machineCodeUrl}/get-engine`,
-    {
-      params: { engineCode },
+  if (data) {
+    const { code, machineCode, ...engine } = data
+    return {
+      props: {
+        code,
+        machineCode,
+        engine,
+      },
     }
-  )
-
-  const { code, machineCode, ...rest } = data
+  }
 
   return {
-    props: { code, machineCode, engine: rest },
+    props: { code: engineCode, message },
   }
 }

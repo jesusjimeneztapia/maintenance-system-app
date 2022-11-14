@@ -1,20 +1,19 @@
-import axios from 'redaxios'
-import { API_URL } from '../../../../libs/environment'
+import { HTTP_METHODS } from '../../../../services'
+import { getActivityByCodeUrlExternal } from '../../../../services/activityServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
 export default async function deleteActivity(req, res) {
   const {
     query: { code, machineCode },
   } = req
 
-  try {
-    const { status } = await axios.delete(`${API_URL}/activities/${code}`, {
-      params: { machineCode },
-    })
-    return res.status(status).send()
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+  const { status, message } = await requestExternalApi({
+    method: HTTP_METHODS.DELETE,
+    params: { machineCode },
+    url: getActivityByCodeUrlExternal(code),
+  })
+
+  return message
+    ? res.status(status).json({ message })
+    : res.status(status).send()
 }

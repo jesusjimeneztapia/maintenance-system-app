@@ -45,6 +45,6 @@
   border-radius: 30px;
   padding: 0 22px;
   padding-bottom: 2.5rem;
-  background-color: var(--slate-100);
+  background-color: rgb(var(--color-slate-100));
   width: 100%;
 }

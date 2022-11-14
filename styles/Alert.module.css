@@ -25,17 +25,15 @@
   border-color: rgb(var(--color-primary) / var(--tw-border-opacity));
 }
 .alert.secondary {
-  color: var(--slate-600);
+  color: rgb(var(--color-slate-600));
   background-color: rgb(var(--color-secondary) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-secondary) / var(--tw-border-opacity));
 }
 .alert.success {
-  color: var(--slate-900);
   background-color: rgb(var(--color-success) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-success) / var(--tw-border-opacity));
 }
 .alert.warning {
-  color: var(--slate-900);
   background-color: rgb(var(--color-warning) / var(--tw-bg-opacity));
   border-color: rgb(var(--color-warning) / var(--tw-border-opacity));
 }

@@ -1,4 +1,5 @@
 import { useForm } from '../../../../context/providers/FormContext'
+import { BOOT_VALUES_MAP } from '../../../../schemas/engine'
 import Input from '../../../Input'
 import Select from '../../../Select'
 
@@ -60,8 +61,8 @@ export default function EditEngineForm() {
       />
       <Input
         id='current'
-        label='Corriente'
-        placeholder='Corriente del motor'
+        label='Corriente [A]'
+        placeholder='Corriente [A] del motor'
         value={values.current}
         onChange={upperCaseHandleChange()}
         error={touched.current ? errors.current : undefined}
@@ -124,15 +125,11 @@ export default function EditEngineForm() {
         id='boot'
         label='Arranque'
         value={values.boot}
+        placeholder='Arranque del motor'
+        optionsMap={BOOT_VALUES_MAP}
         onChange={handleChange}
         error={touched.boot ? errors.boot : undefined}
-      >
-        <option value='' disabled>
-          Arranque del motor
-        </option>
-        <option value='DIRECT'>DIRECTO</option>
-        <option value='SOFT'>SUAVE</option>
-      </Select>
+      />
     </>
   )
 }

@@ -4,6 +4,11 @@ import InputFile from '../../InputFile'
 import Select from '../../Select'
 import Textarea from '../../Textarea'
 import { useForm } from '../../../context/providers/FormContext'
+import {
+  AREA_VALUES_MAP,
+  CRITICALITY_VALUES_MAP,
+  TECHNICAL_DOCUMENTATION_VALUES_MAP,
+} from '../../../schemas/machine'
 
 export default function EditMachineForm() {
   const {
@@ -46,6 +51,15 @@ export default function EditMachineForm() {
         onChange={upperCaseHandleChange()}
         error={touched.location ? errors.location : undefined}
       />
+      <Select
+        id='area'
+        label='Área'
+        value={values.area}
+        placeholder='Área de la máquina'
+        optionsMap={AREA_VALUES_MAP}
+        onChange={handleChange}
+        error={touched.area ? errors.area : undefined}
+      />
       <Input
         id='model'
         label='Modelo'
@@ -75,28 +89,18 @@ export default function EditMachineForm() {
         id='technicalDocumentation'
         label='Documentación técnica'
         values={values.technicalDocumentation}
-        options={[
-          { label: 'Manual de operaciones', value: 'OPERATIONS_MANUAL' },
-          { label: 'Manual de mantenimiento', value: 'MAINTENANCE_MANUAL' },
-          { label: 'Planos eléctricos', value: 'ELECTRICAL_PLANS' },
-          { label: 'Planos mecánicos', value: 'MECHANICAL_PLANS' },
-        ]}
+        optionsMap={TECHNICAL_DOCUMENTATION_VALUES_MAP}
         onChange={handleChange}
       />
       <Select
         id='criticality'
         label='Criticidad'
         value={values.criticality}
+        placeholder='Criticidad de la máquina'
+        optionsMap={CRITICALITY_VALUES_MAP}
         onChange={handleChange}
         error={touched.criticality ? errors.criticality : undefined}
-      >
-        <option value='' disabled>
-          Criticidad de la máquina
-        </option>
-        <option value='HIGH'>Alta</option>
-        <option value='MEDIUM'>Media</option>
-        <option value='LOW'>Baja</option>
-      </Select>
+      />
       <InputFile
         id='image'
         label='Imagen de la máquina'

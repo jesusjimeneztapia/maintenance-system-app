@@ -18,7 +18,7 @@ export default function RadioButton({
         value={value}
         onChange={onChange}
         required={required}
-        checked={value === currentValue}
+        checked={value === `${currentValue}`}
         disabled={disabled}
       />
       <label htmlFor={id}>{label}</label>

@@ -23,7 +23,7 @@ export default function InputFile({
         alt: file.name,
       }
     }
-    return <img {...image} />
+    return <img {...image} /> // eslint-disable-line
   }
 
   const createHandleActive = (value) => () => {

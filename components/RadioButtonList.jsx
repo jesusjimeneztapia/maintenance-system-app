@@ -8,7 +8,7 @@ export default function RadioButtonList({
   id,
   label,
   value: currentValue,
-  options,
+  optionsMap,
   onChange,
   disabled,
   error,
@@ -21,9 +21,8 @@ export default function RadioButtonList({
 
   useEffect(() => {
     if (anotherField) {
-      const values = options.map(({ value }) => value)
       setAnotherValue((anotherValue) => {
-        if (values.includes(currentValue)) {
+        if (optionsMap[currentValue]) {
           if (anotherFocus && anotherValue !== '') {
             return currentValue
           }
@@ -32,13 +31,13 @@ export default function RadioButtonList({
         return currentValue
       })
     }
-  }, [currentValue, anotherField, anotherFocus, options])
+  }, [currentValue, anotherField, anotherFocus, optionsMap])
 
   return (
     <div className={`${styles.group} ${error && styles.error}`}>
       <label>{label}</label>
       <div className={styles['radio-button-list']}>
-        {options.map(({ label, value }) => (
+        {Object.entries(optionsMap).map(([value, label]) => (
           <RadioButton
             key={value}
             id={value}

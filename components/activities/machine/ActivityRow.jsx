@@ -1,11 +1,12 @@
-import Link from 'next/link'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FiEdit } from 'react-icons/fi'
 import { useToast } from '../../../context/providers/ToastContext'
 import styles from '../../../styles/activities/machine/ActivityRow.module.css'
 import Button from '../../Button'
 import axios from 'redaxios'
-import { getFrequencyLabel } from '../../../schemas/activity'
+import { getFrequencyName } from '../../../schemas/activity'
+import { deleteActivityByCodeUrlInternal } from '../../../services/activityServices'
+import ActionLink from '../../ActionLink'
 
 export default function ActivityRow({
   code,
@@ -20,7 +21,7 @@ export default function ActivityRow({
   const autoDelete = async () => {
     const response = await request(
       async () => {
-        await axios.delete(`/api/activities/${code}/delete`, {
+        await axios.delete(deleteActivityByCodeUrlInternal(code), {
           params: { machineCode },
         })
         return true
@@ -63,26 +64,25 @@ export default function ActivityRow({
 
   return (
     <tr>
-      <td style={{ textAlign: 'center' }}>{code}</td>
+      <td className={styles['text-center']}>{code}</td>
       <td>{name}</td>
-      <td style={{ textAlign: 'center' }}>{getFrequencyLabel(frequency)}</td>
+      <td className={styles['text-center']}>{getFrequencyName(frequency)}</td>
       <td>
         <div className={styles.actions}>
-          <Link
+          <ActionLink
             href={{
               pathname: '/activities/[machineCode]/edit-activity',
               query: { machineCode, code },
             }}
+            variant='primary'
           >
-            <a className={styles.edit}>
-              <FiEdit />
-              Editar
-            </a>
-          </Link>
-          <span className={styles.delete} onClick={handleDelete}>
+            <FiEdit />
+            Editar
+          </ActionLink>
+          <ActionLink variant='danger' onClick={handleDelete}>
             <AiOutlineDelete />
             Eliminar
-          </span>
+          </ActionLink>
         </div>
       </td>
     </tr>

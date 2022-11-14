@@ -1,22 +1,18 @@
-import axios from 'redaxios'
-
-const API_URL = process.env.API_URL
+import { HTTP_METHODS } from '../../../../services'
+import { getEngineUrlExternal } from '../../../../services/engineServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
 export default async function addEngine(req, res) {
   const {
     body,
     query: { code },
   } = req
-  try {
-    const { data, status } = await axios.post(
-      `${API_URL}/machines/${code}/engines`,
-      body
-    )
-    return res.status(status).json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+
+  const { data, message, status } = await requestExternalApi({
+    data: body,
+    method: HTTP_METHODS.POST,
+    url: getEngineUrlExternal(code, true),
+  })
+
+  return res.status(status).json(message ? { message } : data)
 }

@@ -1,57 +1,37 @@
-import { getAPIURL } from '../../../libs/origin'
-import axios from 'redaxios'
-import EditMachineForm from '../../../components/machines/code/EditMachineForm'
-import { updateMachineDto } from '../../../schemas/machine'
-import Form from '../../../components/Form'
 import Head from 'next/head'
+import EditMachineForm from '../../../components/machines/code/EditMachineForm'
+import MachineForm from '../../../components/machines/MachineForm'
 import { createDocumentTitle } from '../../../libs/documentTitle'
+import {
+  getMachineByCodeUrlRegular,
+  UPDATE_MACHINE_CONFIG,
+} from '../../../services/machineServices'
+import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
+import { requestInternalApi } from '../../../services/requestApi'
+import { HTTP_METHODS } from '../../../services'
 
-export default function EditMachine({ code, machine, ...rest }) {
-  const mutateValues = (values) => {
-    const { technicalDocumentation, image, ...rest } = values
-    const body = rest
-    if (technicalDocumentation) {
-      body.technicalDocumentation = JSON.stringify(technicalDocumentation)
-    }
-    const formData = new FormData()
-    const keys = Object.keys(body)
-    keys.forEach((key) => {
-      formData.set(key, body[key])
-    })
-    if (image.size) {
-      formData.set('image', image)
-    }
-    return formData
-  }
+export default function EditMachine({ code, name, machine, message }) {
+  const { component, title } = useBeforeRenderPage({
+    message,
+    title: [`Máquina ${name ?? code}`, 'Editar'],
+  })
 
   return (
     <>
       <Head>
-        <title>{createDocumentTitle(`Máquina ${code}`)}</title>
+        <title>{createDocumentTitle(title)}</title>
       </Head>
-      {machine && (
-        <Form
-          title={`Máquina ${code}`}
-          dtoValidation={updateMachineDto}
+      {component ? (
+        <>{component}</>
+      ) : (
+        <MachineForm
+          {...UPDATE_MACHINE_CONFIG}
           initialValues={machine}
-          onSubmit={{
-            method: 'PUT',
-            url: '/api/machines/update',
-            message: 'Guardar',
-            preSubmit: {
-              title: 'Editar máquina',
-              question: '¿Seguro que quiere guardar los cambios?',
-              mutateValues,
-            },
-            duringSubmit: { message: 'La máquina se está actualizando...' },
-            successSubmit: {
-              message: 'La máquina se actualizó exitósamente',
-            },
-            reset: false,
-          }}
+          title={title}
+          code={code}
         >
           <EditMachineForm />
-        </Form>
+        </MachineForm>
       )}
     </>
   )
@@ -62,22 +42,26 @@ export async function getServerSideProps(context) {
     query: { code },
   } = context
 
-  let machine = null
-  let message = null
+  const { data: machine, message } = await requestInternalApi(context, {
+    method: HTTP_METHODS.GET,
+    url: getMachineByCodeUrlRegular(code),
+  })
 
-  const api = getAPIURL(context)
-  try {
-    const { data } = await axios.get(`${api}/machines/${code}`)
-    machine = data
-  } catch (error) {
-    const { data } = error
-    message = data.message
+  if (machine) {
+    const { name } = machine
+    return {
+      props: {
+        code,
+        name,
+        machine,
+        message,
+      },
+    }
   }
 
   return {
     props: {
       code,
-      machine,
       message,
     },
   }

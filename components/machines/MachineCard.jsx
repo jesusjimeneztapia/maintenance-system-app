@@ -3,18 +3,26 @@ import { FiActivity, FiEdit } from 'react-icons/fi'
 import { CgDatabase } from 'react-icons/cg'
 import styles from '../../styles/machines/MachineCard.module.css'
 import Criticality from './Criticality'
+import { AREA_VALUES_MAP } from '../../schemas/machine'
+import ActionLink from '../ActionLink'
 
 export default function MachineCard({
   image,
   code,
   name,
   location,
+  area,
   criticality,
+  page,
 }) {
   return (
     <tr className={styles.card}>
       <td className={styles.image}>
-        {image ? <img src={image} alt={name} /> : <CgDatabase />}
+        {image ? (
+          <img src={image} alt={name} /> // eslint-disable-line
+        ) : (
+          <CgDatabase />
+        )}
       </td>
       <td className={styles.info}>
         <Link href={{ pathname: '/machines/[code]', query: { code } }}>
@@ -22,7 +30,7 @@ export default function MachineCard({
         </Link>
         <span>{name}</span>
       </td>
-      <td>{location}</td>
+      <td>{page === 'machines' ? location : AREA_VALUES_MAP[area]}</td>
       <td>
         <div className={styles.container}>
           <Criticality criticality={criticality} />
@@ -30,22 +38,28 @@ export default function MachineCard({
       </td>
       <td>
         <div className={styles.container}>
-          <Link href={{ pathname: '/machines/[code]/edit', query: { code } }}>
-            <a className={styles.edit}>
-              <FiEdit />
-              Editar
-            </a>
-          </Link>
-        </div>
-      </td>
-      <td>
-        <div className={styles.container}>
-          <Link href={{ pathname: '/activities/[code]', query: { code } }}>
-            <a className={styles.activity}>
-              <FiActivity />
-              Ver actividades
-            </a>
-          </Link>
+          <ActionLink
+            href={{
+              pathname:
+                page === 'machines'
+                  ? '/machines/[code]/edit'
+                  : '/activities/[code]',
+              query: { code },
+            }}
+            variant={page === 'machines' ? 'primary' : 'warning'}
+          >
+            {page === 'machines' ? (
+              <>
+                <FiEdit />
+                Editar
+              </>
+            ) : (
+              <>
+                <FiActivity />
+                Ver actividades
+              </>
+            )}
+          </ActionLink>
         </div>
       </td>
     </tr>

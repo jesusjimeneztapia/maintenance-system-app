@@ -5,7 +5,7 @@
   height: 67px;
   z-index: 51;
   position: relative;
-  border-bottom: 1px solid var(--slate-200);
+  border-bottom: 1px solid rgb(var(--color-slate-200));
 }
 
 .options {
@@ -18,12 +18,12 @@
   width: 2rem;
   height: 2rem;
   border-radius: 1rem;
-  background-color: var(--slate-800);
+  background-color: rgb(var(--color-slate-800));
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .options div span {
-  color: var(--white);
+  color: rgb(var(--color-white));
 }

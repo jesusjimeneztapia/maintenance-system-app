@@ -5,7 +5,7 @@ export default function CheckboxList({
   id,
   label,
   values = [],
-  options,
+  optionsMap,
   onChange,
   disabled,
 }) {
@@ -13,7 +13,7 @@ export default function CheckboxList({
     <div className={styles.group}>
       <label>{label}</label>
       <div className={styles['checkbox-list']}>
-        {options.map(({ label, value }) => (
+        {Object.entries(optionsMap).map(([value, label]) => (
           <Checkbox
             key={value}
             id={value}

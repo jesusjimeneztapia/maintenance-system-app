@@ -1,20 +1,17 @@
-import axios from 'redaxios'
-import { API_URL } from '../../../../libs/environment'
+import { HTTP_METHODS } from '../../../../services'
+import { getActivityByCodeUrlExternal } from '../../../../services/activityServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
-export default async function editActivity(req, res) {
+export default async function getActivityByCode(req, res) {
   const {
     query: { code, machineCode },
   } = req
 
-  try {
-    const { data, status } = await axios.get(`${API_URL}/activities/${code}`, {
-      params: { machineCode },
-    })
-    return res.status(status).json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+  const { data, message, status } = await requestExternalApi({
+    method: HTTP_METHODS.GET,
+    params: { machineCode },
+    url: getActivityByCodeUrlExternal(code),
+  })
+
+  return res.status(status).json(message ? { message } : data)
 }

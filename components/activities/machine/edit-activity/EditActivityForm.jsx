@@ -1,5 +1,8 @@
 import { useForm } from '../../../../context/providers/FormContext'
-import { activityType, frequencyValues } from '../../../../schemas/activity'
+import {
+  ACTIVITY_TYPE_VALUES_MAP,
+  FREQUENCY_VALUES_MAP,
+} from '../../../../schemas/activity'
 import Input from '../../../Input'
 import RadioButtonList from '../../../RadioButtonList'
 import Select from '../../../Select'
@@ -32,7 +35,7 @@ export default function EditActivityForm() {
         id='frequency'
         label='Frecuencia'
         value={values.frequency}
-        options={frequencyValues}
+        optionsMap={FREQUENCY_VALUES_MAP}
         onChange={handleChangeFrequency}
         error={touched.frequency ? errors.frequency : undefined}
         anotherField={{
@@ -46,18 +49,11 @@ export default function EditActivityForm() {
         id='activityType'
         label='Tipo'
         value={values.activityType}
+        placeholder='Tipo de actividad'
+        optionsMap={ACTIVITY_TYPE_VALUES_MAP}
         onChange={handleChange}
         error={touched.activityType ? errors.activityType : undefined}
-      >
-        <option value='' disabled>
-          Tipo de actividad
-        </option>
-        {Object.entries(activityType).map(([value, name]) => (
-          <option key={value} value={value}>
-            {name}
-          </option>
-        ))}
-      </Select>
+      />
     </>
   )
 }

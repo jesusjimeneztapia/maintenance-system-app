@@ -1,5 +1,6 @@
 import TableBordered from '../../TableBordered'
 import ActivityRow from './ActivityRow'
+import styles from '../../../styles/activities/machine/TableActivities.module.css'
 
 export default function TableActivities({
   title,
@@ -11,7 +12,7 @@ export default function TableActivities({
     <TableBordered>
       <thead>
         <tr>
-          <th style={{ textAlign: 'center' }} colSpan={4}>
+          <th className={styles.title} colSpan={4}>
             {title}
           </th>
         </tr>
@@ -19,20 +20,13 @@ export default function TableActivities({
       <tbody>
         {activities.length === 0 ? (
           <tr>
-            <td
-              colSpan={4}
-              style={{
-                textAlign: 'center',
-                fontSize: '0.875rem',
-                color: 'var(--slate-600)',
-              }}
-            >
+            <td className={styles.message} colSpan={4}>
               No existe ninguna actividad en esta sección
             </td>
           </tr>
         ) : (
           <>
-            <tr style={{ fontWeight: '500', textAlign: 'center' }}>
+            <tr className={styles.header}>
               <td>Código</td>
               <td>Nombre</td>
               <td>Frecuencia</td>

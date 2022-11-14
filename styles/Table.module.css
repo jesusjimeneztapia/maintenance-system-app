@@ -11,7 +11,6 @@
   padding: 0.75rem 1.25rem;
   font-weight: 500;
   font-size: 0.875rem;
-  color: var(--slate-900);
   white-space: nowrap;
 }
 
@@ -28,7 +27,6 @@
 
 .table tbody tr td {
   padding: 0.75rem 1.25rem;
-  color: var(--slate-900);
 }
 
 .table tbody tr td:first-child {

@@ -1,14 +1,13 @@
-import axios from 'redaxios'
-import { API_URL } from '../../../libs/environment'
+import { ACTIVITY_TYPE_VALUES_MAP } from '../../../schemas/activity'
+import { HTTP_METHODS } from '../../../services'
+import { ACTIVITY_URL_EXTERNAL } from '../../../services/activityServices'
+import { requestExternalApi } from '../../../services/requestApi'
 
-const ACTICITY_TYPE = {
-  CONDITION_CHECK: 'CONDITION_CHECK',
-  VISUAL_INSPECTIONS: 'VISUAL_INSPECTIONS',
-  LUBRICATION: 'LUBRICATION',
-  AUTONOMOUS_MAINTENANCE: 'AUTONOMOUS_MAINTENANCE',
-  PERIODIC_MAINTENANCE: 'PERIODIC_MAINTENANCE',
-  CORRECTIVE_MAINTENANCE: 'CORRECTIVE_MAINTENANCE',
-}
+const ACTIVITY_TYPE_VALUES = {}
+
+Object.keys(ACTIVITY_TYPE_VALUES_MAP).forEach((key) => {
+  ACTIVITY_TYPE_VALUES[key] = key
+})
 
 function getFilteredActivities(activities, filter) {
   return activities.filter(({ activityType }) => activityType === filter)
@@ -19,38 +18,43 @@ export default async function getActivitiesByMachineCode(req, res) {
     query: { machineCode },
   } = req
 
-  try {
-    const { data } = await axios.get(`${API_URL}/activities`, {
-      params: { machineCode },
-    })
-    const filteredActivities = {
-      CONDITION_CHECK: getFilteredActivities(
-        data,
-        ACTICITY_TYPE.CONDITION_CHECK
-      ),
-      VISUAL_INSPECTIONS: getFilteredActivities(
-        data,
-        ACTICITY_TYPE.VISUAL_INSPECTIONS
-      ),
-      LUBRICATION: getFilteredActivities(data, ACTICITY_TYPE.LUBRICATION),
-      AUTONOMOUS_MAINTENANCE: getFilteredActivities(
-        data,
-        ACTICITY_TYPE.AUTONOMOUS_MAINTENANCE
-      ),
-      PERIODIC_MAINTENANCE: getFilteredActivities(
-        data,
-        ACTICITY_TYPE.PERIODIC_MAINTENANCE
-      ),
-      CORRECTIVE_MAINTENANCE: getFilteredActivities(
-        data,
-        ACTICITY_TYPE.CORRECTIVE_MAINTENANCE
-      ),
-    }
-    return res.json(filteredActivities)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
+  const { data, message, status } = await requestExternalApi({
+    method: HTTP_METHODS.GET,
+    params: { machineCode },
+    url: ACTIVITY_URL_EXTERNAL,
+  })
+
+  if (message) {
+    return res.status(status).json({ message })
   }
+
+  const { activities, ...rest } = data
+
+  const filteredActivities = {
+    CONDITION_CHECK: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.CONDITION_CHECK
+    ),
+    VISUAL_INSPECTIONS: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.VISUAL_INSPECTIONS
+    ),
+    LUBRICATION: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.LUBRICATION
+    ),
+    AUTONOMOUS_MAINTENANCE: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.AUTONOMOUS_MAINTENANCE
+    ),
+    PERIODIC_MAINTENANCE: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.PERIODIC_MAINTENANCE
+    ),
+    CORRECTIVE_MAINTENANCE: getFilteredActivities(
+      activities,
+      ACTIVITY_TYPE_VALUES.CORRECTIVE_MAINTENANCE
+    ),
+  }
+  return res.status(status).json({ ...filteredActivities, ...rest })
 }

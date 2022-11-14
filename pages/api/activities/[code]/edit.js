@@ -1,5 +1,6 @@
-import axios from 'redaxios'
-import { API_URL } from '../../../../libs/environment'
+import { HTTP_METHODS } from '../../../../services'
+import { getActivityByCodeUrlExternal } from '../../../../services/activityServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
 export default async function editActivity(req, res) {
   const {
@@ -7,16 +8,11 @@ export default async function editActivity(req, res) {
     body,
   } = req
 
-  try {
-    const { data, status } = await axios.put(
-      `${API_URL}/activities/${code}`,
-      body
-    )
-    return res.status(status).json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
-  }
+  const { data, message, status } = await requestExternalApi({
+    data: body,
+    method: HTTP_METHODS.PUT,
+    url: getActivityByCodeUrlExternal(code),
+  })
+
+  return res.status(status).json(message ? { message } : data)
 }

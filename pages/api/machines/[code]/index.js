@@ -1,24 +1,28 @@
-import axios from 'redaxios'
-
-const API_URL = process.env.API_URL
+import { HTTP_METHODS } from '../../../../services'
+import { getEngineUrlExternal } from '../../../../services/engineServices'
+import { requestExternalApi } from '../../../../services/requestApi'
 
 export default async function getMachineByCode(req, res) {
   const {
-    query: { code },
+    query: { code, complete },
   } = req
-  try {
-    const { data } = await axios.get(`${API_URL}/machines/${code}/engines`)
-    const { image } = data
-    if (image) {
-      const { url } = image
-      const { name } = data
-      data.image = { src: url, name }
-    }
-    return res.json(data)
-  } catch (error) {
-    const { data, status } = error
-    return res
-      .status(status ?? 500)
-      .json(data ?? { message: 'Ocurrió algún error' })
+
+  const { data, message, status } = await requestExternalApi({
+    method: HTTP_METHODS.GET,
+    url: getEngineUrlExternal(code, complete),
+  })
+
+  if (message) {
+    return res.status(status).json({ message })
   }
+
+  const machine = data
+  const { image } = machine
+  if (image) {
+    const { url } = image
+    const { name } = machine
+    machine.image = { src: url, name }
+  }
+
+  return res.status(status).json(machine)
 }

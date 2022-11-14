@@ -3,18 +3,12 @@ import Box from '../../Box'
 import Button from '../../Button'
 import TableBordered from '../../TableBordered'
 import EngineRow from './EngineRow'
+import styles from '../../../styles/machines/code/EnginesTable.module.css'
 
 export default function EnginesTable({ engines, machineCode }) {
   return (
     <Box>
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '2rem',
-          marginBottom: '1rem',
-        }}
-      >
+      <header className={styles.header}>
         <Button>
           <Link
             href={{
@@ -27,57 +21,54 @@ export default function EnginesTable({ engines, machineCode }) {
         </Button>
       </header>
 
-      {engines.length > 0 && (
-        <div>
-          <TableBordered>
-            <thead>
+      <div>
+        <TableBordered>
+          <thead>
+            <tr>
+              <th className={styles['text-center']} colSpan={16}>
+                Motores Eléctricos
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {engines.length === 0 ? (
               <tr>
-                <th style={{ textAlign: 'center' }} colSpan={16}>
-                  Motores Eléctricos
-                </th>
+                <td className={styles.message} colSpan={16}>
+                  No existen motores para esta máquina
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <tr style={{ fontWeight: '500', textAlign: 'center' }}>
-                <td>Código</td>
-                <td>Función</td>
-                <td>Marca</td>
-                <td>Tipo</td>
-                <td>P [Hp]</td>
-                <td>P [KW]</td>
-                <td>Tensión [V]</td>
-                <td>I [A]</td>
-                <td>rpm</td>
-                <td>cos</td>
-                <td>n</td>
-                <td>f [Hz]</td>
-                <td>N° POLOS</td>
-                <td>IP</td>
-                <td>Aranque</td>
-                <td>Operaciones</td>
-              </tr>
-              {engines.map((engine) => (
-                <EngineRow
-                  key={engine.code}
-                  engine={engine}
-                  machineCode={machineCode}
-                />
-              ))}
-            </tbody>
-          </TableBordered>
-        </div>
-      )}
-      {engines.length === 0 && (
-        <p
-          style={{
-            textAlign: 'center',
-            fontSize: '0.875rem',
-            color: 'var(--slate-600)',
-          }}
-        >
-          No existen motores para esta máquina
-        </p>
-      )}
+            ) : (
+              <>
+                <tr className={styles.header}>
+                  <td>Código</td>
+                  <td>Función</td>
+                  <td>Marca</td>
+                  <td>Tipo</td>
+                  <td>P [Hp]</td>
+                  <td>P [KW]</td>
+                  <td>Tensión [V]</td>
+                  <td>I [A]</td>
+                  <td>rpm</td>
+                  <td>cos</td>
+                  <td>n</td>
+                  <td>f [Hz]</td>
+                  <td>N° POLOS</td>
+                  <td>IP</td>
+                  <td>Aranque</td>
+                  <td>Operaciones</td>
+                </tr>
+                {engines.map((engine) => (
+                  <EngineRow
+                    key={engine.code}
+                    engine={engine}
+                    machineCode={machineCode}
+                  />
+                ))}
+              </>
+            )}
+          </tbody>
+        </TableBordered>
+      </div>
     </Box>
   )
 }

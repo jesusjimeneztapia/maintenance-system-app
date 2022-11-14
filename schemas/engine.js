@@ -1,7 +1,31 @@
 import { z } from 'zod'
 import { createZodDecimal } from '.'
 
-const bootValues = ['DIRECT', 'SOFT']
+const ENGINE_INITIAL_VALUES = {
+  function: '',
+  mark: '',
+  type: '',
+  powerHp: 0,
+  powerKw: 0,
+  voltage: '',
+  current: '',
+  rpm: 0,
+  cosPhi: 0,
+  performance: 0,
+  frequency: 0,
+  poles: 0,
+  ip: 0,
+  boot: '',
+}
+
+export function engineInitialValues(machineCode) {
+  return { ...ENGINE_INITIAL_VALUES, code: `${machineCode}-MOT-` }
+}
+
+export const BOOT_VALUES_MAP = {
+  DIRECT: 'DIRECTO',
+  SOFT: 'SUAVE',
+}
 
 const engineShapeUpdate = {
   function: z
@@ -81,7 +105,9 @@ const engineShapeUpdate = {
   boot: z.enum(['DIRECT', 'SOFT'], {
     errorMap: () => {
       return {
-        message: `El arranque del motor solo puede tener los valores: ${bootValues
+        message: `El arranque del motor solo puede tener los valores: ${Object.keys(
+          BOOT_VALUES_MAP
+        )
           .map((t) => `'${t}'`)
           .join(' | ')}`,
       }
@@ -93,8 +119,9 @@ const engineShapeCreate = {
   ...engineShapeUpdate,
   code: z
     .string({ required_error: 'El código del motor es requerido' })
-    .length(20, {
-      message: 'El código del motor debe tener 20 caracteres',
+    .regex(/^[A-Z]{2}-[0-9]{2}-[A-Z]{3}-[0-9]{2}-MOT-[0-9]{3}$/, {
+      message:
+        "El código del motor debe tener el formato: LL-NN-LLL-NN-MOT-NNN (donde 'L' es letra mayúscula y 'N' es número)",
     }),
 }
 

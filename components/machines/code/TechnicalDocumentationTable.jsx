@@ -1,5 +1,6 @@
 import Box from '../../Box'
 import TableBordered from '../../TableBordered'
+import styles from '../../../styles/machines/code/EnginesTable.module.css'
 
 export default function TechnicalDocumentationTable({
   technicalDocumentation,
@@ -9,13 +10,13 @@ export default function TechnicalDocumentationTable({
       <>
         {technicalDocumentation.includes(value) ? (
           <>
-            <td style={{ textAlign: 'center' }}>X</td>
+            <td className={styles['text-center']}>X</td>
             <td></td>
           </>
         ) : (
           <>
             <td></td>
-            <td style={{ textAlign: 'center' }}>X</td>
+            <td className={styles['text-center']}>X</td>
           </>
         )}
       </>
@@ -27,13 +28,13 @@ export default function TechnicalDocumentationTable({
       <TableBordered>
         <thead>
           <tr>
-            <th style={{ textAlign: 'center' }} colSpan={5}>
+            <th className={styles['text-center']} colSpan={5}>
               Documentación técnica
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr style={{ fontWeight: '500', textAlign: 'center' }}>
+          <tr className={styles.header}>
             <td></td>
             <td>Si</td>
             <td>No</td>
