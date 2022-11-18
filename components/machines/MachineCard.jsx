@@ -43,8 +43,8 @@ export default function MachineCard({
               pathname:
                 page === 'machines'
                   ? '/machines/[code]/edit'
-                  : '/activities/[code]',
-              query: { code },
+                  : '/activities/[machineCode]',
+              query: page === 'machines' ? { code } : { machineCode: code },
             }}
             variant={page === 'machines' ? 'primary' : 'warning'}
           >
