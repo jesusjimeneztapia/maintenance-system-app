@@ -1,6 +1,7 @@
 import { CgDatabase } from 'react-icons/cg'
 import { FiActivity } from 'react-icons/fi'
 import { FcAddDatabase } from 'react-icons/fc'
+import { BsKanban } from 'react-icons/bs'
 import HomeLink from '../components/home/HomeLink'
 import Head from 'next/head'
 import { createDocumentTitle } from '../libs/documentTitle'
@@ -28,6 +29,10 @@ export default function Home() {
         <HomeLink href='/activities'>
           <FiActivity size={64} />
           Actividades
+        </HomeLink>
+        <HomeLink href='/work-orders'>
+          <BsKanban size={64} />
+          Órdenes de trabajo
         </HomeLink>
       </div>
     </>

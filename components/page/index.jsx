@@ -4,6 +4,7 @@ import { CgDatabase } from 'react-icons/cg'
 import Header from './Header'
 import styles from '../../styles/Page.module.css'
 import { FiActivity } from 'react-icons/fi'
+import { BsKanban } from 'react-icons/bs'
 
 export default function Page({ children }) {
   return (
@@ -34,6 +35,12 @@ export default function Page({ children }) {
             <>
               <FiActivity size={24} />
               Actividades
+            </>
+          </NavLink>
+          <NavLink href='/work-orders'>
+            <>
+              <BsKanban size={24} />
+              Órdenes de trabajo
             </>
           </NavLink>
         </ul>

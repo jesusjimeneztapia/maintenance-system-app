@@ -1,5 +1,7 @@
 .link {
+  position: relative;
   list-style: none;
+  z-index: 1;
 }
 
 .link a {
@@ -43,6 +45,7 @@
   left: calc(100% - 25px);
   box-shadow: 25px 25px 0 rgb(var(--color-slate-100)),
     0 50px 0 rgb(var(--color-slate-100));
+  z-index: -1;
 }
 .link.active a::after {
   content: '';

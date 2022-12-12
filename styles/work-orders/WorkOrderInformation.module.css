@@ -1,0 +1,21 @@
+.information {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.information li {
+  font-size: 1rem;
+}
+
+.information li > span {
+  font-weight: 600;
+}
+
+.footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

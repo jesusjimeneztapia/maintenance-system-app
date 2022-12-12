@@ -8,6 +8,7 @@ const ROUTES = {
   machines: { href: '/machines', name: 'Máquinas' },
   activities: { href: '/activities', name: 'Actividades' },
   register: { href: '/machines/register', name: 'Registro' },
+  'work-orders': { href: '/work-orders', name: 'Órdenes de trabajo' },
 }
 
 const ROUTES_NAME = {
@@ -17,6 +18,8 @@ const ROUTES_NAME = {
   'edit-engine': { name: 'Editar motor' },
   'create-activity': { name: 'Crear actividad' },
   'edit-activity': { name: 'Editar actividad' },
+  'work-orders': { name: 'Órdenes de trabajo' },
+  'create-work-order': { name: 'Crear orden de trabajo' },
 }
 
 function generateRoute(pathname, current) {

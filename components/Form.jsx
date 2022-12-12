@@ -54,11 +54,13 @@ export default function Form({
     url: '',
     preSubmit: { title: '', question: '', mutateValues: null },
     duringSubmit: { message: '' },
+    postSubmit: { update: undefined },
     successSubmit: { message: '' },
     message: '',
     reset: true,
   },
   validateOnMount = true,
+  information,
 }) {
   const { showToast, request, reset } = useToast()
 
@@ -93,8 +95,14 @@ export default function Form({
         children: successSubmit.message,
       }
     )
-    if (response && reset) {
-      resetForm()
+    if (response) {
+      const { postSubmit } = onSubmit
+      if (postSubmit && postSubmit.update) {
+        postSubmit.update(response)
+      }
+      if (reset) {
+        resetForm()
+      }
     }
   }
 
@@ -134,6 +142,7 @@ export default function Form({
     >
       <h2>{title}</h2>
       <div className={styles.grid}>
+        {information && <Box>{information}</Box>}
         <FormContainer message={onSubmit.message}>{children}</FormContainer>
       </div>
     </FormProvider>

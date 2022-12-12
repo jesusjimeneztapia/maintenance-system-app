@@ -12,6 +12,7 @@ export default function Input({
   disabled,
   onBlurCapture,
   onFocusCapture,
+  ...props
 }) {
   return (
     <div className={`${styles.group} ${error && styles.error}`}>
@@ -29,6 +30,7 @@ export default function Input({
         disabled={disabled}
         onBlurCapture={onBlurCapture}
         onFocusCapture={onFocusCapture}
+        {...props}
       />
       {error && <small>{error}</small>}
     </div>

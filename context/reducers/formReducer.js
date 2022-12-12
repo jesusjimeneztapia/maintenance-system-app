@@ -3,6 +3,7 @@ export const formInitialState = {
   touched: {},
   errors: {},
   values: {},
+  initialValues: {},
   handleSubmit: (values) => {},
   setValues: (values) => {},
   resetForm: () => {},
