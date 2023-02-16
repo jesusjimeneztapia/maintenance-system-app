@@ -13,7 +13,7 @@ export default function Page({ children }) {
         <h1>
           {
             // eslint-disable-next-line
-            <img src='/favicon.ico' alt='Logo' height={22.44} />
+            <img src='/favicon.ico' alt='Logo' width={24} />
           }
           <span>TECNOPOR S.A.</span>
         </h1>

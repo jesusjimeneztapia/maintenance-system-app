@@ -8,6 +8,8 @@ function createWorkOrderFormProps({
   initialValues,
   method,
   url,
+  preSubmitQuestion,
+  mutateValues,
   update,
 }) {
   return {
@@ -19,10 +21,13 @@ function createWorkOrderFormProps({
       url,
       message: id ? 'Guardar' : 'Crear',
       preSubmit: {
+        mutateValues,
         title: `${id ? 'Editar' : 'Crear'} orden de trabajo`,
-        question: `¿Seguro que quiere ${
-          id ? 'guardar los cambios' : 'crear la orden de trabajo'
-        }?`,
+        question:
+          preSubmitQuestion ||
+          `¿Seguro que quiere ${
+            id ? 'guardar los cambios' : 'crear la orden de trabajo'
+          }?`,
       },
       duringSubmit: {
         message: `La orden de trabajo se está ${
@@ -50,6 +55,8 @@ export default function WorkOrderForm({
   method,
   url,
   update,
+  preSubmitQuestion,
+  mutateValues,
   children,
 }) {
   return (
@@ -61,6 +68,8 @@ export default function WorkOrderForm({
         initialValues,
         method,
         url,
+        preSubmitQuestion,
+        mutateValues,
         update,
       })}
       information={id ? <WorkOrderInformation {...initialValues} /> : null}

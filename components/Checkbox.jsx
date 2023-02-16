@@ -19,7 +19,7 @@ export default function Checkbox({
         value={value}
         onChange={onChange}
         required={required}
-        checked={values.includes(value)}
+        checked={values?.includes(value)}
         disabled={disabled}
       />
       <label htmlFor={id}>{label}</label>

@@ -1,11 +1,37 @@
+import { FiArrowDown, FiArrowUp, FiArrowUpRight } from 'react-icons/fi'
 import { VscEdit } from 'react-icons/vsc'
 import { dateLocaleString } from '../../libs/date'
 import styles from '../../styles/work-orders/WorkOrderCard.module.css'
-import Criticality from '../machines/Criticality'
+import ReportBox from '../ReportBox'
+
+const PRIORITY = {
+  URGENT: (
+    <ReportBox variant='danger'>
+      <FiArrowUp />
+      <span>Urgente</span>
+    </ReportBox>
+  ),
+  IMPORTANT: (
+    <ReportBox variant='warning'>
+      <FiArrowUpRight />
+      <span>Importante</span>
+    </ReportBox>
+  ),
+  NORMAL: (
+    <ReportBox variant='success'>
+      <FiArrowDown />
+      <span>Normal</span>
+    </ReportBox>
+  ),
+}
+
+export function Priority({ priority }) {
+  return <>{PRIORITY[priority]}</>
+}
 
 export default function WorkOrderCard({
   activity,
-  machine,
+  priority,
   createdAt,
   editHandleChange,
 }) {
@@ -16,7 +42,7 @@ export default function WorkOrderCard({
         <VscEdit className={styles.edit} onClick={editHandleChange} />
       </header>
       <footer className={styles.footer}>
-        <Criticality criticality={machine.criticality} />
+        <Priority priority={priority} />
         <span>{dateLocaleString(createdAt)}</span>
       </footer>
     </article>

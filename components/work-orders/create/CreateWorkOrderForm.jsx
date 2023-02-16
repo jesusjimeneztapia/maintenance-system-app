@@ -1,6 +1,9 @@
 import { useForm } from '../../../context/providers/FormContext'
-import { ACTIVITY_TYPE_VALUES_MAP } from '../../../schemas/activity'
 import { AREA_VALUES_MAP } from '../../../schemas/machine'
+import {
+  WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP,
+  WORK_ORDER_PRIORITY_VALUES_MAP,
+} from '../../../schemas/workOrder'
 import Input from '../../Input'
 import Select from '../../Select'
 
@@ -15,10 +18,11 @@ function createMap(array, key, value) {
 }
 
 export default function CreateWorkOrderForm({ machines }) {
-  const { errors, initialValues, setValues, touched, values } = useForm()
+  const { errors, handleChange, initialValues, setValues, touched, values } =
+    useForm()
 
   const machineCodeHandleChange = ({ target: { value } }) => {
-    const selectedMachine = machines.find(({ code }) => code === value)
+    const selectedMachine = machines.find(({ name }) => name === value)
     if (selectedMachine) {
       const {
         code: machineCode,
@@ -39,7 +43,9 @@ export default function CreateWorkOrderForm({ machines }) {
   }
 
   const engineCodeHandleChange = ({ target: { value } }) => {
-    const selectedEngine = values.engines.find(({ code }) => code === value)
+    const selectedEngine = values.engines.find(
+      ({ function: fn }) => fn === value
+    )
     if (selectedEngine) {
       const { code: engineCode, function: engineFunction } = selectedEngine
       setValues((values) => ({ ...values, engineCode, engineFunction }))
@@ -48,50 +54,51 @@ export default function CreateWorkOrderForm({ machines }) {
 
   const activityCodeHandleChange = ({ target: { value } }) => {
     const selectedActivity = values.activities.find(
-      ({ code }) => code === value
+      ({ name }) => name === value
     )
     if (selectedActivity) {
-      const { code, name, activityType } = selectedActivity
+      const { code: activityCode, name: activityName } = selectedActivity
       setValues(({ activity, ...values }) => ({
         ...values,
-        activity: { ...activity, code, name, activityType },
+        activityCode,
+        activityName,
       }))
     }
   }
 
   const activityNameHandleChange = ({ target: { value } }) => {
-    setValues(({ activity, ...values }) => ({
+    const uppercase = value.toUpperCase()
+    const selectedActivity = values.activities.find(
+      ({ name }) => name === uppercase
+    )
+    setValues((values) => ({
       ...values,
-      activity: {
-        ...activity,
-        code: undefined,
-        name: value.toUpperCase(),
-        activityType: 'CORRECTIVE_MAINTENANCE',
-      },
+      activityCode: selectedActivity ? selectedActivity.code : undefined,
+      activityName: selectedActivity ? selectedActivity.name : uppercase,
     }))
   }
 
   return (
     <>
       <Select
-        id='machineCode'
-        label='Código de máquina'
-        value={values.machineCode}
+        id='machineName'
+        label='Máquina'
+        value={values.machineName}
         placeholder={
           machines.length > 0
             ? 'Elija una máquina'
             : 'No existen máquinas disponibles'
         }
-        optionsMap={createMap(machines, 'code', 'code')}
+        optionsMap={createMap(machines, 'name', 'name')}
         onChange={machineCodeHandleChange}
-        error={touched.machineCode ? errors.machineCode : undefined}
+        error={touched.machineName ? errors.machineName : undefined}
         disabled={machines.length === 0}
       />
       <Input
-        id='machineName'
-        label='Nombre de máquina'
+        id='machineCode'
+        label='Código de máquina'
         placeholder='Primero elija una máquina'
-        value={values.machineName}
+        value={values.machineCode}
         disabled
       />
       <Input
@@ -102,58 +109,92 @@ export default function CreateWorkOrderForm({ machines }) {
         disabled
       />
       <Select
-        id='engineCode'
-        label='Código de motor'
-        value={values.engineCode}
+        id='engineFunction'
+        label='Motor'
+        value={values.engineFunction}
         placeholder={
           values.engines.length > 0
             ? 'Elija un motor'
             : 'No existen motores disponibles'
         }
-        optionsMap={createMap(values.engines, 'code', 'code')}
+        optionsMap={createMap(values.engines, 'function', 'function')}
         onChange={engineCodeHandleChange}
-        error={touched.engineCode ? errors.engineCode : undefined}
+        error={touched.engineFunction ? errors.engineFunction : undefined}
         disabled={values.engines.length === 0}
       />
       <Input
-        id='engineFuntion'
-        label='Función de motor'
+        id='engineCode'
+        label='Código de motor'
         placeholder='Primero elija un motor'
-        value={values.engineFunction}
+        value={values.engineCode}
         disabled
       />
       <Select
-        id='activityCode'
-        label='Código de actividad'
-        value={values.activity.code ?? ''}
+        id='activityName'
+        label='Actividad'
+        value={
+          values.activities
+            .map(({ name }) => name)
+            .includes(values.activityName)
+            ? values.activityName
+            : ''
+        }
         placeholder={
           values.activities.length > 0
             ? 'Elija una actividad'
             : 'No existen actividades disponibles'
         }
-        optionsMap={createMap(values.activities, 'code', 'code')}
+        optionsMap={createMap(values.activities, 'name', 'name')}
         onChange={activityCodeHandleChange}
         disabled={values.activities.length === 0}
       />
       <Input
-        id='activityTyope'
-        label='Tipo de actividad'
+        id='activityCode'
+        label='Código de actividad'
         placeholder='Primero elija una actividad'
-        value={
-          ACTIVITY_TYPE_VALUES_MAP[values.activity.activityType] ??
-          values.activity.activityType ??
-          ''
-        }
+        value={values.activityCode ?? ''}
         disabled
       />
       <Input
         id='activityName'
         label='Nombre de actividad'
-        placeholder='Elija una actividad o introduzca el nombre de actividad'
-        value={values.activity.name ?? ''}
+        placeholder={
+          values.machineCode === ''
+            ? 'Primero elija una máquina'
+            : 'Elija una actividad o introduzca el nombre de actividad'
+        }
+        value={values.activityName ?? ''}
         onChange={activityNameHandleChange}
-        error={touched.activity?.name ? errors.activity?.at(0) : undefined}
-        disabled={machines.length === 0 || !values.engineCode}
+        error={touched.activityName ? errors.activityName : undefined}
+        disabled={values.machineCode === ''}
+      />
+      <Select
+        id='activityType'
+        label='Tipo de actividad'
+        value={values.activityType}
+        placeholder={
+          values.machineCode === ''
+            ? 'Primero elija una máquina'
+            : 'Seleccione el tipo de actividad de la orden de trabajo'
+        }
+        optionsMap={WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP}
+        onChange={handleChange}
+        error={touched.activityType ? errors.activityType : undefined}
+        disabled={values.machineCode === ''}
+      />
+      <Select
+        id='priority'
+        label='Prioridad'
+        value={values.priority}
+        placeholder={
+          values.machineCode === ''
+            ? 'Primero elija una máquina'
+            : 'Seleccione la prioridad de la orden de trabajo'
+        }
+        optionsMap={WORK_ORDER_PRIORITY_VALUES_MAP}
+        onChange={handleChange}
+        error={touched.priority ? errors.priority : undefined}
+        disabled={values.machineCode === ''}
       />
     </>
   )

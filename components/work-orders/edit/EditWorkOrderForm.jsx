@@ -52,7 +52,7 @@ export default function EditWorkOrderForm() {
         onChange={handleChange}
         error={touched.state ? errors.state : undefined}
       />
-      {initialValues.activity.activityType === 'CORRECTIVE_MAINTENANCE' && (
+      {initialValues.activityType === 'CORRECTIVO' && (
         <Input
           id='failureCause'
           label='Causa de falla'

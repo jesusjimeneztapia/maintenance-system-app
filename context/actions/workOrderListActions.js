@@ -34,7 +34,7 @@ export const WORK_ORDER_LIST_ACTIONS = {
   },
   setSelectedWorkOrder(state, payload) {
     const { workOrders } = state
-    const selectedWorkOrder = workOrders.find(({ id }) => id === payload)
+    const selectedWorkOrder = workOrders.find(({ code }) => code === payload)
     if (selectedWorkOrder) {
       return {
         ...state,
@@ -49,9 +49,9 @@ export const WORK_ORDER_LIST_ACTIONS = {
     }
   },
   updateWorkOrder(state, payload) {
-    const { id: workOrderId } = payload
+    const { code: workOrderId } = payload
     const workOrders = [...state.workOrders]
-    const foundIndex = workOrders.findIndex(({ id }) => id === workOrderId)
+    const foundIndex = workOrders.findIndex(({ code }) => code === workOrderId)
     if (foundIndex >= 0) {
       const foundWorkOrder = workOrders[foundIndex]
       workOrders[foundIndex] = payload
@@ -60,7 +60,7 @@ export const WORK_ORDER_LIST_ACTIONS = {
       const filteredByState = { ...state.filteredByState }
       const currentColumn = filteredByState[currentState]
       const foundUpdateIndex = currentColumn.findIndex(
-        (workOrder) => workOrderId === workOrder.id
+        (workOrder) => workOrderId === workOrder.code
       )
       if (currentState !== updatedState) {
         const updateColumn = filteredByState[updatedState]
