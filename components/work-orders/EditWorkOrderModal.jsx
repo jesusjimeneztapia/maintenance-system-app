@@ -13,6 +13,7 @@ import axios from 'redaxios'
 import ValidatedToDoingForm from './edit/ValidatedToDoingForm'
 import DoingToDoneForm from './edit/DoingToDoneForm'
 import WorkOrderInformation from './edit/WorkOrderInformation'
+import { isInspection } from '../../libs/workOrder'
 
 export default function EditWorkOrderModal() {
   const { request, showToast } = useToast()
@@ -22,6 +23,7 @@ export default function EditWorkOrderModal() {
   if (!selectedWorkOrder) {
     return <></>
   }
+  const toDoing = isInspection(selectedWorkOrder)
 
   const passToValidated = async () => {
     showToast({
@@ -36,7 +38,11 @@ export default function EditWorkOrderModal() {
         const { data } = await axios.put(
           updateWorkOrderUrlInternal(selectedWorkOrder.code),
           {
-            state: 'VALIDATED',
+            state: toDoing ? 'DOING' : 'VALIDATED',
+            securityMeasureStarts: [],
+            protectionEquipments: [],
+            startDate: new Date(),
+            allow: toDoing,
           }
         )
         return data
@@ -56,12 +62,6 @@ export default function EditWorkOrderModal() {
   const handleMutateValuesToDoing = (values) => {
     return { ...values, startDate: new Date() }
   }
-  // const handleMutateValuesToDone = (values) => {
-  //   const startDate = new Date(values.startDate)
-  //   const endDate = new Date()
-  //   const totalHours = Math.round(Math.abs(startDate - endDate))
-  //   return { ...values, endDate, totalHours }
-  // }
 
   return (
     <div className={styles.modal}>
@@ -78,7 +78,9 @@ export default function EditWorkOrderModal() {
           <>
             <WorkOrderInformation {...selectedWorkOrder} />
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-              <Button onClick={passToValidated}>Pasar a validada</Button>
+              <Button onClick={passToValidated}>
+                Pasar a {toDoing ? 'ejecución' : 'validada'}
+              </Button>
             </div>
           </>
         ) : selectedWorkOrder.state === 'VALIDATED' ? (

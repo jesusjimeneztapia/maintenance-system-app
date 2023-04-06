@@ -19,15 +19,18 @@ export default function BoardColumn({ state, workOrders }) {
           </p>
         ) : (
           <>
-            {workOrders.map(({ code, activityName, priority, createdAt }) => (
-              <WorkOrderCard
-                key={code}
-                activity={{ name: activityName }}
-                priority={priority}
-                createdAt={createdAt}
-                editHandleChange={() => selectWorkOrder(code)}
-              />
-            ))}
+            {workOrders.map(
+              ({ code, activityName, priority, createdAt, machineName }) => (
+                <WorkOrderCard
+                  key={code}
+                  activity={{ name: activityName }}
+                  priority={priority}
+                  createdAt={createdAt}
+                  machineName={machineName}
+                  editHandleChange={() => selectWorkOrder(code)}
+                />
+              )
+            )}
           </>
         )}
       </div>

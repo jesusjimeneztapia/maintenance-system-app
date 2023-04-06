@@ -1,21 +1,12 @@
 import { useEffect } from 'react'
 import { useForm } from '../../../context/providers/FormContext'
 import { getDateValue } from '../../../libs/date'
+import { isInspection } from '../../../libs/workOrder'
 import { WORK_ORDER_SECURITY_MEASURE_END_VALUES } from '../../../schemas/workOrder'
 import CheckboxList from '../../CheckboxList'
 import Input from '../../Input'
 import Textarea from '../../Textarea'
-
-// function getMinDate(isoString) {
-//   const date = isoString ? new Date(isoString) : new Date()
-//   return date
-//     .toLocaleString('af-ZA', {
-//       year: 'numeric',
-//       month: '2-digit',
-//       day: '2-digit',
-//     })
-//     .replace(/\//g, '-')
-// }
+import CheckListForm from './CheckListForm'
 
 export default function DoingToDoneForm() {
   const {
@@ -52,6 +43,16 @@ export default function DoingToDoneForm() {
       }
     })
   }, [setValues])
+
+  if (isInspection(values)) {
+    return (
+      <CheckListForm
+        checkList={values.machineCheckList}
+        setValues={setValues}
+        values={values}
+      />
+    )
+  }
 
   return (
     <>
@@ -129,26 +130,6 @@ export default function DoingToDoneForm() {
       />
       <Input label='Hora fin' type='time' value={values.endHour} disabled />
 
-      {/* <Input
-        id='startHour'
-        label='Hora inicio'
-        placeholder='Seleccione la hora de inicio'
-        type='time'
-        min={values.startHour ?? ''}
-        onChange={handleChange}
-        error={touched.startHour ? errors.startHour : undefined}
-        // required
-      />
-      <Input
-        id='endHour'
-        label='Hora final'
-        placeholder='Seleccione la hora de finalización'
-        type='time'
-        min={values.endHour ?? ''}
-        onChange={handleChange}
-        error={touched.endHour ? errors.endHour : undefined}
-        // required
-      /> */}
       <Input
         id='totalHours'
         label='Horas totales'
@@ -164,6 +145,15 @@ export default function DoingToDoneForm() {
         values={values.securityMeasureEnds}
         optionsMap={WORK_ORDER_SECURITY_MEASURE_END_VALUES}
         onChange={handleChange}
+      />
+      <Textarea
+        id='observations'
+        label='Observaciones'
+        placeholder='Observaciones de la orden de trabajo...'
+        onChange={upperCaseHandleChange()}
+        value={values.observations ?? ''}
+        error={touched.observations ? errors.observations : undefined}
+        required
       />
     </>
   )

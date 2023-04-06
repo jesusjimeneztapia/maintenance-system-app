@@ -34,11 +34,15 @@ export default function WorkOrderCard({
   priority,
   createdAt,
   editHandleChange,
+  machineName,
 }) {
   return (
     <article className={styles.card}>
       <header className={styles.header}>
-        <p>{activity.name}</p>
+        <p>
+          {activity.name}
+          <span>{machineName}</span>
+        </p>
         <VscEdit className={styles.edit} onClick={editHandleChange} />
       </header>
       <footer className={styles.footer}>

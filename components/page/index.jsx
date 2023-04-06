@@ -5,6 +5,7 @@ import Header from './Header'
 import styles from '../../styles/Page.module.css'
 import { FiActivity } from 'react-icons/fi'
 import { BsKanban } from 'react-icons/bs'
+import { VscCalendar } from 'react-icons/vsc'
 
 export default function Page({ children }) {
   return (
@@ -41,6 +42,12 @@ export default function Page({ children }) {
             <>
               <BsKanban size={24} />
               Órdenes de trabajo
+            </>
+          </NavLink>
+          <NavLink href='/schedule'>
+            <>
+              <VscCalendar size={24} />
+              Planificación
             </>
           </NavLink>
         </ul>

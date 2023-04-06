@@ -2,6 +2,7 @@ import styles from '../styles/Input.module.css'
 
 export default function Select({
   id,
+  name,
   label,
   onChange,
   error,
@@ -16,7 +17,7 @@ export default function Select({
       <label htmlFor={id}>{label}</label>
       <select
         id={id}
-        name={id}
+        name={name ?? id}
         className={styles.input}
         value={value}
         onChange={onChange}

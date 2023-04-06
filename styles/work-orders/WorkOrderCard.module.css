@@ -19,6 +19,16 @@
 .header p {
   width: 100%;
   max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.header p > span {
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .edit {

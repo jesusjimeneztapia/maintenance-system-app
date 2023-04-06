@@ -9,6 +9,7 @@ const ROUTES = {
   activities: { href: '/activities', name: 'Actividades' },
   register: { href: '/machines/register', name: 'Registro' },
   'work-orders': { href: '/work-orders', name: 'Órdenes de trabajo' },
+  schedule: { href: '/schedule', name: 'Planificación' },
 }
 
 const ROUTES_NAME = {

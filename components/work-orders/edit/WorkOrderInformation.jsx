@@ -1,15 +1,10 @@
-// import { useToast } from '../../../context/providers/ToastContext'
 import styles from '../../../styles/work-orders/WorkOrderInformation.module.css'
-// import Button from '../../Button'
-// import axios from 'redaxios'
-// import { HTTP_METHODS } from '../../../services'
-// import { updateWorkOrderUrlInternal } from '../../../services/workOrderService'
-// import { useWorkOrderList } from '../../../context/providers/WorkOrderListContext'
 import { dateLocaleString } from '../../../libs/date'
 import {
   WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP,
   WORK_ORDER_PRIORITY_VALUES_MAP,
   WORK_ORDER_PROTECTION_EQUIPMENT_VALUES,
+  WORK_ORDER_SECURITY_MEASURE_END_VALUES,
   WORK_ORDER_SECURITY_MEASURE_START_VALUES,
   WORK_ORDER_STATE_VALUES_MAP,
 } from '../../../schemas/workOrder'
@@ -39,43 +34,10 @@ export default function WorkOrderInformation({
   storeDescription,
   storeUnit,
   totalHours,
+  securityMeasureEnds,
+  observations,
+  checkListVerified,
 }) {
-  // const { updateWorkOrder } = useWorkOrderList()
-  // const { request, showToast } = useToast()
-
-  // const changeState =
-  //   (moveTo = 'next') =>
-  //   async () => {
-  //     showToast({
-  //       autoClose: false,
-  //       close: true,
-  //       color: 'secondary',
-  //       position: 'center',
-  //       children: 'Pasando al siguiente estado...',
-  //     })
-  //     const response = await request(
-  //       async () => {
-  //         const { data } = await axios({
-  //           method: HTTP_METHODS.PATCH,
-  //           url: updateWorkOrderUrlInternal(code),
-  //           data: { state: moveTo === 'next' ? nextState : previousState },
-  //         })
-  //         return data
-  //       },
-  //       {
-  //         autoClose: true,
-  //         close: true,
-  //         color: 'success',
-  //         children: `Se pasó al ${
-  //           moveTo === 'next' ? 'siguiente' : 'anterior'
-  //         } estado exitósamente`,
-  //       }
-  //     )
-
-  //     if (response) {
-  //       updateWorkOrder(response)
-  //     }
-  //   }
   return (
     <ul className={styles.information}>
       <li>
@@ -124,7 +86,7 @@ export default function WorkOrderInformation({
         <span>Prioridad: </span>
         {WORK_ORDER_PRIORITY_VALUES_MAP[priority]}
       </li>
-      {securityMeasureStarts && (
+      {securityMeasureStarts?.length > 0 && (
         <li>
           <span>Medidas de seguridad inicio del trabajo</span>
           <ul>
@@ -141,7 +103,7 @@ export default function WorkOrderInformation({
           </ul>
         </li>
       )}
-      {protectionEquipments && (
+      {protectionEquipments.length > 0 && (
         <li>
           <span>Riesgos de trabajo (Precauciones a tener en cuenta)</span>
           <ul>
@@ -222,26 +184,52 @@ export default function WorkOrderInformation({
           {totalHours} hrs
         </li>
       )}
+      {securityMeasureEnds?.length > 0 && (
+        <li>
+          <span>Medidas de seguridad fin del trabajo</span>
+          <ul>
+            {securityMeasureEnds.map((security) => (
+              <li
+                style={{
+                  marginLeft: '24px',
+                }}
+                key={security}
+              >
+                {WORK_ORDER_SECURITY_MEASURE_END_VALUES[security]}
+              </li>
+            ))}
+          </ul>
+        </li>
+      )}
+      {observations && (
+        <li>
+          <span>Observaciones: </span>
+          {observations}
+        </li>
+      )}
+      {checkListVerified?.length > 0 && (
+        <li>
+          <span>Check List</span>
+          <ul>
+            {checkListVerified.map(({ id, field, value }) => (
+              <li
+                style={{
+                  marginLeft: '24px',
+                }}
+                key={id}
+              >
+                <span>{field}: </span>
+                {value}
+              </li>
+            ))}
+          </ul>
+        </li>
+      )}
       <li>
         <span>Creado: </span>
         {dateLocaleString(createdAt, true)}
       </li>
-      <footer className={styles.footer}>
-        {/* {previousState && (
-          <Button variant='secondary' onClick={changeState('previous')}>
-            <p style={{ textAlign: 'center', width: '100%' }}>
-              Anterior estado
-            </p>
-          </Button>
-        )} */}
-        {/* {nextState && (
-          <Button onClick={changeState()}>
-            <p style={{ textAlign: 'center', width: '100%' }}>
-              Siguiente estado
-            </p>
-          </Button>
-        )} */}
-      </footer>
+      <footer className={styles.footer}></footer>
     </ul>
   )
 }
