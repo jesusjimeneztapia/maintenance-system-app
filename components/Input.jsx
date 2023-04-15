@@ -1,7 +1,9 @@
-import styles from '../styles/Input.module.css'
+import { Flex } from '@tremor/react'
+import { Label, TextInput } from 'flowbite-react'
 
 export default function Input({
   id,
+  name,
   label,
   placeholder,
   value,
@@ -9,30 +11,35 @@ export default function Input({
   type = 'text',
   required = false,
   error,
+  touched,
   disabled,
   onBlurCapture,
   onFocusCapture,
   ...props
 }) {
   return (
-    <div className={`${styles.group} ${error && styles.error}`}>
-      {label && <label htmlFor={id}>{label}</label>}
-      <input
-        type={type}
+    <Flex flexDirection='col' alignItems=''>
+      <Label
+        htmlFor={id}
+        value={label}
+        color={touched && error ? 'failure' : undefined}
+      />
+      <TextInput
         id={id}
-        name={id}
-        className={styles.input}
+        name={name ?? id}
+        type={type}
         placeholder={placeholder}
+        autoComplete='off'
         value={value}
         onChange={onChange}
+        color={touched && error ? 'failure' : undefined}
+        helperText={touched ? error : undefined}
         required={required}
-        autoComplete='off'
         disabled={disabled}
         onBlurCapture={onBlurCapture}
         onFocusCapture={onFocusCapture}
         {...props}
       />
-      {error && <small>{error}</small>}
-    </div>
+    </Flex>
   )
 }

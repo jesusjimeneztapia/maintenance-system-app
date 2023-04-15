@@ -1,5 +1,3 @@
-import Box from '../../../components/Box'
-import Button from '../../../components/Button'
 import TableActivities from '../../../components/activities/machine/TableActivities'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -9,7 +7,7 @@ import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
 import { ACTIVITY_URL_REGULAR } from '../../../services/activityServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
-import styles from '../../../styles/activities/machine/MachineActivities.module.css'
+import { Flex, Title } from '@tremor/react'
 
 function useMachineActivities({
   CONDITION_CHECK,
@@ -72,72 +70,65 @@ export default function MachineActivities({
         <title>{createDocumentTitle(title)}</title>
       </Head>
       {component ? (
-        <>{component}</>
+        <>
+          <Title className='mb-5'>
+            Actividades (Máquina {machineName ?? machineCode})
+          </Title>
+          {component}
+        </>
       ) : (
         <>
-          <header className={styles.header}>
-            <h2>{title}</h2>
-            <Button>
-              <Link
-                href={{
-                  pathname: '/activities/[machineCode]/create-activity',
-                  query: { machineCode },
-                }}
-              >
-                Crear Actividad
-              </Link>
-            </Button>
-          </header>
-          <div className={styles.container}>
-            <Box>
-              <TableActivities
-                title='Verificación de condición'
-                activities={activities.CONDITION_CHECK}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-            <Box>
-              <TableActivities
-                title='Inspecciones visuales'
-                activities={activities.VISUAL_INSPECTIONS}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-            <Box>
-              <TableActivities
-                title='Lubricación'
-                activities={activities.LUBRICATION}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-            <Box>
-              <TableActivities
-                title='Mantenimiento autónomo'
-                activities={activities.AUTONOMOUS_MAINTENANCE}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-            <Box>
-              <TableActivities
-                title='Mantenimiento periódico'
-                activities={activities.PERIODIC_MAINTENANCE}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-            <Box>
-              <TableActivities
-                title='Mantenimiento correctivo'
-                activities={activities.CORRECTIVE_MAINTENANCE}
-                machineCode={machineCode}
-                deleteActivity={deleteActivity}
-              />
-            </Box>
-          </div>
+          <Flex className='mb-5 max-sm:flex-col max-sm:items-start max-sm:gap-3'>
+            <Title>Actividades ({machineName ?? machineCode})</Title>
+            <Link
+              href={{
+                pathname: '/activities/[machineCode]/create-activity',
+                query: { machineCode },
+              }}
+            >
+              <a className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
+                <span className='w-full'>Crear actividad</span>
+              </a>
+            </Link>
+          </Flex>
+          <Flex className='gap-5' flexDirection='col' alignItems=''>
+            <TableActivities
+              title='Verificación de condición'
+              activities={activities.CONDITION_CHECK}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+            <TableActivities
+              title='Inspecciones visuales'
+              activities={activities.VISUAL_INSPECTIONS}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+            <TableActivities
+              title='Lubricación'
+              activities={activities.LUBRICATION}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+            <TableActivities
+              title='Mantenimiento autónomo'
+              activities={activities.AUTONOMOUS_MAINTENANCE}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+            <TableActivities
+              title='Mantenimiento periódico'
+              activities={activities.PERIODIC_MAINTENANCE}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+            <TableActivities
+              title='Mantenimiento correctivo'
+              activities={activities.CORRECTIVE_MAINTENANCE}
+              machineCode={machineCode}
+              deleteActivity={deleteActivity}
+            />
+          </Flex>
         </>
       )}
     </>

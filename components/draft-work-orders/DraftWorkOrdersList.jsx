@@ -1,39 +1,43 @@
+import { Badge, Card, Flex, Subtitle, Text } from '@tremor/react'
 import { useSchedule } from '../../context/providers/ScheduleContext'
 import DraftWorkOrderCard from './DraftWorkOrderCard'
 
+function getWeekNumber({ year, month, day }) {
+  const date = new Date(year, month, day)
+  const dayNumber = (date.getDay() + 6) % 7
+
+  const aux = new Date(date.valueOf())
+  aux.setDate(aux.getDate() - dayNumber + 3)
+  const firstTuesday = aux.valueOf()
+
+  aux.setMonth(0, 1)
+
+  if (aux.getDay() !== 4) {
+    aux.setMonth(0, 1 + ((4 - aux.getDay() + 7) % 7))
+  }
+
+  return 1 + Math.ceil((firstTuesday - aux) / 604800000)
+}
+
 export default function DraftWorkOrdersList() {
-  const { draftWorkOrders, deleteDraftWorkOrderByCode } = useSchedule()
+  const { date, draftWorkOrders, deleteDraftWorkOrderByCode } = useSchedule()
   const handleDeleteDraftWorkOrder = (draftWorkOrderCode) => () => {
     deleteDraftWorkOrderByCode(draftWorkOrderCode)
   }
 
   return (
-    <section
-      style={{
-        width: '100%',
-        padding: '1.25rem',
-        backgroundColor: 'rgb(var(--color-primary))',
-        borderRadius: '0.375rem',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          gap: '24px',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
-      >
+    <Card>
+      <Flex className='mb-6 gap-2' justifyContent='start' alignItems='center'>
+        <Subtitle>Semana {getWeekNumber(date)}</Subtitle>
+        <Badge className='w-10' color='slate'>
+          {draftWorkOrders.length}
+        </Badge>
+      </Flex>
+      <Flex className='flex-wrap gap-5' justifyContent='center'>
         {draftWorkOrders.length < 1 ? (
-          <p
-            style={{
-              color: 'rgb(var(--color-white))',
-              textAlign: 'center',
-              width: '100%',
-            }}
-          >
+          <Text className='text-center w-full'>
             No existen órdenes de trabajo en borrador.
-          </p>
+          </Text>
         ) : (
           draftWorkOrders.map(({ code, ...rest }) => (
             <DraftWorkOrderCard
@@ -44,7 +48,7 @@ export default function DraftWorkOrdersList() {
             />
           ))
         )}
-      </div>
-    </section>
+      </Flex>
+    </Card>
   )
 }

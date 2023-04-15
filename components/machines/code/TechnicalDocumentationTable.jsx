@@ -1,6 +1,15 @@
-import Box from '../../Box'
-import TableBordered from '../../TableBordered'
-import styles from '../../../styles/machines/code/EnginesTable.module.css'
+import {
+  Bold,
+  Card,
+  Flex,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Text,
+} from '@tremor/react'
 
 export default function TechnicalDocumentationTable({
   technicalDocumentation,
@@ -10,13 +19,17 @@ export default function TechnicalDocumentationTable({
       <>
         {technicalDocumentation.includes(value) ? (
           <>
-            <td className={styles['text-center']}>X</td>
-            <td></td>
+            <TableCell className='text-center py-2 text-amber-500'>
+              <Bold>✓</Bold>
+            </TableCell>
+            <TableCell />
           </>
         ) : (
           <>
-            <td></td>
-            <td className={styles['text-center']}>X</td>
+            <TableCell />
+            <TableCell className='text-center py-2 pr-0 text-red-500'>
+              <Bold>✕</Bold>
+            </TableCell>
           </>
         )}
       </>
@@ -24,39 +37,43 @@ export default function TechnicalDocumentationTable({
   }
 
   return (
-    <Box>
-      <TableBordered>
-        <thead>
-          <tr>
-            <th className={styles['text-center']} colSpan={5}>
-              Documentación técnica
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className={styles.header}>
-            <td></td>
-            <td>Si</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td>Manual de Operaciones</td>
-            {renderTechnicalDocumentation('OPERATIONS_MANUAL')}
-          </tr>
-          <tr>
-            <td>Manual de Mantenimiento</td>
-            {renderTechnicalDocumentation('MAINTENANCE_MANUAL')}
-          </tr>
-          <tr>
-            <td>Planos Eléctricos</td>
-            {renderTechnicalDocumentation('ELECTRICAL_PLANS')}
-          </tr>
-          <tr>
-            <td>Planos Mecánicos</td>
-            {renderTechnicalDocumentation('MECHANICAL_PLANS')}
-          </tr>
-        </tbody>
-      </TableBordered>
-    </Box>
+    <Card>
+      <Flex flexDirection='col' alignItems=''>
+        <Text className='text-slate-400 font-medium'>
+          Documentación técnica
+        </Text>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeaderCell></TableHeaderCell>
+              <TableHeaderCell className='text-center py-2'>Si</TableHeaderCell>
+              <TableHeaderCell className='text-center py-2 pr-0'>
+                No
+              </TableHeaderCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Manual de Operaciones</TableCell>
+              {renderTechnicalDocumentation('OPERATIONS_MANUAL')}
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>
+                Manual de Mantenimiento
+              </TableCell>
+              {renderTechnicalDocumentation('MAINTENANCE_MANUAL')}
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Planos Eléctricos</TableCell>
+              {renderTechnicalDocumentation('ELECTRICAL_PLANS')}
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Planos Mecánicos</TableCell>
+              {renderTechnicalDocumentation('MECHANICAL_PLANS')}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Flex>
+    </Card>
   )
 }

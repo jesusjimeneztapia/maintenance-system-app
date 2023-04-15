@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Button from '../../components/Button'
 import KanbanBoard from '../../components/work-orders/KanbanBoard'
 import WorkOrderListProvider from '../../context/providers/WorkOrderListContext'
 import useBeforeRenderPage from '../../hooks/useBeforeRenderPage'
@@ -8,7 +7,7 @@ import { createDocumentTitle } from '../../libs/documentTitle'
 import { HTTP_METHODS } from '../../services'
 import { requestInternalApi } from '../../services/requestApi'
 import { WORK_ORDER_URL_REGULAR } from '../../services/workOrderService'
-import styles from '../../styles/machines/code/Machine.module.css'
+import { Flex, Title } from '@tremor/react'
 
 export default function WorkOrders({ workOrders, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -22,17 +21,20 @@ export default function WorkOrders({ workOrders, message }) {
         <title>{createDocumentTitle(title)}</title>
       </Head>
       {component ? (
-        <>{component}</>
+        <>
+          <Title className='mb-5'>{title}</Title>
+          {component}
+        </>
       ) : (
         <>
-          <header className={styles.header}>
-            <h2>{title}</h2>
-            <Button>
-              <Link href='/work-orders/create-work-order'>
-                <a>Crear Orden de trabajo</a>
-              </Link>
-            </Button>
-          </header>
+          <Flex className='mb-5 max-sm:flex-col max-sm:items-start'>
+            <Title>{title}</Title>
+            <Link href='/work-orders/create-work-order'>
+              <a className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
+                <span className='w-full'>Crear órden de trabajo</span>
+              </a>
+            </Link>
+          </Flex>
           <WorkOrderListProvider workOrders={workOrders}>
             <KanbanBoard />
           </WorkOrderListProvider>

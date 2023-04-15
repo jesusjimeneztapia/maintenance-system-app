@@ -7,6 +7,7 @@ import CheckboxList from '../../CheckboxList'
 import Input from '../../Input'
 import Textarea from '../../Textarea'
 import CheckListForm from './CheckListForm'
+import { Col, Grid, Text } from '@tremor/react'
 
 export default function DoingToDoneForm() {
   const {
@@ -62,39 +63,39 @@ export default function DoingToDoneForm() {
         placeholder='Descripción de la actividad...'
         onChange={upperCaseHandleChange()}
         value={values.activityDescription ?? ''}
-        error={
-          touched.activityDescription ? errors.activityDescription : undefined
-        }
+        error={errors.activityDescription}
+        touched={touched.activityDescription}
         required
       />
-      <label style={{ fontSize: '14px', fontWeight: '500' }}>Repuestos</label>
-      <div
-        style={{
-          display: 'grid',
-          gap: '1.25rem',
-          gridTemplateColumns: '6fr 1fr',
-        }}
-      >
-        <Input
-          id='storeDescription'
-          label='Descripción'
-          placeholder='Descripción de los repuestos'
-          onChange={upperCaseHandleChange()}
-          value={values.storeDescription ?? ''}
-          error={touched.storeDescription ? errors.storeDescription : undefined}
-          required
-        />
-        <Input
-          id='storeUnit'
-          label='Unidad'
-          placeholder='Unidad de los repuestos'
-          onChange={handleChange}
-          type='number'
-          value={values.storeUnit ?? ''}
-          error={touched.storeUnit ? errors.storeUnit : undefined}
-          required
-        />
-      </div>
+      <Text className='text-slate-900 font-medium'>Repuestos</Text>
+      <Grid className='gap-4' numCols={5}>
+        <Col numColSpan={5} numColSpanSm={3}>
+          <Input
+            id='storeDescription'
+            label='Descripción (repuestos)'
+            placeholder='Descripción de los repuestos'
+            onChange={upperCaseHandleChange()}
+            value={values.storeDescription ?? ''}
+            error={errors.storeDescription}
+            touched={touched.storeDescription}
+            required
+          />
+        </Col>
+        <Col numColSpan={5} numColSpanLg={2}>
+          <Input
+            id='storeUnit'
+            label='Unidad (repuestos)'
+            placeholder='0'
+            onChange={handleChange}
+            type='number'
+            value={values.storeUnit ?? ''}
+            error={errors.storeUnit}
+            touched={touched.storeUnit}
+            required
+          />
+        </Col>
+      </Grid>
+
       {values.activityType === 'CORRECTIVE' && (
         <Textarea
           id='failureCause'
@@ -102,7 +103,8 @@ export default function DoingToDoneForm() {
           placeholder='Causa de falla...'
           onChange={upperCaseHandleChange()}
           value={values.failureCause}
-          error={touched.failureCause ? errors.failureCause : undefined}
+          error={errors.failureCause}
+          touched={touched.failureCause}
           required
         />
       )}
@@ -137,7 +139,8 @@ export default function DoingToDoneForm() {
         type='number'
         onChange={handleChange}
         value={values.totalHours ?? ''}
-        error={touched.totalHours ? errors.totalHours : undefined}
+        error={errors.totalHours}
+        touched={touched.totalHours}
       />
       <CheckboxList
         id='securityMeasureEnds'
@@ -152,7 +155,8 @@ export default function DoingToDoneForm() {
         placeholder='Observaciones de la orden de trabajo...'
         onChange={upperCaseHandleChange()}
         value={values.observations ?? ''}
-        error={touched.observations ? errors.observations : undefined}
+        error={errors.observations}
+        touched={touched.observations}
         required
       />
     </>

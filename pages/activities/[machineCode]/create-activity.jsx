@@ -8,6 +8,7 @@ import { HTTP_METHODS } from '../../../services'
 import { CREATE_ACTIVITY_CONFIG } from '../../../services/activityServices'
 import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
 import { requestInternalApi } from '../../../services/requestApi'
+import { Title } from '@tremor/react'
 
 export default function CreateActivity({ name, machineCode, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -21,16 +22,22 @@ export default function CreateActivity({ name, machineCode, message }) {
         <title>{createDocumentTitle(title)}</title>
       </Head>
       {component ? (
-        <>{component}</>
+        <>
+          <Title className='mb-5'>{`Máquina ${name ?? machineCode}`}</Title>
+          {component}
+        </>
       ) : (
-        <ActivityForm
-          {...CREATE_ACTIVITY_CONFIG}
-          machineCode={machineCode}
-          initialValues={activityInitialValues(machineCode)}
-          title={title}
-        >
-          <CreateActivityForm />
-        </ActivityForm>
+        <>
+          <Title className='mb-5'>{`Máquina ${name ?? machineCode}`}</Title>
+          <ActivityForm
+            {...CREATE_ACTIVITY_CONFIG}
+            machineCode={machineCode}
+            initialValues={activityInitialValues(machineCode)}
+            title='Crear actividad'
+          >
+            <CreateActivityForm />
+          </ActivityForm>
+        </>
       )}
     </>
   )

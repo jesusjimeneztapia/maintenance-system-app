@@ -1,3 +1,4 @@
+import { Text } from '@tremor/react'
 import Input from '../../Input'
 import RadioButtonList from '../../RadioButtonList'
 import Textarea from '../../Textarea'
@@ -16,10 +17,10 @@ function CheckList({ id, field, type, options, placeholder, onChange, value }) {
   }
   if (type === 'info') {
     return (
-      <div>
-        <p style={{ fontSize: '14px', fontWeight: '500' }}>{field}</p>
-        <p style={{ fontSize: '14px' }}>{placeholder}</p>
-      </div>
+      <section>
+        <Text className='text-slate-900 font-medium'>{field}</Text>
+        <Text className=''>{placeholder}</Text>
+      </section>
     )
   }
   if (type === 'text' || type === 'number') {

@@ -2,25 +2,8 @@ import { filterDraftWorkOrderDto } from '../../schemas/draftWorkOrder'
 import Input from '../Input'
 import axios from 'redaxios'
 import { useToast } from '../../context/providers/ToastContext'
-import Button from '../Button'
 import { useSchedule } from '../../context/providers/ScheduleContext'
-
-function getWeekNumber({ year, month, day }) {
-  const date = new Date(year, month, day)
-  const dayNumber = (date.getDay() + 6) % 7
-
-  const aux = new Date(date.valueOf())
-  aux.setDate(aux.getDate() - dayNumber + 3)
-  const firstTuesday = aux.valueOf()
-
-  aux.setMonth(0, 1)
-
-  if (aux.getDay() !== 4) {
-    aux.setMonth(0, 1 + ((4 - aux.getDay() + 7) % 7))
-  }
-
-  return 1 + Math.ceil((firstTuesday - aux) / 604800000)
-}
+import { Button } from '@tremor/react'
 
 function transformDateForInput({ year, month, day }) {
   const date = new Date(year, month, day)
@@ -83,20 +66,18 @@ export default function FilterDraftWorkOrderForm() {
   const { date, handleChange, onSubmit } = useFilterDraftWorkOrderForm()
 
   return (
-    <form
-      onSubmit={onSubmit}
-      style={{ display: 'flex', alignItems: 'flex-end', gap: '12px' }}
-    >
+    <form className='flex gap-3 max-sm:self-end' onSubmit={onSubmit}>
       <Input
         id='date'
-        label={`Semana ${getWeekNumber(date)}`}
         type='date'
         onChange={handleChange}
         value={transformDateForInput(date)}
         required
       />
 
-      <Button type='submit'>Filtrar</Button>
+      <Button type='submit' color='amber'>
+        Filtrar
+      </Button>
     </form>
   )
 }

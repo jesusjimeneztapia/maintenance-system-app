@@ -11,6 +11,7 @@ export default function EditActivityForm() {
   const {
     errors,
     handleChange,
+    initialValues,
     setValues,
     touched,
     upperCaseHandleChange,
@@ -26,10 +27,14 @@ export default function EditActivityForm() {
       <Input
         id='name'
         label='Nombre'
-        placeholder='Nombre de la actividad'
+        placeholder={
+          initialValues.name ||
+          'LIMPIEZA DE TABLERO ELECTRICO, INSPECCION DE ELEMENTOS DE FUERZA Y MANDO'
+        }
         value={values.name}
         onChange={upperCaseHandleChange()}
-        error={touched.name ? errors.name : undefined}
+        error={errors.name}
+        touched={touched.name}
       />
       <RadioButtonList
         id='frequency'
@@ -52,7 +57,8 @@ export default function EditActivityForm() {
         placeholder='Tipo de actividad'
         optionsMap={ACTIVITY_TYPE_VALUES_MAP}
         onChange={handleChange}
-        error={touched.activityType ? errors.activityType : undefined}
+        error={errors.activityType}
+        touched={touched.activityType}
       />
     </>
   )

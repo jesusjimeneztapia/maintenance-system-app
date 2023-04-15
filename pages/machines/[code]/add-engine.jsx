@@ -8,6 +8,7 @@ import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
 import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
+import { Title } from '@tremor/react'
 
 export default function AddEngine({ name, machineCode, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -20,17 +21,20 @@ export default function AddEngine({ name, machineCode, message }) {
       <Head>
         <title>{createDocumentTitle(title)}</title>
       </Head>
+      <Title className='mb-5'>{`Máquina ${name ?? machineCode}`}</Title>
       {component ? (
         <>{component}</>
       ) : (
-        <EngineForm
-          {...addEngineConfig(machineCode)}
-          machineCode={machineCode}
-          initialValues={engineInitialValues(machineCode)}
-          title={title}
-        >
-          <AddEngineForm />
-        </EngineForm>
+        <>
+          <EngineForm
+            {...addEngineConfig(machineCode)}
+            machineCode={machineCode}
+            initialValues={engineInitialValues(machineCode)}
+            title='Motor a agregar'
+          >
+            <AddEngineForm />
+          </EngineForm>
+        </>
       )}
     </>
   )

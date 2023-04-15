@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import Button from '../components/Button'
 import { useToast } from '../context/providers/ToastContext'
 import { createTitleInitial } from '../libs/documentTitle'
-import styles from '../styles/BeforeRenderPage.module.css'
+import { Flex, Subtitle, Text } from '@tremor/react'
 
 export default function useBeforeRenderPage({ message, title }) {
   const titleInitial = createTitleInitial(title)
@@ -15,7 +14,7 @@ export default function useBeforeRenderPage({ message, title }) {
       showToast({
         autoClose: false,
         close: true,
-        color: 'danger',
+        color: 'failure',
         position: 'center',
         children: message,
       })
@@ -36,22 +35,40 @@ export default function useBeforeRenderPage({ message, title }) {
 
   return {
     component: (
-      <>
-        <h2>{titleInitial}</h2>
-        <p className={styles.message}>{message}</p>
-        <p className={styles.info}>
-          Puede hacer clic en <span>Volver</span> para volver atrás o{' '}
-          <span>Inicio</span> para ir al inicio.
-        </p>
-        <footer className={styles.footer}>
-          <Button variant='soft-primary' onClick={createHandleClick()}>
+      <Flex className='gap-3' flexDirection='col'>
+        <Subtitle>{message}</Subtitle>
+        <Text>
+          Puede hacer clic en{' '}
+          <button
+            className='font-medium text-slate-500 hover:text-slate-700'
+            onClick={createHandleClick()}
+          >
             Volver
-          </Button>
-          <Button variant='secondary' onClick={createHandleClick('/')}>
+          </button>{' '}
+          para volver atrás o{' '}
+          <button
+            className='font-medium text-blue-500 hover:text-blue-700'
+            onClick={createHandleClick('/')}
+          >
             Inicio
-          </Button>
-        </footer>
-      </>
+          </button>{' '}
+          para ir al inicio.
+        </Text>
+        <Flex className='gap-3' justifyContent='center'>
+          <button
+            className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'
+            onClick={createHandleClick()}
+          >
+            Volver
+          </button>
+          <button
+            className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-blue-500 rounded-lg bg-blue-100 hover:text-blue-900 hover:bg-blue-200'
+            onClick={createHandleClick('/')}
+          >
+            Inicio
+          </button>
+        </Flex>
+      </Flex>
     ),
     title: titleInitial,
   }

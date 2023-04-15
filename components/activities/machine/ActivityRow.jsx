@@ -1,12 +1,18 @@
-import { AiOutlineDelete } from 'react-icons/ai'
-import { FiEdit } from 'react-icons/fi'
 import { useToast } from '../../../context/providers/ToastContext'
-import styles from '../../../styles/activities/machine/ActivityRow.module.css'
-import Button from '../../Button'
 import axios from 'redaxios'
 import { getFrequencyName } from '../../../schemas/activity'
 import { deleteActivityByCodeUrlInternal } from '../../../services/activityServices'
-import ActionLink from '../../ActionLink'
+import {
+  Button,
+  Flex,
+  Subtitle,
+  TableCell,
+  TableRow,
+  Text,
+} from '@tremor/react'
+import Link from 'next/link'
+import EditIcon from '../../icons/EditIcon'
+import TrashSolidIcon from '../../icons/TrashSolidIcon'
 
 export default function ActivityRow({
   code,
@@ -43,48 +49,56 @@ export default function ActivityRow({
     showToast({
       autoClose: false,
       close: false,
-      color: 'secondary',
+      color: 'dark',
       position: 'right',
       children: (
-        <section className={styles.modal}>
-          <h4>Eliminar actividad {code}</h4>
-          <p>¿Seguro que quiere eliminar la actividad?</p>
-          <div>
-            <Button variant='primary' onClick={autoDelete}>
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>
+            Eliminar actividad {code}
+          </Subtitle>
+          <Text className='text-inherit'>
+            ¿Seguro que quiere eliminar la actividad?
+          </Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
+            <Button onClick={autoDelete} color='amber'>
               Si
             </Button>
-            <Button variant='danger' onClick={reset}>
+            <Button onClick={reset} color='red'>
               No
             </Button>
-          </div>
-        </section>
+          </Flex>
+        </Flex>
       ),
     })
   }
 
   return (
-    <tr>
-      <td className={styles['text-center']}>{code}</td>
-      <td>{name}</td>
-      <td className={styles['text-center']}>{getFrequencyName(frequency)}</td>
-      <td>
-        <div className={styles.actions}>
-          <ActionLink
+    <TableRow>
+      <TableCell>{code}</TableCell>
+      <TableCell>{name}</TableCell>
+      <TableCell className='text-center'>
+        {getFrequencyName(frequency)}
+      </TableCell>
+      <TableCell>
+        <Flex className='gap-4' justifyContent='center' alignItems='center'>
+          <Link
             href={{
               pathname: '/activities/[machineCode]/edit-activity',
               query: { machineCode, code },
             }}
-            variant='primary'
           >
-            <FiEdit />
-            Editar
-          </ActionLink>
-          <ActionLink variant='danger' onClick={handleDelete}>
-            <AiOutlineDelete />
-            Eliminar
-          </ActionLink>
-        </div>
-      </td>
-    </tr>
+            <a className='flex items-center gap-1 font-medium text-slate-500 hover:text-slate-700'>
+              <EditIcon className='w-5 h-5' />
+              Editar
+            </a>
+          </Link>
+          <Button
+            icon={() => <TrashSolidIcon className='w-4 h-4 text-inherit' />}
+            color='red'
+            onClick={handleDelete}
+          />
+        </Flex>
+      </TableCell>
+    </TableRow>
   )
 }

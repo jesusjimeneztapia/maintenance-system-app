@@ -1,10 +1,23 @@
-import { AREA_VALUES_MAP } from '../../../schemas/machine'
-import Box from '../../Box'
-import TableBordered from '../../TableBordered'
-import Criticality from '../Criticality'
-import styles from '../../../styles/machines/code/EnginesTable.module.css'
+import { Badge } from 'flowbite-react'
+import {
+  AREA_VALUES_MAP,
+  CRITICALITY_VALUES_MAP,
+} from '../../../schemas/machine'
+import {
+  Card,
+  Flex,
+  TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  Text,
+} from '@tremor/react'
+import ArrowUpIcon from '../../icons/ArrowUpIcon'
+import ArrowRightIcon from '../../icons/ArrowRightIcon'
+import ArrowDownIcon from '../../icons/ArrowDownIcon'
 
 export default function GeneralInformationTable({
+  code,
   name,
   maker,
   model,
@@ -15,52 +28,76 @@ export default function GeneralInformationTable({
   specificData,
 }) {
   return (
-    <Box>
-      <TableBordered>
-        <thead>
-          <tr>
-            <th className={styles['text-center']} colSpan={2}>
-              Información general
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Máquina</td>
-            <td>{name}</td>
-          </tr>
-          <tr>
-            <td>Fabricante</td>
-            <td>{maker}</td>
-          </tr>
-          <tr>
-            <td>Modelo</td>
-            <td>{model}</td>
-          </tr>
-          <tr>
-            <td>Ubicación</td>
-            <td>{location}</td>
-          </tr>
-          <tr>
-            <td>Área</td>
-            <td>{AREA_VALUES_MAP[area]}</td>
-          </tr>
-          <tr>
-            <td>Criticidad</td>
-            <td>
-              <Criticality criticality={criticality} />
-            </td>
-          </tr>
-          <tr>
-            <td>Función</td>
-            <td>{fn}</td>
-          </tr>
-          <tr>
-            <td>Datos específicos</td>
-            <td>{specificData}</td>
-          </tr>
-        </tbody>
-      </TableBordered>
-    </Box>
+    <Card>
+      <Flex className='gap-2' flexDirection='col' alignItems=''>
+        <Text className='text-gray-400 font-medium'>Información general</Text>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Código</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>{code}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Nombre</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>{name}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Fabricante</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>{maker}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Modelo</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>{model}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Ubicación</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>
+                {location}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Área</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>
+                {AREA_VALUES_MAP[area]}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Criticidad</TableCell>
+              <TableCell className='pr-0 py-2'>
+                <Badge
+                  className='w-fit xl:ml-auto'
+                  icon={
+                    criticality === 'HIGH'
+                      ? ArrowUpIcon
+                      : criticality === 'MEDIUM'
+                      ? ArrowRightIcon
+                      : ArrowDownIcon
+                  }
+                  color={
+                    criticality === 'HIGH'
+                      ? 'failure'
+                      : criticality === 'MEDIUM'
+                      ? 'warning'
+                      : 'success'
+                  }
+                >
+                  {CRITICALITY_VALUES_MAP[criticality]}
+                </Badge>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Función</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>{fn}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='pl-0 py-2'>Datos específicos</TableCell>
+              <TableCell className='pr-0 py-2 xl:text-right'>
+                {specificData}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Flex>
+    </Card>
   )
 }

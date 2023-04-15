@@ -27,40 +27,36 @@ export default function ValidatedToDoingForm() {
         label='Riesgos de trabajo (Precausiones a tener en cuenta)'
         values={values.protectionEquipments}
         moreInfo={
-          <ul
-            style={{
-              marginLeft: '1.25rem',
-              padding: '0 0.875rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.375rem',
-            }}
-          >
-            <li>
+          <ul className='list-none'>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Alto nivel de ruido. Aconsejable el uso de protectores acusticos
             </li>
-            <li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Excesivo ruido. Absolutamente obligatorio el uso de protectores
               acusticos
             </li>
-            <li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Golpes en la cabeza(Salientes a la altura de la cabeza).
               Obligatorio el uso de casco.
             </li>
-            <li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Algunas zonas calientes. Tomar precauciones para no tocar zonas
               marcadas como calientes
             </li>
-            <li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Partes moviles. Precaucion para no tocar partes en movimiento.
               Controlar buen estado de protecciones.
             </li>
-            <li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
               Riesgos electricos. No tocar cables ni manipular los equipos bajo
               tension
             </li>
-            <li>Productos quimicos abrasivos. Evitar contacto con la piel</li>
-            <li>Trabajo en altura. Uso obligatorio del arnes de seguridad</li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
+              Productos quimicos abrasivos. Evitar contacto con la piel
+            </li>
+            <li className='p-0 max-w-full block text-sm ml-5 relative before:content-["➢"] before:absolute before:-left-5'>
+              Trabajo en altura. Uso obligatorio del arnes de seguridad
+            </li>
           </ul>
         }
         optionsMap={WORK_ORDER_PROTECTION_EQUIPMENT_VALUES}

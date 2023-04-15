@@ -1,10 +1,14 @@
 import Link from 'next/link'
-import { FiActivity, FiEdit } from 'react-icons/fi'
-import { CgDatabase } from 'react-icons/cg'
-import styles from '../../styles/machines/MachineCard.module.css'
-import Criticality from './Criticality'
-import { AREA_VALUES_MAP } from '../../schemas/machine'
-import ActionLink from '../ActionLink'
+import { AREA_VALUES_MAP, CRITICALITY_VALUES_MAP } from '../../schemas/machine'
+import { Flex, Icon, TableCell, TableRow, Text, Title } from '@tremor/react'
+import Image from 'next/image'
+import OneServerSolidIcon from '../icons/OneServerSolidIcon'
+import EditIcon from '../icons/EditIcon'
+import PresentationChartLineIcon from '../icons/PresentationChartLineIcon'
+import { Badge } from 'flowbite-react'
+import ArrowDownIcon from '../icons/ArrowDownIcon'
+import ArrowUpIcon from '../icons/ArrowUpIcon'
+import ArrowRightIcon from '../icons/ArrowRightIcon'
 
 export default function MachineCard({
   image,
@@ -16,52 +20,99 @@ export default function MachineCard({
   page,
 }) {
   return (
-    <tr className={styles.card}>
-      <td className={styles.image}>
-        {image ? (
-          <img src={image} alt={name} /> // eslint-disable-line
-        ) : (
-          <CgDatabase />
-        )}
-      </td>
-      <td className={styles.info}>
-        <Link href={{ pathname: '/machines/[code]', query: { code } }}>
-          <a>{code}</a>
-        </Link>
-        <span>{name}</span>
-      </td>
-      <td>{page === 'machines' ? location : AREA_VALUES_MAP[area]}</td>
-      <td>
-        <div className={styles.container}>
-          <Criticality criticality={criticality} />
-        </div>
-      </td>
-      <td>
-        <div className={styles.container}>
-          <ActionLink
-            href={{
-              pathname:
-                page === 'machines'
-                  ? '/machines/[code]/edit'
-                  : '/activities/[machineCode]',
-              query: page === 'machines' ? { code } : { machineCode: code },
-            }}
-            variant={page === 'machines' ? 'primary' : 'warning'}
+    <Link href={{ pathname: '/machines/[code]', query: { code } }}>
+      <TableRow className='hover:bg-slate-50 cursor-pointer'>
+        <TableCell>
+          {image ? (
+            <Image
+              src={image}
+              alt={name}
+              height={44}
+              width={80}
+              layout='fixed'
+              objectFit='cover'
+              objectPosition='center'
+            />
+          ) : (
+            <Icon
+              className='w-20 flex justify-center'
+              icon={OneServerSolidIcon}
+              size='lg'
+              color='amber'
+              variant='solid'
+            />
+          )}
+        </TableCell>
+        <TableCell>
+          <Title>{code}</Title>
+          <Text>{name}</Text>
+        </TableCell>
+        <TableCell className='text-center'>
+          {page === 'machines' ? location : AREA_VALUES_MAP[area]}
+        </TableCell>
+        <TableCell className='text-center'>
+          <Badge
+            className='w-fit m-auto'
+            icon={
+              criticality === 'HIGH'
+                ? ArrowUpIcon
+                : criticality === 'MEDIUM'
+                ? ArrowRightIcon
+                : ArrowDownIcon
+            }
+            color={
+              criticality === 'HIGH'
+                ? 'failure'
+                : criticality === 'MEDIUM'
+                ? 'warning'
+                : 'success'
+            }
           >
-            {page === 'machines' ? (
-              <>
-                <FiEdit />
-                Editar
-              </>
-            ) : (
-              <>
-                <FiActivity />
-                Ver actividades
-              </>
-            )}
-          </ActionLink>
-        </div>
-      </td>
-    </tr>
+            {CRITICALITY_VALUES_MAP[criticality]}
+          </Badge>
+        </TableCell>
+        <TableCell>
+          <Flex className='gap-4' justifyContent='center'>
+            <Link
+              href={{
+                pathname:
+                  page === 'machines'
+                    ? '/machines/[code]/edit'
+                    : '/activities/[machineCode]',
+                query: page === 'machines' ? { code } : { machineCode: code },
+              }}
+            >
+              <a
+                className={`flex items-center gap-1 font-medium ${
+                  page === 'machines'
+                    ? 'text-slate-500 hover:text-slate-700'
+                    : 'text-blue-500 hover:text-blue-700'
+                }`}
+              >
+                {page === 'machines' ? (
+                  <>
+                    <EditIcon className='w-5 h-5' />
+                    Editar
+                  </>
+                ) : (
+                  <>
+                    <PresentationChartLineIcon className='w-5 h-5' />
+                    Ver actividades
+                  </>
+                )}
+              </a>
+            </Link>
+            <Link href={`/machines/${code}`}>
+              <a
+                className={`flex items-center gap-1 font-medium text-amber-500 hover:text-amber-700`}
+              >
+                Ver más
+                <ArrowRightIcon className='w-4 h-4' />
+              </a>
+            </Link>
+          </Flex>
+        </TableCell>
+      </TableRow>
+    </Link>
   )
 }

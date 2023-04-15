@@ -9,6 +9,7 @@ import {
 } from '../../../services/engineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import EngineForm from '../../../components/machines/code/EngineForm'
+import { Title } from '@tremor/react'
 
 export default function EditEngine({ code, machineCode, engine, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -21,6 +22,7 @@ export default function EditEngine({ code, machineCode, engine, message }) {
       <Head>
         <title>{createDocumentTitle(title)}</title>
       </Head>
+      <Title className='mb-5'>{`Motor ${code}`}</Title>
       {component ? (
         <>{component}</>
       ) : (
@@ -28,7 +30,7 @@ export default function EditEngine({ code, machineCode, engine, message }) {
           {...editEngineConfig(machineCode, code)}
           code={code}
           initialValues={engine}
-          title={title}
+          title={`Editar motor ${code}`}
         >
           <EditEngineForm />
         </EngineForm>

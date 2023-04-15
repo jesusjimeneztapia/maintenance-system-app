@@ -1,5 +1,5 @@
+import { Flex } from '@tremor/react'
 import { useWorkOrderList } from '../../context/providers/WorkOrderListContext'
-import styles from '../../styles/work-orders/KanbanBoard.module.css'
 import BoardColumn from './BoardColumn'
 import EditWorkOrderModal from './EditWorkOrderModal'
 
@@ -9,15 +9,15 @@ export default function KanbanBoard() {
   return (
     <>
       <EditWorkOrderModal />
-      <div className={styles.container}>
-        <div className={styles.board}>
+      <Flex className='overflow-x-auto'>
+        <Flex className='gap-5 w-max' alignItems='start'>
           {Object.entries(filteredByState ?? workOrders).map(
             ([state, workOrders]) => (
               <BoardColumn key={state} state={state} workOrders={workOrders} />
             )
           )}
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </>
   )
 }

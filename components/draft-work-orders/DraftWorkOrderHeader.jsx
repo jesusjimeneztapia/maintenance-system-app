@@ -1,34 +1,19 @@
 import Link from 'next/link'
-import Button from '../Button'
 import FilterDraftWorkOrderForm from './FilterDraftWorkOrderForm'
+import { Flex, Title } from '@tremor/react'
 
 export default function DraftWorkOrderHeader({ title }) {
   return (
-    <header
-      style={{
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        marginBottom: '1.25rem',
-      }}
-    >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <h2
-          style={{
-            fontWeight: '500',
-            lineHeight: '1.75rem',
-            fontSize: '1.125rem',
-          }}
-        >
-          {title}
-        </h2>
+    <Flex className='mb-5 gap-3' flexDirection='col' alignItems='end'>
+      <Flex className='max-sm:flex-col max-sm:items-start max-sm:gap-3'>
+        <Title>{title}</Title>
         <FilterDraftWorkOrderForm />
-      </div>
-      <Button>
-        <Link href='/work-orders/create-work-order'>
-          <a>Crear Orden de trabajo</a>
-        </Link>
-      </Button>
-    </header>
+      </Flex>
+      <Link href='/work-orders/create-work-order'>
+        <a className='inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
+          <span className='w-full'>Crear órden de trabajo</span>
+        </a>
+      </Link>
+    </Flex>
   )
 }

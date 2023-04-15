@@ -1,9 +1,7 @@
 import FormProvider, { useForm } from '../context/providers/FormContext'
 import { useToast } from '../context/providers/ToastContext'
-import Button from './Button'
 import axios from 'redaxios'
-import Box from './Box'
-import styles from '../styles/Form.module.css'
+import { Button, Card, Col, Flex, Grid, Subtitle, Text } from '@tremor/react'
 
 function FormContainer({ children, message }) {
   const { showToast } = useToast()
@@ -15,32 +13,34 @@ function FormContainer({ children, message }) {
       showToast({
         autoClose: false,
         close: true,
-        color: 'danger',
+        color: 'failure',
         position: 'right',
         children: (
-          <section className={styles.failed}>
-            <h4>Fallo al registrar la máquina</h4>
-            <p>Por favor verifique los campos.</p>
-          </section>
+          <>
+            <Subtitle className='text-inherit'>
+              Fallo al registrar la máquina
+            </Subtitle>
+            <Text className='text-inherit'>
+              Por favor verifique los campos.
+            </Text>
+          </>
         ),
       })
     }
   }
 
   return (
-    <Box>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        {children}
-        <footer>
-          <Button onClick={resetForm} type='button' variant='secondary'>
-            Reiniciar
-          </Button>
-          <Button onClick={handleClick} type='submit'>
-            {message}
-          </Button>
-        </footer>
-      </form>
-    </Box>
+    <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+      {children}
+      <footer className='flex justify-end gap-3'>
+        <Button onClick={resetForm} type='button' color='slate'>
+          Reiniciar
+        </Button>
+        <Button onClick={handleClick} type='submit' color='amber'>
+          {message}
+        </Button>
+      </footer>
+    </form>
   )
 }
 
@@ -79,7 +79,7 @@ export default function Form({
     showToast({
       autoClose: false,
       close: true,
-      color: 'secondary',
+      color: 'info',
       position: 'center',
       children: message,
     })
@@ -111,40 +111,54 @@ export default function Form({
     showToast({
       autoClose: false,
       close: false,
-      color: 'secondary',
+      color: 'dark',
       position: 'right',
       children: (
-        <article className={styles.modal}>
-          <h4>{title}</h4>
-          <p>{question}</p>
-          <div>
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>{title}</Subtitle>
+          <Text className='text-inherit'>{question}</Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
             <Button
-              variant='primary'
               onClick={() => handleMutateValues(values, resetForm)}
+              color='amber'
             >
               Si
             </Button>
-            <Button variant='danger' onClick={reset}>
+            <Button onClick={reset} color='red'>
               No
             </Button>
-          </div>
-        </article>
+          </Flex>
+        </Flex>
       ),
     })
+    console.log('Despues de handle submit')
   }
 
   return (
-    <FormProvider
-      dtoValidation={dtoValidation}
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validateOnMount={validateOnMount}
-    >
-      <h2>{title}</h2>
-      <div className={styles.grid}>
-        {information && <Box>{information}</Box>}
-        <FormContainer message={onSubmit.message}>{children}</FormContainer>
-      </div>
-    </FormProvider>
+    <Grid className='gap-4' numCols={2}>
+      {information && (
+        <Col numColSpan={2} numColSpanLg={1}>
+          <Card>{information}</Card>
+        </Col>
+      )}
+      <Col numColSpan={2} numColSpanLg={1}>
+        <Card>
+          <FormProvider
+            dtoValidation={dtoValidation}
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            validateOnMount={validateOnMount}
+          >
+            {title && <Subtitle className='mb-6'>{title}</Subtitle>}
+            <div>
+              {/* {information && <Box>{information}</Box>} */}
+              <FormContainer message={onSubmit.message}>
+                {children}
+              </FormContainer>
+            </div>
+          </FormProvider>
+        </Card>
+      </Col>
+    </Grid>
   )
 }

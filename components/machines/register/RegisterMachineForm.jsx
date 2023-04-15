@@ -3,17 +3,19 @@ import { useForm } from '../../../context/providers/FormContext'
 import EditMachineForm from '../code/EditMachineForm'
 
 export default function RegisterMachineForm() {
-  const { errors, touched, upperCaseHandleChange, values } = useForm()
+  const { errors, initialValues, touched, upperCaseHandleChange, values } =
+    useForm()
 
   return (
     <>
       <Input
         id='code'
         label='Código'
-        placeholder='Código de la máquina'
+        placeholder={initialValues.code || 'CB-01-PRX-01'}
         value={values.code}
         onChange={upperCaseHandleChange()}
-        error={touched.code ? errors.code : undefined}
+        error={errors.code}
+        touched={touched.code}
       />
       <EditMachineForm />
     </>

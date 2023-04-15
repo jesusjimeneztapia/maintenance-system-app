@@ -1,24 +1,27 @@
 import { useWorkOrderList } from '../../context/providers/WorkOrderListContext'
-import { CgClose } from 'react-icons/cg'
-import styles from '../../styles/work-orders/EditWorkOrderModal.module.css'
-import WorkOrderForm from './WorkOrderForm'
-import {
-  getUpdateWorkOrderConfig,
-  updateWorkOrderUrlInternal,
-} from '../../services/workOrderService'
-import { Priority } from './WorkOrderCard'
-import Button from '../Button'
+import { updateWorkOrderUrlInternal } from '../../services/workOrderService'
 import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
-import ValidatedToDoingForm from './edit/ValidatedToDoingForm'
-import DoingToDoneForm from './edit/DoingToDoneForm'
 import WorkOrderInformation from './edit/WorkOrderInformation'
 import { isInspection } from '../../libs/workOrder'
+import { Modal } from 'flowbite-react'
+import { Button, Flex, Tab, TabList, Title } from '@tremor/react'
+import InfoIcon from '../icons/InfoIcon'
+import { useEffect, useState } from 'react'
+import WorkOrderEditForm from './edit/WorkOrderEditForm'
+import ArrowReturnRight from '../icons/ArrowReturnRight'
 
 export default function EditWorkOrderModal() {
   const { request, showToast } = useToast()
   const { selectedWorkOrder, deselectWorkOrder, updateWorkOrder } =
     useWorkOrderList()
+  const [selectedTab, setSelectedTab] = useState(0)
+
+  useEffect(() => {
+    if (!selectedWorkOrder) {
+      setSelectedTab(0)
+    }
+  }, [selectedWorkOrder])
 
   if (!selectedWorkOrder) {
     return <></>
@@ -29,7 +32,7 @@ export default function EditWorkOrderModal() {
     showToast({
       autoClose: false,
       close: true,
-      color: 'secondary',
+      color: 'info',
       position: 'center',
       children: `La orden de trabajo ${selectedWorkOrder.code} se está actualizando...`,
     })
@@ -55,69 +58,73 @@ export default function EditWorkOrderModal() {
       }
     )
     if (response) {
-      updateWorkOrder(response)
+      handleUpdate(response)
     }
   }
 
-  const handleMutateValuesToDoing = (values) => {
-    return { ...values, startDate: new Date() }
+  const handleUpdate = (updatedWorkOrder) => {
+    updateWorkOrder(updatedWorkOrder)
+    deselectWorkOrder()
   }
 
   return (
-    <div className={styles.modal}>
-      <span onClick={deselectWorkOrder} />
-      <div className={styles.container}>
-        <header className={styles.header}>
-          <section>
-            <p>Información de la orden de trabajo #{selectedWorkOrder.code}</p>
-            <Priority criticality={selectedWorkOrder.priority} />
-          </section>
-          <CgClose className={styles.close} onClick={deselectWorkOrder} />
-        </header>
-        {selectedWorkOrder.state === 'PLANNED' ? (
-          <>
+    <Modal
+      className='h-screen'
+      dismissible={true}
+      show={true}
+      onClose={deselectWorkOrder}
+      size='7xl'
+      position='top-center'
+    >
+      <Modal.Header>Órden de trabajo #{selectedWorkOrder.code}</Modal.Header>
+      <Modal.Body className='max-sm:px-4 max-sm:pt-2'>
+        <TabList
+          defaultValue={selectedTab}
+          color='slate'
+          onValueChange={(value) => setSelectedTab(value)}
+        >
+          <Tab value={0} text='Información' icon={InfoIcon} />
+          {selectedWorkOrder?.state !== 'DONE' &&
+          selectedWorkOrder?.state !== 'PLANNED' ? (
+            <Tab value={1} text='Siguiente estado' icon={ArrowReturnRight} />
+          ) : (
+            <></>
+          )}
+        </TabList>
+        <Flex
+          className='p-1 gap-4 max-h-[calc(100vh-12rem)] max-sm:max-h-[calc(100vh-11rem)] overflow-y-auto'
+          flexDirection='col'
+          alignItems=''
+        >
+          <Flex className='pt-6 max-sm:pt-4 gap-2 max-sm:flex-col max-sm:items-start'>
+            <Title className='w-full'>{selectedWorkOrder?.activityName}</Title>
+            <Flex className='gap-2' justifyContent='end'>
+              {selectedWorkOrder?.state === 'PLANNED' && (
+                <Button
+                  className='max-sm:self-end'
+                  color='amber'
+                  onClick={passToValidated}
+                >
+                  Pasar a {toDoing ? 'ejecución' : 'validada'}
+                </Button>
+              )}
+              {selectedWorkOrder?.state !== 'DONE' && (
+                <Button className='max-sm:self-end' color='red'>
+                  Eliminar
+                </Button>
+              )}
+            </Flex>
+          </Flex>
+          {selectedTab === 0 ? (
             <WorkOrderInformation {...selectedWorkOrder} />
-            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-              <Button onClick={passToValidated}>
-                Pasar a {toDoing ? 'ejecución' : 'validada'}
-              </Button>
-            </div>
-          </>
-        ) : selectedWorkOrder.state === 'VALIDATED' ? (
-          <WorkOrderForm
-            {...getUpdateWorkOrderConfig(selectedWorkOrder.code)}
-            id={selectedWorkOrder.code}
-            initialValues={{
-              ...selectedWorkOrder,
-              failureCause: selectedWorkOrder.failureCause ?? undefined,
-              startDate: selectedWorkOrder.startDate ?? undefined,
-              endDate: selectedWorkOrder.endDate ?? undefined,
-            }}
-            update={updateWorkOrder}
-            mutateValues={handleMutateValuesToDoing}
-            preSubmitQuestion='¿Seguro que quiere guardar los cambios? A partir de este momento se tomará en cuenta el tiempo de ejecución de la orden de trabajo.'
-          >
-            <ValidatedToDoingForm />
-          </WorkOrderForm>
-        ) : selectedWorkOrder.state === 'DOING' ? (
-          <WorkOrderForm
-            {...getUpdateWorkOrderConfig(selectedWorkOrder.code)}
-            id={selectedWorkOrder.code}
-            initialValues={{
-              ...selectedWorkOrder,
-              failureCause: selectedWorkOrder.failureCause ?? undefined,
-              startDate: selectedWorkOrder.startDate ?? undefined,
-              endDate: selectedWorkOrder.endDate ?? undefined,
-            }}
-            update={updateWorkOrder}
-            preSubmitQuestion='¿Seguro que quiere guardar los cambios? Se cerrará esta orden de trabajo.'
-          >
-            <DoingToDoneForm />
-          </WorkOrderForm>
-        ) : (
-          <WorkOrderInformation {...selectedWorkOrder} />
-        )}
-      </div>
-    </div>
+          ) : (
+            <WorkOrderEditForm
+              {...selectedWorkOrder}
+              updateWorkOrder={handleUpdate}
+            />
+          )}
+        </Flex>
+      </Modal.Body>
+    </Modal>
   )
 }

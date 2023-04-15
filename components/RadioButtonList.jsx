@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-
-import styles from '../styles/Input.module.css'
-import Input from './Input'
-import RadioButton from './RadioButton'
+import { Flex } from '@tremor/react'
+import { Label, Radio, TextInput } from 'flowbite-react'
 
 export default function RadioButtonList({
   id,
+  name,
   label,
   value: currentValue,
   optionsMap,
   onChange,
   disabled,
   error,
+  touched,
   anotherField,
 }) {
   const [anotherValue, setAnotherValue] = useState(
@@ -34,24 +34,31 @@ export default function RadioButtonList({
   }, [currentValue, anotherField, anotherFocus, optionsMap])
 
   return (
-    <div className={`${styles.group} ${error && styles.error}`}>
-      <label>{label}</label>
-      <div className={styles['radio-button-list']}>
-        {Object.entries(optionsMap).map(([value, label]) => (
-          <RadioButton
-            key={value}
-            id={value}
-            name={id}
-            label={label}
-            value={value}
-            onChange={onChange}
-            currentValue={currentValue}
-            disabled={disabled}
-          />
+    <>
+      <Flex flexDirection='col' alignItems=''>
+        <Label value={label} color={touched && error ? 'failure' : undefined} />
+        {Object.entries(optionsMap).map(([value, text]) => (
+          <Flex key={value} className='gap-2' justifyContent=''>
+            <Radio
+              id={`${id}-${value}`}
+              name={name ?? id}
+              value={value}
+              onChange={onChange}
+              checked={`${currentValue}` === value}
+              disabled={disabled}
+            />
+            <Label htmlFor={`${id}-${value}`} value={text} />
+          </Flex>
         ))}
         {anotherField && (
-          <Input
+          <TextInput
+            className='pt-3'
             id={id}
+            name={name ?? id}
+            autoComplete='off'
+            color={touched && error ? 'failure' : undefined}
+            helperText={touched ? error : undefined}
+            disabled={disabled}
             type={anotherField.type ?? 'text'}
             placeholder={anotherField.placeholder}
             value={anotherValue}
@@ -60,8 +67,7 @@ export default function RadioButtonList({
             onFocusCapture={() => setAnotherFocus(true)}
           />
         )}
-        {error && <small>{error}</small>}
-      </div>
-    </div>
+      </Flex>
+    </>
   )
 }

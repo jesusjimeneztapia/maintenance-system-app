@@ -1,11 +1,13 @@
-import styles from '../styles/Input.module.css'
+import { Flex } from '@tremor/react'
+import { Label, Select } from 'flowbite-react'
 
-export default function Select({
+export default function CustomSelect({
   id,
   name,
   label,
   onChange,
   error,
+  touched,
   required = false,
   value = '',
   placeholder,
@@ -13,14 +15,19 @@ export default function Select({
   disabled,
 }) {
   return (
-    <div className={`${styles.group} ${error && styles.error}`}>
-      <label htmlFor={id}>{label}</label>
-      <select
+    <Flex flexDirection='col' alignItems=''>
+      <Label
+        htmlFor={id}
+        value={label}
+        color={touched && error ? 'failure' : undefined}
+      />
+      <Select
         id={id}
         name={name ?? id}
-        className={styles.input}
         value={value}
         onChange={onChange}
+        color={touched && error ? 'failure' : undefined}
+        helperText={touched ? error : undefined}
         required={required}
         disabled={disabled}
       >
@@ -34,8 +41,7 @@ export default function Select({
             {name}
           </option>
         ))}
-      </select>
-      {error && <small>{error}</small>}
-    </div>
+      </Select>
+    </Flex>
   )
 }

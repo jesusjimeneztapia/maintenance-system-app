@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { dateLocaleString } from '../../libs/date'
 import { WORK_ORDER_PRIORITY_VALUES_MAP } from '../../schemas/workOrder'
-import Button from '../Button'
-import ReportBox from '../ReportBox'
 import Select from '../Select'
 import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
 import { DRAFT_WORK_ORDER_URL_INTERNAL } from '../../services/draftWorkOrderService'
+import { Button, Card, Flex, Subtitle, Text } from '@tremor/react'
+import { Badge } from 'flowbite-react'
 
 export default function DraftWorkOrderCard({
   code,
@@ -45,22 +45,27 @@ export default function DraftWorkOrderCard({
 
   const handleRemove = () => {
     showToast({
-      color: 'secondary',
+      color: 'dark',
       autoClose: false,
       close: false,
-      position: 'center',
+      position: 'right',
       children: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <p>¿Seguro que quiere eliminar la órden de trabajo en borrador?</p>
-          <footer
-            style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}
-          >
-            <Button onClick={remove}>Si</Button>
-            <Button variant='danger' onClick={reset}>
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>
+            Eliminar órden de trabajo
+          </Subtitle>
+          <Text className='text-inherit'>
+            ¿Seguro que quiere eliminar la órden de trabajo en borrador?
+          </Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
+            <Button color='amber' onClick={remove}>
+              Si
+            </Button>
+            <Button onClick={reset} color='red'>
               No
             </Button>
-          </footer>
-        </div>
+          </Flex>
+        </Flex>
       ),
     })
   }
@@ -71,7 +76,7 @@ export default function DraftWorkOrderCard({
         return await axios.put(`${DRAFT_WORK_ORDER_URL_INTERNAL}/${code}`, data)
       },
       {
-        color: 'secondary',
+        color: 'info',
         position: 'center',
         autoClose: true,
         close: true,
@@ -94,63 +99,36 @@ export default function DraftWorkOrderCard({
   const handleSubmit = (e) => {
     e.preventDefault()
     showToast({
-      color: 'secondary',
+      color: 'dark',
       position: 'right',
       autoClose: false,
       close: false,
       children: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <p>¿Seguro que quiere crear la órden de trabajo?</p>
-          <footer
-            style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}
-          >
-            <Button onClick={submit}>Si</Button>
-            <Button variant='danger' onClick={reset}>
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>Crear órden de trabajo</Subtitle>
+          <Text className='text-inherit'>
+            ¿Seguro que quiere crear la órden de trabajo?
+          </Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
+            <Button color='amber' onClick={submit}>
+              Si
+            </Button>
+            <Button onClick={reset} color='red'>
               No
             </Button>
-          </footer>
-        </div>
+          </Flex>
+        </Flex>
       ),
     })
   }
 
   return (
-    <article
-      style={{
-        width: '320px',
-        backgroundColor: 'rgb(var(--color-white))',
-        padding: '0.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.75rem',
-        borderRadius: '0.25rem',
-      }}
-    >
-      <header
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.25rem',
-        }}
-      >
-        <p
-          style={{
-            fontSize: '14px',
-            color: 'rgb(var(--color-slate-900) / .75)',
-          }}
-        >
-          {machineName}
-        </p>
-        <h3 style={{ lineHeight: '1.25' }}>{activityName}</h3>
-      </header>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.75rem',
-        }}
-      >
+    <Card className='max-w-xs w-full'>
+      <Flex className='mb-3 gap-1' flexDirection='col' alignItems='start'>
+        <Text className='text-slate-400'>{machineName}</Text>
+        <Text className='text-slate-900 font-medium'>{activityName}</Text>
+      </Flex>
+      <form className='flex flex-col gap-3 mb-3' onSubmit={handleSubmit}>
         <Select
           id={`priority-${code}`}
           name='priority'
@@ -159,20 +137,18 @@ export default function DraftWorkOrderCard({
           optionsMap={WORK_ORDER_PRIORITY_VALUES_MAP}
           onChange={handleChange}
         />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button variant='primary' type='submit'>
+        <Flex className='gap-2' justifyContent='start'>
+          <Button type='submit' color='amber'>
             Crear
           </Button>
-          <Button onClick={handleRemove} variant='danger' type='button'>
+          <Button onClick={handleRemove} type='button' color='red'>
             Eliminar
           </Button>
-        </div>
+        </Flex>
       </form>
-      <footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ReportBox variant='secondary'>
-          {dateLocaleString(plannedDay, true)}
-        </ReportBox>
-      </footer>
-    </article>
+      <Badge className='w-fit ml-auto' color='gray'>
+        {dateLocaleString(plannedDay, true)}
+      </Badge>
+    </Card>
   )
 }

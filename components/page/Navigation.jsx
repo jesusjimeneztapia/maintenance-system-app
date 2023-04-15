@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import styles from '../../styles/Navigation.module.css'
+import { Breadcrumb } from 'flowbite-react'
+import ChevronRightIcon from '../icons/ChevronRightIcon'
 
 const ROUTES = {
   '/': { href: '/', name: 'Inicio' },
@@ -20,7 +21,7 @@ const ROUTES_NAME = {
   'create-activity': { name: 'Crear actividad' },
   'edit-activity': { name: 'Editar actividad' },
   'work-orders': { name: 'Órdenes de trabajo' },
-  'create-work-order': { name: 'Crear orden de trabajo' },
+  'create-work-order': { name: 'Crear' },
 }
 
 function generateRoute(pathname, current) {
@@ -62,17 +63,33 @@ export default function Navigation() {
   const { history, current } = useNavigation()
 
   return (
-    <ul className={styles.navigation}>
+    <Breadcrumb className='overflow-x-auto'>
       {history.length > 0 && (
         <>
-          {history.map(({ href, name }) => (
+          {history.map(({ href, name }, index) => (
             <li key={name}>
-              <Link href={href}>{name}</Link>
+              <div className='flex items-center w-max'>
+                {index > 0 && (
+                  <ChevronRightIcon className='w-5 h-5 text-slate-400' />
+                )}
+                <Link href={href}>
+                  <a className='text-sm font-medium text-slate-600 hover:text-amber-600'>
+                    {name}
+                  </a>
+                </Link>
+              </div>
             </li>
           ))}
         </>
       )}
-      <li>{current}</li>
-    </ul>
+      <li aria-current='page'>
+        <div className='flex items-center w-max'>
+          {history.length > 0 && (
+            <ChevronRightIcon className='w-5 h-5 text-slate-400' />
+          )}
+          <span className='text-sm font-medium text-slate-400'>{current}</span>
+        </div>
+      </li>
+    </Breadcrumb>
   )
 }

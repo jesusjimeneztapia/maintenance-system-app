@@ -1,5 +1,4 @@
 import Form from '../Form'
-import WorkOrderInformation from './edit/WorkOrderInformation'
 
 function createWorkOrderFormProps({
   id,
@@ -22,11 +21,11 @@ function createWorkOrderFormProps({
       message: id ? 'Guardar' : 'Crear',
       preSubmit: {
         mutateValues,
-        title: `${id ? 'Editar' : 'Crear'} orden de trabajo`,
+        title: `${id ? 'Editar' : 'Crear'} órden de trabajo`,
         question:
           preSubmitQuestion ||
           `¿Seguro que quiere ${
-            id ? 'guardar los cambios' : 'crear la orden de trabajo'
+            id ? 'guardar los cambios' : 'crear la órden de trabajo'
           }?`,
       },
       duringSubmit: {
@@ -72,7 +71,6 @@ export default function WorkOrderForm({
         mutateValues,
         update,
       })}
-      information={id ? <WorkOrderInformation {...initialValues} /> : null}
     >
       {children}
     </Form>

@@ -1,17 +1,12 @@
-import { IoMdNotificationsOutline } from 'react-icons/io'
-import styles from '../../styles/Header.module.css'
 import Navigation from './Navigation'
+import { Flex } from '@tremor/react'
+import Notification from './Notification'
 
 export default function Header() {
   return (
-    <header className={styles.header}>
+    <Flex className='border-b pb-4 gap-2'>
       <Navigation />
-      <div className={styles.options}>
-        <IoMdNotificationsOutline size={24} />
-        <div>
-          <span>A</span>
-        </div>
-      </div>
-    </header>
+      <Notification />
+    </Flex>
   )
 }

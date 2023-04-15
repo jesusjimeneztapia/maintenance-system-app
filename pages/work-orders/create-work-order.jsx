@@ -10,11 +10,12 @@ import {
   CREATE_WORK_ORDER_CONFIG,
   GET_WORK_ORDERS_COUNT_REGULAR,
 } from '../../services/workOrderService'
+import { Title } from '@tremor/react'
 
 export default function CreateWorkOrder({ count, machines, message }) {
   const { component, title } = useBeforeRenderPage({
     message,
-    title: ['Órdenes de trabajo', 'Crear Orden de trabajo'],
+    title: ['Órdenes de trabajo', 'Crear órden de trabajo'],
   })
 
   return (
@@ -22,13 +23,14 @@ export default function CreateWorkOrder({ count, machines, message }) {
       <Head>
         <title>{createDocumentTitle(title)}</title>
       </Head>
+      <Title className='mb-5'>Crear órden de trabajo</Title>
       {component ? (
         <>{component}</>
       ) : (
         <WorkOrderForm
           {...CREATE_WORK_ORDER_CONFIG}
           initialValues={CREATE_WORK_ORDER_INITIAL_VALUES}
-          title={`${title} #${count + 1}`}
+          title={`Órden de trabajo #${count + 1}`}
         >
           <CreateWorkOrderForm machines={machines} />
         </WorkOrderForm>

@@ -1,31 +1,39 @@
-import styles from '../styles/Input.module.css'
+import { Flex } from '@tremor/react'
+import { Label, Textarea } from 'flowbite-react'
 
-export default function Textarea({
+export default function CustomTextarea({
   id,
+  name,
   label,
   placeholder,
   value,
   onChange,
   rows = 4,
   error,
+  touched,
   required = false,
   disabled,
 }) {
   return (
-    <div className={`${styles.group} ${error && styles.error}`}>
-      <label htmlFor={id}>{label}</label>
-      <textarea
+    <Flex flexDirection='col' alignItems=''>
+      <Label
+        htmlFor={id}
+        value={label}
+        color={touched && error ? 'failure' : undefined}
+      />
+      <Textarea
+        className='resize-none'
         id={id}
-        name={id}
+        name={name ?? id}
         rows={rows}
-        className={`${styles.input} ${styles.textarea}`}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        color={touched && error ? 'failure' : undefined}
+        helperText={touched ? error : undefined}
         required={required}
         disabled={disabled}
       />
-      {error && <small>{error}</small>}
-    </div>
+    </Flex>
   )
 }

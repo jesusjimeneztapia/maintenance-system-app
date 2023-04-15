@@ -9,6 +9,7 @@ import {
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import ActivityForm from '../../../components/activities/ActivityForm'
 import EditActivityForm from '../../../components/activities/machine/edit-activity/EditActivityForm'
+import { Title } from '@tremor/react'
 
 export default function EditActivity({ code, machineCode, message, ...props }) {
   const { component, title } = useBeforeRenderPage({
@@ -22,16 +23,22 @@ export default function EditActivity({ code, machineCode, message, ...props }) {
         <title>{createDocumentTitle(title)}</title>
       </Head>
       {component ? (
-        <>{component}</>
+        <>
+          <Title className='mb-5'>{`Actividad ${code}`}</Title>
+          {component}
+        </>
       ) : (
-        <ActivityForm
-          {...editActivityConfig(code)}
-          code={code}
-          initialValues={{ ...props, machineCode }}
-          title={title}
-        >
-          <EditActivityForm />
-        </ActivityForm>
+        <>
+          <Title className='mb-5'>{`Actividad ${code}`}</Title>
+          <ActivityForm
+            {...editActivityConfig(code)}
+            code={code}
+            initialValues={{ ...props, machineCode }}
+            title='Editar actividad'
+          >
+            <EditActivityForm />
+          </ActivityForm>
+        </>
       )}
     </>
   )

@@ -8,6 +8,7 @@ import { createDocumentTitle } from '../../libs/documentTitle'
 import { HTTP_METHODS } from '../../services'
 import { DRAFT_WORK_ORDER_URL_REGULAR } from '../../services/draftWorkOrderService'
 import { requestInternalApi } from '../../services/requestApi'
+import { Title } from '@tremor/react'
 
 export default function Schedule({
   draftWorkOrders,
@@ -27,7 +28,10 @@ export default function Schedule({
         <title>{createDocumentTitle(title)}</title>
       </Head>
       {component ? (
-        <>{component}</>
+        <>
+          <Title className='mb-5'>{title}</Title>
+          {component}
+        </>
       ) : (
         <ScheduleProvider
           year={year}

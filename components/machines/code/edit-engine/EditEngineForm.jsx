@@ -4,131 +4,151 @@ import Input from '../../../Input'
 import Select from '../../../Select'
 
 export default function EditEngineForm() {
-  const { errors, handleChange, touched, upperCaseHandleChange, values } =
-    useForm()
+  const {
+    errors,
+    handleChange,
+    initialValues,
+    touched,
+    upperCaseHandleChange,
+    values,
+  } = useForm()
 
   return (
     <>
       <Input
         id='function'
         label='Función'
-        placeholder='Función del motor'
+        placeholder={initialValues.function || 'MOTOR #1'}
         value={values.function}
         onChange={upperCaseHandleChange()}
-        error={touched.function ? errors.function : undefined}
+        error={errors.function}
+        touched={touched.function}
       />
       <Input
         id='mark'
         label='Marca'
-        placeholder='Marca del motor'
+        placeholder={initialValues.mark || '-'}
         value={values.mark}
         onChange={upperCaseHandleChange()}
-        error={touched.mark ? errors.mark : undefined}
+        error={errors.mark}
+        touched={touched.mark}
       />
       <Input
         id='type'
         label='Tipo'
-        placeholder='Tipo del motor'
+        placeholder={initialValues.type || '-'}
         value={values.type}
         onChange={upperCaseHandleChange()}
-        error={touched.type ? errors.type : undefined}
+        error={errors.type}
+        touched={touched.type}
       />
       <Input
         id='powerHp'
         label='Potencia [Hp]'
-        placeholder='Potencia [Hp] del motor'
+        placeholder={initialValues.powerHp || '99.9'}
         value={values.powerHp}
         onChange={handleChange}
-        error={touched.powerHp ? errors.powerHp : undefined}
+        error={errors.powerHp}
+        touched={touched.powerHp}
         type='number'
       />
       <Input
         id='powerKw'
         label='Potencia [Kw]'
-        placeholder='Potencia [Kw] del motor'
+        placeholder={initialValues.powerKw || '99.9'}
         value={values.powerKw}
         onChange={handleChange}
-        error={touched.powerKw ? errors.powerKw : undefined}
+        error={errors.powerKw}
+        touched={touched.powerKw}
         type='number'
       />
       <Input
         id='voltage'
         label='Tensión [V]'
-        placeholder='Tensión [V] del motor'
+        placeholder={initialValues.voltage || '-'}
         value={values.voltage}
         onChange={upperCaseHandleChange()}
-        error={touched.voltage ? errors.voltage : undefined}
+        error={errors.voltage}
+        touched={touched.voltage}
       />
       <Input
         id='current'
         label='Corriente [A]'
-        placeholder='Corriente [A] del motor'
+        placeholder={initialValues.current || '-'}
         value={values.current}
         onChange={upperCaseHandleChange()}
-        error={touched.current ? errors.current : undefined}
+        error={errors.current}
+        touched={touched.current}
       />
       <Input
         id='rpm'
         label='rpm'
-        placeholder='rpm del motor'
+        placeholder={initialValues.rpm || '0'}
         value={values.rpm}
         onChange={handleChange}
-        error={touched.rpm ? errors.rpm : undefined}
+        error={errors.rpm}
+        touched={touched.rpm}
         type='number'
       />
       <Input
         id='cosPhi'
         label='Cos ϕ'
-        placeholder='Cos ϕ del motor'
+        placeholder={initialValues.cosPhi || '99.99'}
         value={values.cosPhi}
         onChange={handleChange}
-        error={touched.cosPhi ? errors.cosPhi : undefined}
+        error={errors.cosPhi}
+        touched={touched.cosPhi}
         type='number'
       />
       <Input
         id='performance'
         label='Rendimiento'
-        placeholder='Rendimiento del motor'
+        placeholder={initialValues.performance || '99.99'}
         value={values.performance}
         onChange={handleChange}
-        error={touched.performance ? errors.performance : undefined}
+        error={errors.performance}
+        touched={touched.performance}
         type='number'
       />
       <Input
         id='frequency'
         label='Frecuencia'
-        placeholder='Frecuencia del motor'
+        placeholder={initialValues.frequency || '0'}
         value={values.frequency}
         onChange={handleChange}
-        error={touched.frequency ? errors.frequency : undefined}
+        error={errors.frequency}
+        touched={touched.frequency}
         type='number'
       />
       <Input
         id='poles'
         label='N° polos'
-        placeholder='N° polos del motor'
+        placeholder={initialValues.poles || '0'}
         value={values.poles}
         onChange={handleChange}
-        error={touched.poles ? errors.poles : undefined}
+        error={errors.poles}
+        touched={touched.poles}
         type='number'
       />
       <Input
         id='ip'
         label='Grado de protección'
-        placeholder='Grado de protección del motor'
+        placeholder={initialValues.ip || '0'}
         value={values.ip}
         onChange={handleChange}
-        error={touched.ip ? errors.ip : undefined}
+        error={errors.ip}
+        touched={touched.ip}
         type='number'
       />
       <Select
         id='boot'
         label='Arranque'
         value={values.boot}
-        placeholder='Arranque del motor'
+        placeholder='Seleccione el arranque del motor'
         optionsMap={BOOT_VALUES_MAP}
         onChange={handleChange}
-        error={touched.boot ? errors.boot : undefined}
+        error={errors.boot}
+        touched={touched.boot}
       />
     </>
   )

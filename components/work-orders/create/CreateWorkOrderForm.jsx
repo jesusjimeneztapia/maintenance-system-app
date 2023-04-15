@@ -91,7 +91,8 @@ export default function CreateWorkOrderForm({ machines }) {
         }
         optionsMap={createMap(machines, 'name', 'name')}
         onChange={machineCodeHandleChange}
-        error={touched.machineName ? errors.machineName : undefined}
+        error={errors.machineName}
+        touched={touched.machineName}
         disabled={machines.length === 0}
       />
       <Input
@@ -119,7 +120,8 @@ export default function CreateWorkOrderForm({ machines }) {
         }
         optionsMap={createMap(values.engines, 'function', 'function')}
         onChange={engineCodeHandleChange}
-        error={touched.engineFunction ? errors.engineFunction : undefined}
+        error={errors.engineFunction}
+        touched={touched.engineFunction}
         disabled={values.engines.length === 0}
       />
       <Input
@@ -165,7 +167,8 @@ export default function CreateWorkOrderForm({ machines }) {
         }
         value={values.activityName ?? ''}
         onChange={activityNameHandleChange}
-        error={touched.activityName ? errors.activityName : undefined}
+        error={errors.activityName}
+        touched={touched.activityName}
         disabled={values.machineCode === ''}
       />
       <Select
@@ -179,7 +182,8 @@ export default function CreateWorkOrderForm({ machines }) {
         }
         optionsMap={WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP}
         onChange={handleChange}
-        error={touched.activityType ? errors.activityType : undefined}
+        error={errors.activityType}
+        touched={touched.activityType}
         disabled={values.machineCode === ''}
       />
       <Select
@@ -193,7 +197,8 @@ export default function CreateWorkOrderForm({ machines }) {
         }
         optionsMap={WORK_ORDER_PRIORITY_VALUES_MAP}
         onChange={handleChange}
-        error={touched.priority ? errors.priority : undefined}
+        error={errors.priority}
+        touched={touched.priority}
         disabled={values.machineCode === ''}
       />
     </>

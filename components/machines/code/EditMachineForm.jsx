@@ -1,14 +1,14 @@
-import CheckboxList from '../../CheckboxList'
-import Input from '../../Input'
 import InputFile from '../../InputFile'
-import Select from '../../Select'
-import Textarea from '../../Textarea'
 import { useForm } from '../../../context/providers/FormContext'
 import {
   AREA_VALUES_MAP,
   CRITICALITY_VALUES_MAP,
   TECHNICAL_DOCUMENTATION_VALUES_MAP,
 } from '../../../schemas/machine'
+import Input from '../../Input'
+import Select from '../../Select'
+import Textarea from '../../Textarea'
+import CheckboxList from '../../CheckboxList'
 
 export default function EditMachineForm() {
   const {
@@ -18,6 +18,7 @@ export default function EditMachineForm() {
     touched,
     upperCaseHandleChange,
     values,
+    initialValues,
   } = useForm()
 
   const fileHandleChange = ({ target: { files } }) => {
@@ -30,81 +31,89 @@ export default function EditMachineForm() {
       <Input
         id='name'
         label='Nombre'
-        placeholder='Nombre de la máquina'
+        placeholder={initialValues.name || 'PRE EXPANSORA'}
         value={values.name}
         onChange={upperCaseHandleChange()}
-        error={touched.name ? errors.name : undefined}
+        error={errors.name}
+        touched={touched.name}
       />
       <Input
         id='maker'
-        label='Fabricante'
-        placeholder='Fabricante de la máquina'
+        label='Marca'
+        placeholder={initialValues.maker || '-'}
         value={values.maker}
         onChange={upperCaseHandleChange()}
-        error={touched.maker ? errors.maker : undefined}
+        error={errors.maker}
+        touched={touched.maker}
       />
       <Input
         id='location'
         label='Ubicación'
-        placeholder='Ubicación de la máquina'
+        placeholder={initialValues.location || 'EPS'}
         value={values.location}
         onChange={upperCaseHandleChange()}
-        error={touched.location ? errors.location : undefined}
+        error={errors.location}
+        touched={touched.location}
       />
       <Select
         id='area'
         label='Área'
         value={values.area}
-        placeholder='Área de la máquina'
+        placeholder='Seleccione el área de la máquina'
         optionsMap={AREA_VALUES_MAP}
         onChange={handleChange}
-        error={touched.area ? errors.area : undefined}
+        error={errors.area}
+        touched={touched.area}
       />
       <Input
         id='model'
         label='Modelo'
-        placeholder='Modelo de la máquina'
+        placeholder={initialValues.model || '-'}
         value={values.model}
         onChange={upperCaseHandleChange()}
-        error={touched.model ? errors.model : undefined}
+        error={errors.model}
+        touched={touched.model}
       />
       <Input
         id='function'
         label='Función'
-        placeholder='Función de la máquina'
+        placeholder={initialValues.function || '-'}
         value={values.function}
         onChange={upperCaseHandleChange()}
-        error={touched.function ? errors.function : undefined}
+        error={errors.function}
+        touched={touched.function}
       />
       <Textarea
         id='specificData'
         label='Datos específicos'
-        placeholder='Datos específicos de la máquina...'
-        rows={3}
+        placeholder={initialValues.specificData || '-'}
         value={values.specificData}
         onChange={upperCaseHandleChange()}
-        error={touched.specificData ? errors.specificData : undefined}
+        error={errors.specificData}
+        touched={touched.specificData}
+        rows={3}
       />
       <CheckboxList
         id='technicalDocumentation'
         label='Documentación técnica'
-        values={values.technicalDocumentation}
-        optionsMap={TECHNICAL_DOCUMENTATION_VALUES_MAP}
         onChange={handleChange}
+        optionsMap={TECHNICAL_DOCUMENTATION_VALUES_MAP}
+        values={values.technicalDocumentation}
       />
       <Select
         id='criticality'
         label='Criticidad'
         value={values.criticality}
-        placeholder='Criticidad de la máquina'
+        placeholder='Seleccione la criticidad de la máquina'
         optionsMap={CRITICALITY_VALUES_MAP}
         onChange={handleChange}
-        error={touched.criticality ? errors.criticality : undefined}
+        error={errors.criticality}
+        touched={touched.criticality}
       />
       <InputFile
         id='image'
         label='Imagen de la máquina'
-        message='Arrastre aquí la imagen o haz click para seleccionar una imagen.'
+        message='Arrastre aquí la imagen o haz click para seleccionar una imagen'
         file={values.image}
         onChange={fileHandleChange}
         accept='image/*'

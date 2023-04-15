@@ -1,8 +1,9 @@
-import Checkbox from './Checkbox'
-import styles from '../styles/Input.module.css'
+import { Checkbox, Label } from 'flowbite-react'
+import { Flex } from '@tremor/react'
 
 export default function CheckboxList({
   id,
+  name,
   label,
   values = [],
   moreInfo,
@@ -11,23 +12,22 @@ export default function CheckboxList({
   disabled,
 }) {
   return (
-    <div className={styles.group}>
-      <label>{label}</label>
+    <Flex className='gap-1' flexDirection='col' alignItems=''>
+      <Label value={label} />
       {moreInfo}
-      <div className={styles['checkbox-list']}>
-        {Object.entries(optionsMap).map(([value, label]) => (
+      {Object.entries(optionsMap).map(([value, text]) => (
+        <Flex key={value} className='gap-2' justifyContent=''>
           <Checkbox
-            key={value}
             id={value}
-            name={id}
-            label={label}
+            name={name ?? id}
             value={value}
             onChange={onChange}
-            values={values}
+            checked={values.technicalDocumentation?.includes(value)}
             disabled={disabled}
           />
-        ))}
-      </div>
-    </div>
+          <Label htmlFor={value} value={text} />
+        </Flex>
+      ))}
+    </Flex>
   )
 }

@@ -9,6 +9,7 @@ import {
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
+import { Title } from '@tremor/react'
 
 export default function EditMachine({ code, name, machine, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -21,13 +22,14 @@ export default function EditMachine({ code, name, machine, message }) {
       <Head>
         <title>{createDocumentTitle(title)}</title>
       </Head>
+      <Title className='mb-5'>{`Máquina ${name ?? code}`}</Title>
       {component ? (
         <>{component}</>
       ) : (
         <MachineForm
           {...UPDATE_MACHINE_CONFIG}
           initialValues={machine}
-          title={title}
+          title={`Editar máquina ${code}`}
           code={code}
         >
           <EditMachineForm />
