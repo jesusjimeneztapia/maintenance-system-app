@@ -102,4 +102,11 @@ export const WORK_ORDER_LIST_ACTIONS = {
     }
     return state
   },
+  deleteWorkOrderById(state, payload) {
+    const { workOrders } = state
+    const filteredWorkOrders = workOrders.filter(
+      (workOrder) => workOrder.code !== payload
+    )
+    return { ...state, workOrders: filteredWorkOrders }
+  },
 }

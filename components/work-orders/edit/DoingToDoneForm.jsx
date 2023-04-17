@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useForm } from '../../../context/providers/FormContext'
 import { getDateValue } from '../../../libs/date'
-import { isInspection } from '../../../libs/workOrder'
 import { WORK_ORDER_SECURITY_MEASURE_END_VALUES } from '../../../schemas/workOrder'
 import CheckboxList from '../../CheckboxList'
 import Input from '../../Input'
@@ -45,10 +44,10 @@ export default function DoingToDoneForm() {
     })
   }, [setValues])
 
-  if (isInspection(values)) {
+  if (values.machine.checkList) {
     return (
       <CheckListForm
-        checkList={values.machineCheckList}
+        checkList={values.machine.checkList}
         setValues={setValues}
         values={values}
       />

@@ -4,14 +4,14 @@ import BoardColumn from './BoardColumn'
 import EditWorkOrderModal from './EditWorkOrderModal'
 
 export default function KanbanBoard() {
-  const { filteredByState, workOrders } = useWorkOrderList()
+  const { filteredWorkOrdersByState } = useWorkOrderList()
 
   return (
     <>
       <EditWorkOrderModal />
       <Flex className='overflow-x-auto'>
         <Flex className='gap-5 w-max' alignItems='start'>
-          {Object.entries(filteredByState ?? workOrders).map(
+          {Object.entries(filteredWorkOrdersByState).map(
             ([state, workOrders]) => (
               <BoardColumn key={state} state={state} workOrders={workOrders} />
             )

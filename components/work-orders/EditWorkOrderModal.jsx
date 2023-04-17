@@ -1,20 +1,34 @@
 import { useWorkOrderList } from '../../context/providers/WorkOrderListContext'
-import { updateWorkOrderUrlInternal } from '../../services/workOrderService'
+import {
+  deleteWorkOrderUrlInternal,
+  updateWorkOrderUrlInternal,
+} from '../../services/workOrderService'
 import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
 import WorkOrderInformation from './edit/WorkOrderInformation'
-import { isInspection } from '../../libs/workOrder'
 import { Modal } from 'flowbite-react'
-import { Button, Flex, Tab, TabList, Title } from '@tremor/react'
+import {
+  Button,
+  Flex,
+  Subtitle,
+  Tab,
+  TabList,
+  Text,
+  Title,
+} from '@tremor/react'
 import InfoIcon from '../icons/InfoIcon'
 import { useEffect, useState } from 'react'
 import WorkOrderEditForm from './edit/WorkOrderEditForm'
 import ArrowReturnRight from '../icons/ArrowReturnRight'
 
 export default function EditWorkOrderModal() {
-  const { request, showToast } = useToast()
-  const { selectedWorkOrder, deselectWorkOrder, updateWorkOrder } =
-    useWorkOrderList()
+  const { request, showToast, reset } = useToast()
+  const {
+    selectedWorkOrder,
+    deleteWorkOrderById,
+    deselectWorkOrder,
+    updateWorkOrder,
+  } = useWorkOrderList()
   const [selectedTab, setSelectedTab] = useState(0)
 
   useEffect(() => {
@@ -26,7 +40,7 @@ export default function EditWorkOrderModal() {
   if (!selectedWorkOrder) {
     return <></>
   }
-  const toDoing = isInspection(selectedWorkOrder)
+  const toDoing = selectedWorkOrder.nextState === 'DOING'
 
   const passToValidated = async () => {
     showToast({
@@ -41,11 +55,10 @@ export default function EditWorkOrderModal() {
         const { data } = await axios.put(
           updateWorkOrderUrlInternal(selectedWorkOrder.code),
           {
-            state: toDoing ? 'DOING' : 'VALIDATED',
+            state: selectedWorkOrder.nextState,
             securityMeasureStarts: [],
             protectionEquipments: [],
-            startDate: new Date(),
-            allow: toDoing,
+            startDate: toDoing ? new Date() : undefined,
           }
         )
         return data
@@ -65,6 +78,60 @@ export default function EditWorkOrderModal() {
   const handleUpdate = (updatedWorkOrder) => {
     updateWorkOrder(updatedWorkOrder)
     deselectWorkOrder()
+  }
+
+  const deleteWorkOrder = async () => {
+    const { code } = selectedWorkOrder
+    showToast({
+      autoClose: false,
+      close: true,
+      color: 'info',
+      position: 'center',
+      children: `La órden de trabajo #${code} se está eliminando...`,
+    })
+    const response = await request(
+      async () => {
+        const { data } = await axios.delete(deleteWorkOrderUrlInternal(code))
+        return data
+      },
+      {
+        autoClose: true,
+        close: true,
+        color: 'success',
+        children: `La órden de trabajo #${code} se eliminó exitósamente`,
+      }
+    )
+    if (response) {
+      deleteWorkOrderById(response.code)
+      deselectWorkOrder()
+    }
+  }
+
+  const handleDeleteWorkOrder = async () => {
+    showToast({
+      autoClose: false,
+      close: false,
+      color: 'dark',
+      position: 'right',
+      children: (
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>
+            Eliminar la órden de trabajo #{selectedWorkOrder.code}
+          </Subtitle>
+          <Text className='text-inherit'>
+            ¿Seguro que quiere eliminar la órden de trabajo?
+          </Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
+            <Button onClick={deleteWorkOrder} color='amber'>
+              Si
+            </Button>
+            <Button onClick={reset} color='red'>
+              No
+            </Button>
+          </Flex>
+        </Flex>
+      ),
+    })
   }
 
   return (
@@ -109,7 +176,11 @@ export default function EditWorkOrderModal() {
                 </Button>
               )}
               {selectedWorkOrder?.state !== 'DONE' && (
-                <Button className='max-sm:self-end' color='red'>
+                <Button
+                  className='max-sm:self-end'
+                  color='red'
+                  onClick={handleDeleteWorkOrder}
+                >
                   Eliminar
                 </Button>
               )}

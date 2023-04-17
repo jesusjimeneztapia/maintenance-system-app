@@ -59,7 +59,7 @@ export default function CheckListForm({ checkList, setValues, values }) {
           checkListVerified[index] = { id, field, value }
         }
 
-        return { ...values, checkListVerified }
+        return { ...values, checkListVerified, endDate: new Date() }
       })
     }
   return (

@@ -131,7 +131,6 @@ export default function Form({
         </Flex>
       ),
     })
-    console.log('Despues de handle submit')
   }
 
   return (

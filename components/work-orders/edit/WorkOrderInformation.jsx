@@ -48,6 +48,7 @@ export default function WorkOrderInformation({
   securityMeasureEnds,
   observations,
   checkListVerified,
+  machine,
 }) {
   return (
     <Card>
@@ -244,13 +245,13 @@ export default function WorkOrderInformation({
                   <TableRow>
                     <TableCell className='pl-0 pt-2 pb-2'>Nombre</TableCell>
                     <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                      {machineName}
+                      {machine?.name}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className='pl-0 pt-2 pb-2'>Área</TableCell>
                     <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                      {AREA_VALUES_MAP[machineArea]}
+                      {AREA_VALUES_MAP[machine?.area]}
                     </TableCell>
                   </TableRow>
                 </TableBody>

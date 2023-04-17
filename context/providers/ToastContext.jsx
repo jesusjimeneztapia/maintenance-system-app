@@ -47,7 +47,7 @@ export default function ToastProvider({ children }) {
       showToast({
         autoClose: false,
         close: true,
-        color: status >= 500 ? 'danger' : 'warning',
+        color: status >= 500 ? 'failure' : 'warning',
         position: 'center',
         children: message,
       })

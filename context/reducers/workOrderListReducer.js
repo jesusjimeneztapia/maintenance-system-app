@@ -1,11 +1,9 @@
 import { WORK_ORDER_LIST_ACTIONS } from '../actions/workOrderListActions'
 
 export const WORK_ORDER_LIST_INITIAL_STATE = {
-  filterByActivityName: '',
-  workOrders: [],
-  filteredWorkOrders: [],
-  filteredByState: {},
+  filteredWorkOrdersByState: {},
   selectedWorkOrder: null,
+  workOrders: [],
 }
 
 export function workOrderListReducer(state, { action, payload }) {

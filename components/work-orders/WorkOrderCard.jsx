@@ -5,6 +5,9 @@ import ArrowUpIcon from '../icons/ArrowUpIcon'
 import ArrowRightIcon from '../icons/ArrowRightIcon'
 import ArrowDownIcon from '../icons/ArrowDownIcon'
 import InfoIcon from '../icons/InfoIcon'
+import { useWorkOrderList } from '../../context/providers/WorkOrderListContext'
+import { useToast } from '../../context/providers/ToastContext'
+import { getWorkOrderById } from '../../services/workOrderService'
 
 const PRIORITY = {
   URGENT: ({ className }) => (
@@ -29,24 +32,43 @@ export function Priority({ priority, className }) {
 }
 
 export default function WorkOrderCard({
-  activity,
+  code,
+  activityName,
   priority,
   createdAt,
-  editHandleChange,
   machineName,
 }) {
+  const { request, reset, showToast } = useToast()
+  const { selectWorkOrder } = useWorkOrderList()
+
+  const handleSelectWorkOrder = async () => {
+    selectWorkOrder(code)
+    showToast({
+      color: 'info',
+      autoClose: false,
+      close: true,
+      position: 'center',
+      children: `Obteniendo todos los datos de la órden de trabajo #${code}`,
+    })
+    const response = await request(async () => getWorkOrderById({ id: code }))
+    if (response) {
+      reset()
+      selectWorkOrder(response)
+    }
+  }
+
   return (
     <>
       <article className='flex flex-col gap-4 w-full p-2 bg-white rounded shadow'>
         <Flex className='gap-2' alignItems='start'>
           <Text className='text-slate-900 font-medium flex flex-col gap-1'>
-            {activity.name}
+            {activityName}
             <span className='text-slate-400 font-normal'>{machineName}</span>
           </Text>
           <Button
             icon={() => <InfoIcon className='w-5 h-5' />}
             variant='light'
-            onClick={editHandleChange}
+            onClick={handleSelectWorkOrder}
           />
         </Flex>
         <Flex className='gap-2' justifyContent='start'>

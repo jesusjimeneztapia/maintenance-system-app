@@ -35,7 +35,7 @@ export default function WorkOrders({ workOrders, message }) {
               </a>
             </Link>
           </Flex>
-          <WorkOrderListProvider workOrders={workOrders}>
+          <WorkOrderListProvider allWorkOrders={workOrders}>
             <KanbanBoard />
           </WorkOrderListProvider>
         </>
@@ -46,13 +46,13 @@ export default function WorkOrders({ workOrders, message }) {
 
 export async function getServerSideProps(context) {
   const {
-    query: { dateRange },
+    query: { date },
   } = context
 
   const { data: workOrders, message } = await requestInternalApi(context, {
     method: HTTP_METHODS.GET,
     url: WORK_ORDER_URL_REGULAR,
-    params: { dateRange: dateRange ?? 'MONTHLY' },
+    params: { date: date || new Date().toLocaleDateString() },
   })
 
   return {
