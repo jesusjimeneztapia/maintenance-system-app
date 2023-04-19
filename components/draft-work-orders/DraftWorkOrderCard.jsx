@@ -10,8 +10,8 @@ import { Badge } from 'flowbite-react'
 
 export default function DraftWorkOrderCard({
   code,
-  activityName,
-  machineName,
+  activity,
+  machine,
   plannedDay,
   priority,
   handleDelete,
@@ -125,8 +125,8 @@ export default function DraftWorkOrderCard({
   return (
     <Card className='max-w-xs w-full'>
       <Flex className='mb-3 gap-1' flexDirection='col' alignItems='start'>
-        <Text className='text-slate-400'>{machineName}</Text>
-        <Text className='text-slate-900 font-medium'>{activityName}</Text>
+        <Text className='text-slate-400'>{machine?.name}</Text>
+        <Text className='text-slate-900 font-medium'>{activity?.name}</Text>
       </Flex>
       <form className='flex flex-col gap-3 mb-3' onSubmit={handleSubmit}>
         <Select

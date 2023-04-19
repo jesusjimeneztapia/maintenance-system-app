@@ -16,16 +16,10 @@ export function useSchedule() {
   return context
 }
 
-export default function ScheduleProvider({
-  children,
-  year,
-  month,
-  day,
-  draftWorkOrders,
-}) {
+export default function ScheduleProvider({ date, children, draftWorkOrders }) {
   const [state, dispatch] = useReducer(scheduleReducer, {
     ...scheduleInitialState,
-    date: { year, month, day },
+    date,
     draftWorkOrders,
   })
 

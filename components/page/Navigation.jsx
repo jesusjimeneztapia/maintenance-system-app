@@ -37,7 +37,10 @@ function useNavigation() {
   const [navigation, setNavigation] = useState({ history: [], current: '/' })
 
   useEffect(() => {
-    let routes = asPath.split('/').filter((route) => !!route)
+    let routes = asPath
+      .replace(/\?.+/, '')
+      .split('/')
+      .filter((route) => !!route)
 
     let history = []
     let current = routes.pop() ?? 'Inicio'

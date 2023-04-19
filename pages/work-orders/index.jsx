@@ -45,14 +45,15 @@ export default function WorkOrders({ workOrders, message }) {
 }
 
 export async function getServerSideProps(context) {
-  const {
-    query: { date },
-  } = context
-
+  let { date } = context.query
+  date = new Date(date)
+  if (date.toString().toLowerCase() === 'invalid date') {
+    date = new Date()
+  }
   const { data: workOrders, message } = await requestInternalApi(context, {
     method: HTTP_METHODS.GET,
     url: WORK_ORDER_URL_REGULAR,
-    params: { date: date || new Date().toLocaleDateString() },
+    params: { date },
   })
 
   return {

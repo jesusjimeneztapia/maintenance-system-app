@@ -10,13 +10,7 @@ import { DRAFT_WORK_ORDER_URL_REGULAR } from '../../services/draftWorkOrderServi
 import { requestInternalApi } from '../../services/requestApi'
 import { Title } from '@tremor/react'
 
-export default function Schedule({
-  draftWorkOrders,
-  message,
-  year,
-  month,
-  day,
-}) {
+export default function Schedule({ draftWorkOrders, message, date }) {
   const { component, title } = useBeforeRenderPage({
     message,
     title: 'Planificación',
@@ -33,12 +27,7 @@ export default function Schedule({
           {component}
         </>
       ) : (
-        <ScheduleProvider
-          year={year}
-          month={month}
-          day={day}
-          draftWorkOrders={draftWorkOrders}
-        >
+        <ScheduleProvider date={date} draftWorkOrders={draftWorkOrders}>
           <DraftWorkOrderHeader title={title} />
           <DraftWorkOrdersList />
         </ScheduleProvider>
@@ -48,19 +37,22 @@ export default function Schedule({
 }
 
 export async function getServerSideProps(context) {
-  const { query } = context
+  let { date } = context.query
+  date = new Date(date)
+  if (date.toString().toLowerCase() === 'invalid date') {
+    date = new Date()
+  }
   const { data: draftWorkOrders, message } = await requestInternalApi(context, {
     method: HTTP_METHODS.GET,
     url: DRAFT_WORK_ORDER_URL_REGULAR,
-    params: { ...query },
+    params: { date },
   })
 
-  const now = new Date()
-  const year = query.year ? Number(query.year) : now.getFullYear()
-  const month = query.month ? Number(query.month) : now.getMonth()
-  const day = query.day ? Number(query.day) : now.getDate()
-
   return {
-    props: { draftWorkOrders, message, year, month, day },
+    props: {
+      draftWorkOrders,
+      message,
+      date: date.toISOString().replace(/T.+/, ''),
+    },
   }
 }

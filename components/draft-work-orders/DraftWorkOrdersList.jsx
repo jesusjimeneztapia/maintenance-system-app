@@ -2,21 +2,15 @@ import { Badge, Card, Flex, Subtitle, Text } from '@tremor/react'
 import { useSchedule } from '../../context/providers/ScheduleContext'
 import DraftWorkOrderCard from './DraftWorkOrderCard'
 
-function getWeekNumber({ year, month, day }) {
-  const date = new Date(year, month, day)
-  const dayNumber = (date.getDay() + 6) % 7
-
-  const aux = new Date(date.valueOf())
-  aux.setDate(aux.getDate() - dayNumber + 3)
-  const firstTuesday = aux.valueOf()
-
-  aux.setMonth(0, 1)
-
-  if (aux.getDay() !== 4) {
-    aux.setMonth(0, 1 + ((4 - aux.getDay() + 7) % 7))
-  }
-
-  return 1 + Math.ceil((firstTuesday - aux) / 604800000)
+function getWeekNumber(date) {
+  const [year, month, day] = date.split('-')
+  date = new Date(year, month - 1, day)
+  const firstDay = new Date(date.getFullYear(), 0, 1)
+  const weeks = Math.ceil(
+    ((date.getTime() - firstDay.getTime()) / 86400000 + firstDay.getDay() + 1) /
+      7
+  )
+  return weeks > 52 ? 1 : weeks
 }
 
 export default function DraftWorkOrdersList() {
