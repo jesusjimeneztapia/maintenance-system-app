@@ -6,6 +6,7 @@ export default function Input({
   name,
   label,
   placeholder,
+  defaultValue,
   value,
   onChange,
   type = 'text',
@@ -30,6 +31,7 @@ export default function Input({
         type={type}
         placeholder={placeholder}
         autoComplete='off'
+        defaultValue={defaultValue}
         value={value}
         onChange={onChange}
         color={touched && error ? 'failure' : undefined}

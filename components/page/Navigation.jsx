@@ -22,6 +22,7 @@ const ROUTES_NAME = {
   'edit-activity': { name: 'Editar actividad' },
   'work-orders': { name: 'Órdenes de trabajo' },
   'create-work-order': { name: 'Crear' },
+  draft: { name: 'Borradores' },
 }
 
 function generateRoute(pathname, current) {
