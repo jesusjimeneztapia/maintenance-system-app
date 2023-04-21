@@ -6,11 +6,14 @@ export default function ImageMachineTable({ code, image }) {
     <Card>
       {image ? (
         <Flex justifyContent='center'>
-          <img
-            className='max-h-44 w-auto h-full'
-            src={image.src}
-            alt={image.name}
-          />
+          {
+            /* eslint-disable */
+            <img
+              className='max-h-44 w-auto h-full'
+              src={image.src}
+              alt={image.name}
+            />
+          }
         </Flex>
       ) : (
         <Icon
