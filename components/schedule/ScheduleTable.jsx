@@ -31,7 +31,7 @@ export default function ScheduleTable({
       <TableHead>
         <TableRow>
           <TableHeaderCell>Máquina</TableHeaderCell>
-          <TableHeaderCell>O.T.</TableHeaderCell>
+          <TableHeaderCell className='text-center'>O.T.</TableHeaderCell>
           <TableHeaderCell>Actividades</TableHeaderCell>
           <TableHeaderCell>Tipo de actividad</TableHeaderCell>
 
@@ -98,7 +98,7 @@ export default function ScheduleTable({
               className={`${index % 2 === 0 && 'bg-slate-200/60'}`}
             >
               <TableCell>{machine?.name}</TableCell>
-              <TableCell>{code}</TableCell>
+              <TableCell className='text-center'>{code}</TableCell>
               <TableCell>{activityName}</TableCell>
               <TableCell>
                 {WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP[activityType]}

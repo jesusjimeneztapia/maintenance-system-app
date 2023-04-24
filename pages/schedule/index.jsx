@@ -200,9 +200,11 @@ export default function Schedule({ message, allWorkOrders, date }) {
 
 export async function getServerSideProps(context) {
   let { date } = context.query
+  let strict = true
   date = new Date(date)
   if (date.toString().toLowerCase() === 'invalid date') {
     date = new Date()
+    strict = false
   }
 
   const firstDay = date.getDate() - date.getDay()
@@ -211,7 +213,7 @@ export async function getServerSideProps(context) {
   const { data, message } = await requestInternalApi(context, {
     method: HTTP_METHODS.GET,
     url: '/schedule',
-    params: { date, strict: false },
+    params: { date, strict },
   })
 
   return {
