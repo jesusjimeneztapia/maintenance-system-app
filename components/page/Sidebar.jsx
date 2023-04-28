@@ -9,6 +9,7 @@ import NavLink from './NavLink'
 import { Button, Flex, Title } from '@tremor/react'
 import MenuIcon from '../icons/MenuIcon'
 import CloseIcon from '../icons/CloseIcon'
+import PresentationChartBarIcon from '../icons/PresentationChartBarIcon'
 
 export default function Sidebar() {
   const [translate, setTranslate] = useState(false)
@@ -81,6 +82,11 @@ export default function Sidebar() {
               href='/schedule'
               icon={CalendarSolidIcon}
               text='Planificación'
+            />
+            <NavLink
+              href='/indicators'
+              icon={PresentationChartBarIcon}
+              text='Indicadores'
             />
           </ul>
         </div>

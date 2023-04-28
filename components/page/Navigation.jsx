@@ -11,6 +11,7 @@ const ROUTES = {
   register: { href: '/machines/register', name: 'Registro' },
   'work-orders': { href: '/work-orders', name: 'Órdenes de trabajo' },
   schedule: { href: '/schedule', name: 'Planificación' },
+  indicators: { href: '/indicators', name: 'Indicadores' },
 }
 
 const ROUTES_NAME = {

@@ -7,6 +7,7 @@ import OneServerSolidIcon from '../components/icons/OneServerSolidIcon'
 import PresentationChartLineSolidIcon from '../components/icons/PresentationChartLineSolidIcon'
 import TemplateSolidIcon from '../components/icons/TemplateSolidIcon'
 import CalendarSolidIcon from '../components/icons/CalendarSolidIcon'
+import PresentationChartBarIcon from '../components/icons/PresentationChartBarIcon'
 
 export default function Home() {
   return (
@@ -40,6 +41,11 @@ export default function Home() {
           href='/schedule'
           title='Planificación'
           icon={CalendarSolidIcon}
+        />
+        <HomeLink
+          href='/indicators'
+          title='Indicadores'
+          icon={PresentationChartBarIcon}
         />
       </Flex>
     </>
