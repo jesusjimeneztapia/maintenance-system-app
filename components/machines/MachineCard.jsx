@@ -18,6 +18,7 @@ export default function MachineCard({
   location,
   area,
   criticality,
+  priority,
 }) {
   const page = useMachineList((state) => state.page)
 
@@ -34,6 +35,7 @@ export default function MachineCard({
               layout='fixed'
               objectFit='cover'
               objectPosition='center'
+              priority={priority}
             />
           ) : (
             <Icon

@@ -29,8 +29,13 @@ export default function MachineList({ machines }) {
         </TableHead>
 
         <TableBody>
-          {machines.map(({ code, ...rest }) => (
-            <MachineCard key={code} code={code} {...rest} />
+          {machines.map(({ code, ...rest }, index) => (
+            <MachineCard
+              key={code}
+              code={code}
+              {...rest}
+              priority={index < 10}
+            />
           ))}
         </TableBody>
       </Table>
