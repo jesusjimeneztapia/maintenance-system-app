@@ -1,26 +1,36 @@
 import MachineList from './MachineList'
-import { useMachineList } from '../../context/providers/MachineListContext'
-import { Bold, Card, Flex, Text } from '@tremor/react'
+import { Bold, Card, Flex, Text, TextInput } from '@tremor/react'
 import SearchIcon from '../icons/SearchIcon'
-import { TextInput } from 'flowbite-react'
+import { useMachineList } from '../../store/machines'
 
-export default function MachineContainer({ page }) {
-  const { filterByName, filteredMachines, searchHandleChange } =
-    useMachineList()
+export default function MachineContainer() {
+  const [filterByName, machines, setFilterByName] = useMachineList((state) => [
+    state.filterByName,
+    state.machines,
+    state.setFilterByName,
+  ])
+
+  const filteredMachines = machines.filter(({ name }) =>
+    name.startsWith(filterByName)
+  )
+
+  const handleSearch = ({ target: { value } }) => {
+    setFilterByName(value.toUpperCase())
+  }
 
   return (
     <Card>
       <Flex className='gap-6' flexDirection='col' alignItems=''>
         <TextInput
-          className='w-60'
-          rightIcon={SearchIcon}
+          className='w-fit ring-amber-500/50'
+          icon={SearchIcon}
           placeholder='Buscar máquina por nombre'
           value={filterByName}
-          onChange={searchHandleChange}
+          onChange={handleSearch}
         />
 
         {filteredMachines.length > 0 ? (
-          <MachineList machines={filteredMachines} page={page} />
+          <MachineList machines={filteredMachines} />
         ) : (
           <Text className='text-center'>
             No existe la máquina <Bold>{filterByName}</Bold>

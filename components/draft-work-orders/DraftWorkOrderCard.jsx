@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { dateLocaleString } from '../../libs/date'
 import { WORK_ORDER_PRIORITY_VALUES_MAP } from '../../schemas/workOrder'
 import Select from '../Select'
-import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
 import { DRAFT_WORK_ORDER_URL_INTERNAL } from '../../services/draftWorkOrderService'
 import { Button, Card, Flex, Subtitle, Text } from '@tremor/react'
 import { Badge } from 'flowbite-react'
+import { useToast } from '../../store/toast'
 
 export default function DraftWorkOrderCard({
   code,
@@ -16,7 +16,11 @@ export default function DraftWorkOrderCard({
   priority,
   handleDelete,
 }) {
-  const { showToast, reset, request } = useToast()
+  const [show, request, reset] = useToast((state) => [
+    state.show,
+    state.request,
+    state.reset,
+  ])
   const [data, setData] = useState({ priority })
 
   const handleChange = ({ target: { name, value } }) => {
@@ -44,7 +48,7 @@ export default function DraftWorkOrderCard({
   }
 
   const handleRemove = () => {
-    showToast({
+    show({
       color: 'dark',
       autoClose: false,
       close: false,
@@ -85,7 +89,7 @@ export default function DraftWorkOrderCard({
     )
 
     if (response) {
-      showToast({
+      show({
         color: 'success',
         position: 'center',
         autoClose: true,
@@ -98,7 +102,7 @@ export default function DraftWorkOrderCard({
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    showToast({
+    show({
       color: 'dark',
       position: 'right',
       autoClose: false,

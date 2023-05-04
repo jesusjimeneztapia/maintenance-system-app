@@ -3,7 +3,6 @@ import {
   deleteWorkOrderUrlInternal,
   updateWorkOrderUrlInternal,
 } from '../../services/workOrderService'
-import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
 import WorkOrderInformation from './edit/WorkOrderInformation'
 import { Modal } from 'flowbite-react'
@@ -20,9 +19,14 @@ import InfoIcon from '../icons/InfoIcon'
 import { useEffect, useState } from 'react'
 import WorkOrderEditForm from './edit/WorkOrderEditForm'
 import ArrowReturnRight from '../icons/ArrowReturnRight'
+import { useToast } from '../../store/toast'
 
 export default function EditWorkOrderModal() {
-  const { request, showToast, reset } = useToast()
+  const [show, request, reset] = useToast((state) => [
+    state.show,
+    state.request,
+    state.reset,
+  ])
   const {
     selectedWorkOrder,
     deleteWorkOrderById,
@@ -43,7 +47,7 @@ export default function EditWorkOrderModal() {
   const toDoing = selectedWorkOrder.nextState === 'DOING'
 
   const passToValidated = async () => {
-    showToast({
+    show({
       autoClose: false,
       close: true,
       color: 'info',
@@ -82,7 +86,7 @@ export default function EditWorkOrderModal() {
 
   const deleteWorkOrder = async () => {
     const { code } = selectedWorkOrder
-    showToast({
+    show({
       autoClose: false,
       close: true,
       color: 'info',
@@ -108,7 +112,7 @@ export default function EditWorkOrderModal() {
   }
 
   const handleDeleteWorkOrder = async () => {
-    showToast({
+    show({
       autoClose: false,
       close: false,
       color: 'dark',

@@ -1,16 +1,16 @@
 import FormProvider, { useForm } from '../context/providers/FormContext'
-import { useToast } from '../context/providers/ToastContext'
 import axios from 'redaxios'
 import { Button, Card, Col, Flex, Grid, Subtitle, Text } from '@tremor/react'
+import { useToast } from '../store/toast'
 
 function FormContainer({ children, message }) {
-  const { showToast } = useToast()
+  const show = useToast((state) => state.show)
 
   const { handleSubmit, resetForm, isValid } = useForm()
 
   const handleClick = () => {
     if (!isValid) {
-      showToast({
+      show({
         autoClose: false,
         close: true,
         color: 'failure',
@@ -62,7 +62,11 @@ export default function Form({
   validateOnMount = true,
   information,
 }) {
-  const { showToast, request, reset } = useToast()
+  const [show, request, reset] = useToast((state) => [
+    state.show,
+    state.request,
+    state.reset,
+  ])
 
   const handleMutateValues = (values, resetForm) => {
     let mutatedValues = values
@@ -76,7 +80,7 @@ export default function Form({
   const submitAction = async (values, resetForm) => {
     const { method, successSubmit, url, reset } = onSubmit
     const { message } = onSubmit.duringSubmit
-    showToast({
+    show({
       autoClose: false,
       close: true,
       color: 'info',
@@ -108,7 +112,7 @@ export default function Form({
 
   const handleSubmit = (values, { resetForm }) => {
     const { title, question } = onSubmit.preSubmit
-    showToast({
+    show({
       autoClose: false,
       close: false,
       color: 'dark',

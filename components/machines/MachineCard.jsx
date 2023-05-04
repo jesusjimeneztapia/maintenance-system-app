@@ -9,6 +9,7 @@ import { Badge } from 'flowbite-react'
 import ArrowDownIcon from '../icons/ArrowDownIcon'
 import ArrowUpIcon from '../icons/ArrowUpIcon'
 import ArrowRightIcon from '../icons/ArrowRightIcon'
+import { useMachineList } from '../../store/machines'
 
 export default function MachineCard({
   image,
@@ -17,8 +18,9 @@ export default function MachineCard({
   location,
   area,
   criticality,
-  page,
 }) {
+  const page = useMachineList((state) => state.page)
+
   return (
     <Link href={{ pathname: '/machines/[code]', query: { code } }}>
       <TableRow className='hover:bg-slate-50 cursor-pointer'>

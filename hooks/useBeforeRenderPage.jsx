@@ -1,17 +1,17 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useToast } from '../context/providers/ToastContext'
 import { createTitleInitial } from '../libs/documentTitle'
 import { Flex, Subtitle, Text } from '@tremor/react'
+import { useToast } from '../store/toast'
 
 export default function useBeforeRenderPage({ message, title }) {
   const titleInitial = createTitleInitial(title)
-  const { reset, showToast } = useToast()
+  const [reset, show] = useToast((state) => [state.reset, state.show])
   const router = useRouter()
 
   useEffect(() => {
     if (message) {
-      showToast({
+      show({
         autoClose: false,
         close: true,
         color: 'failure',

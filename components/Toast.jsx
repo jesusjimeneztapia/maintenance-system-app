@@ -1,10 +1,26 @@
-import { useToast } from '../context/providers/ToastContext'
 import { Alert } from 'flowbite-react'
 import { Button, Flex } from '@tremor/react'
 import CloseIcon from './icons/CloseIcon'
+import { useToast } from '../store/toast'
+import { useEffect } from 'react'
+
+function useAutoToast() {
+  const [toast, reset] = useToast((state) => [state.toast, state.reset])
+  const { show, autoClose } = toast
+
+  useEffect(() => {
+    if (show && autoClose) {
+      const timer = setTimeout(() => reset(), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [autoClose, show, reset])
+
+  return { toast, reset }
+}
 
 export default function Toast() {
-  const { close, color, children, reset, show, position } = useToast()
+  const { toast, reset } = useAutoToast()
+  const { close, color, children, show, position } = toast
 
   if (!show) {
     return <></>

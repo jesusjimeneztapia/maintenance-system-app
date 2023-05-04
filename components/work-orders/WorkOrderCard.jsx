@@ -6,8 +6,8 @@ import ArrowRightIcon from '../icons/ArrowRightIcon'
 import ArrowDownIcon from '../icons/ArrowDownIcon'
 import InfoIcon from '../icons/InfoIcon'
 import { useWorkOrderList } from '../../context/providers/WorkOrderListContext'
-import { useToast } from '../../context/providers/ToastContext'
 import { getWorkOrderById } from '../../services/workOrderService'
+import { useToast } from '../../store/toast'
 
 const PRIORITY = {
   URGENT: ({ className }) => (
@@ -38,12 +38,16 @@ export default function WorkOrderCard({
   createdAt,
   machineName,
 }) {
-  const { request, reset, showToast } = useToast()
+  const [show, request, reset] = useToast((state) => [
+    state.show,
+    state.request,
+    state.reset,
+  ])
   const { selectWorkOrder } = useWorkOrderList()
 
   const handleSelectWorkOrder = async () => {
     selectWorkOrder(code)
-    showToast({
+    show({
       color: 'info',
       autoClose: false,
       close: true,

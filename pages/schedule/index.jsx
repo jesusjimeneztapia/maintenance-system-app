@@ -5,7 +5,6 @@ import { createDocumentTitle } from '../../libs/documentTitle'
 import { HTTP_METHODS } from '../../services'
 import { requestInternalApi } from '../../services/requestApi'
 import { Title } from '@tremor/react'
-import { useToast } from '../../context/providers/ToastContext'
 import {
   getSchedule,
   workOrderOnSchedule,
@@ -13,6 +12,7 @@ import {
 import ScheduleOnHold from '../../components/schedule/ScheduleOnHold'
 import OnSchedule from '../../components/schedule/OnSchedule'
 import ScheduleHeader from '../../components/schedule/ScheduleHeader'
+import { useToast } from '../../store/toast'
 
 function getWeekNumber(date) {
   const [year, month, day] = date.split('-')
@@ -44,7 +44,7 @@ function getStrict(date) {
 
 function useSchedule({ allWorkOrders, date }) {
   const strict = useRef(getStrict(date))
-  const { request, showToast } = useToast()
+  const [show, request] = useToast((state) => [state.show, state.request])
   const [weeks, setWeeks] = useState(getWeekNumber(date))
   const [firstWeekDay, setFirstWeekDay] = useState(getFirstWeekDay(date))
   const [workOrders, setWorkOrders] = useState(allWorkOrders)
@@ -65,7 +65,7 @@ function useSchedule({ allWorkOrders, date }) {
       month: 'short',
       day: 'numeric',
     })
-    showToast({
+    show({
       autoClose: false,
       close: true,
       color: 'info',
@@ -96,7 +96,7 @@ function useSchedule({ allWorkOrders, date }) {
   const updateWorkOrder = async ({ id, workOrderOnScheduleDto }) => {
     const index = workOrders.findIndex(({ code }) => id === code)
     if (index >= 0) {
-      showToast({
+      show({
         autoClose: false,
         close: true,
         color: 'info',

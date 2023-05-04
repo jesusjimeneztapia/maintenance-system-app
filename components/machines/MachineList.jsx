@@ -6,8 +6,11 @@ import {
   TableRow,
 } from '@tremor/react'
 import MachineCard from './MachineCard'
+import { useMachineList } from '../../store/machines'
 
-export default function MachineList({ machines, page }) {
+export default function MachineList({ machines }) {
+  const page = useMachineList((state) => state.page)
+
   return (
     <div>
       <Table>
@@ -27,7 +30,7 @@ export default function MachineList({ machines, page }) {
 
         <TableBody>
           {machines.map(({ code, ...rest }) => (
-            <MachineCard key={code} code={code} page={page} {...rest} />
+            <MachineCard key={code} code={code} {...rest} />
           ))}
         </TableBody>
       </Table>

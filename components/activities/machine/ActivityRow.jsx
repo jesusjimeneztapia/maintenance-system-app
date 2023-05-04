@@ -1,4 +1,3 @@
-import { useToast } from '../../../context/providers/ToastContext'
 import axios from 'redaxios'
 import { getFrequencyName } from '../../../schemas/activity'
 import { deleteActivityByCodeUrlInternal } from '../../../services/activityServices'
@@ -13,6 +12,7 @@ import {
 import Link from 'next/link'
 import EditIcon from '../../icons/EditIcon'
 import TrashSolidIcon from '../../icons/TrashSolidIcon'
+import { useToast } from '../../../store/toast'
 
 export default function ActivityRow({
   code,
@@ -22,7 +22,11 @@ export default function ActivityRow({
   activityType,
   deleteActivity,
 }) {
-  const { showToast, reset, request } = useToast()
+  const [show, request, reset] = useToast((state) => [
+    state.show,
+    state.request,
+    state.reset,
+  ])
 
   const autoDelete = async () => {
     const response = await request(
@@ -46,7 +50,7 @@ export default function ActivityRow({
   }
 
   const handleDelete = () => {
-    showToast({
+    show({
       autoClose: false,
       close: false,
       color: 'dark',

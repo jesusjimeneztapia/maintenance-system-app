@@ -10,12 +10,12 @@ import ScheduleHeader from '../../components/schedule/ScheduleHeader'
 import { HTTP_METHODS } from '../../services'
 import { DRAFT_WORK_ORDER_URL_REGULAR } from '../../services/draftWorkOrderService'
 import { requestInternalApi } from '../../services/requestApi'
-import { useToast } from '../../context/providers/ToastContext'
 import axios from 'redaxios'
+import { useToast } from '../../store/toast'
 
 function useFilterDraftWorkOrderForm() {
   const { date, setDate, setDraftWorkOrders } = useSchedule()
-  const { request } = useToast()
+  const request = useToast((state) => state.request)
 
   const handleChange = (date) => {
     setDate(date)
