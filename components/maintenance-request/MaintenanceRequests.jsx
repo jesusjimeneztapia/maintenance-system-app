@@ -3,7 +3,6 @@ import { useMaintenanceRequest } from '../../store/maintenanceRequest'
 import useBeforeRenderPage from '../../hooks/useBeforeRenderPage'
 import { Button, Flex, Title } from '@tremor/react'
 import MaintenanceRequestContainer from './MaintenanceRequestContainer'
-import Head from 'next/head'
 
 function useLoadMaintenanceRequests({ allMaintenanceRequests, message }) {
   const { component, title } = useBeforeRenderPage({
@@ -48,9 +47,6 @@ export default function MaintenanceRequests({
   if (component) {
     return (
       <>
-        <Head>
-          <title>{title} | TECNOPOR S.A.</title>
-        </Head>
         <Title className='mb-5'>{title}</Title>
         {component}
       </>
@@ -59,9 +55,6 @@ export default function MaintenanceRequests({
 
   return (
     <>
-      <Head>
-        <title>{title} | TECNOPOR S.A.</title>
-      </Head>
       <Flex className='gap-2 mb-5 max-sm:flex-col max-sm:items-end'>
         <Title className='max-sm:w-full'>Solicitudes de mantenimiento</Title>
         <Button color='rose' onClick={handleOpenModal}>

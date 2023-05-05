@@ -1,1 +1,3 @@
-export const MAINTENANCE_REQUEST_URL_INTERNAL = '/api/maintenance-request'
+export const MAINTENANCE_REQUEST_URL_REGULAR = '/maintenance-request'
+
+export const MAINTENANCE_REQUEST_URL_INTERNAL = `/api${MAINTENANCE_REQUEST_URL_REGULAR}`

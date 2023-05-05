@@ -30,7 +30,8 @@ export const useMaintenanceRequest = create((set, get) => ({
     }
   },
   addMaintenanceRequest: (maintenanceRequest) => {
-    const { maintenanceRequests } = get()
+    const { maintenanceRequests, setShowModal } = get()
     set({ maintenanceRequests: [maintenanceRequest, ...maintenanceRequests] })
+    setShowModal(false)
   },
 }))
