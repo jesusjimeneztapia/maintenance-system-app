@@ -10,6 +10,7 @@ import { Button, Flex, Title } from '@tremor/react'
 import MenuIcon from '../icons/MenuIcon'
 import CloseIcon from '../icons/CloseIcon'
 import PresentationChartBarIcon from '../icons/PresentationChartBarIcon'
+import WrenchScrewdriverSolidIcon from '../icons/WrenchScrewdriverSolidIcon'
 
 export default function Sidebar() {
   const [translate, setTranslate] = useState(false)
@@ -77,6 +78,11 @@ export default function Sidebar() {
               href='/work-orders'
               icon={TemplateSolidIcon}
               text='Órdenes de trabajo'
+            />
+            <NavLink
+              href='/maintenance-request'
+              icon={WrenchScrewdriverSolidIcon}
+              text='Solicitudes'
             />
             <NavLink
               href='/schedule'

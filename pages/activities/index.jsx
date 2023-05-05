@@ -8,7 +8,7 @@ export default function ActivitiesPage({ allMachines, message }) {
   return (
     <>
       <Head>
-        <title>Actividades</title>
+        <title>Actividades | TECNOPOR S.A.</title>
       </Head>
       <Machines allMachines={allMachines} message={message} page='activities' />
     </>

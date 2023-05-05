@@ -8,7 +8,7 @@ export default function MachinesPage({ allMachines, message }) {
   return (
     <>
       <Head>
-        <title>Máquinas</title>
+        <title>Máquinas | TECNOPOR S.A.</title>
       </Head>
       <Machines allMachines={allMachines} message={message} />
     </>

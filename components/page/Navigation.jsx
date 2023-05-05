@@ -12,6 +12,10 @@ const ROUTES = {
   'work-orders': { href: '/work-orders', name: 'Órdenes de trabajo' },
   schedule: { href: '/schedule', name: 'Planificación' },
   indicators: { href: '/indicators', name: 'Indicadores' },
+  'maintenance-request': {
+    href: '/maintenance-request',
+    name: 'Solicitudes de mantenimiento',
+  },
 }
 
 const ROUTES_NAME = {
