@@ -28,7 +28,6 @@ function useLoadMachines({ allMachines, message, page }) {
   }, [page, setPage])
 
   useEffect(() => {
-    setLoading(false)
     if (allMachines != null) {
       setMachines(allMachines)
     }

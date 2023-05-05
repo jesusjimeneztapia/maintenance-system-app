@@ -1,22 +1,6 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Flex,
-  Subtitle,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Title,
-} from '@tremor/react'
-import Head from 'next/head'
-import ClipboardDocumentCheck from '../../components/icons/ClipboardDocumentCheck'
-import { dateLocaleString } from '../../libs/date'
+import MaintenanceRequests from '../../components/maintenance-request/MaintenanceRequests'
 
-const MAINTENANCE_REQUEST = [
+const MAINTENANCE_REQUESTS = [
   {
     id: 1,
     description:
@@ -87,57 +71,10 @@ const MAINTENANCE_REQUEST = [
   },
 ]
 
-export default function MaintenanceRequestPage() {
-  return (
-    <>
-      <Head>
-        <title>Solicitudes de mantenimiento | TECNOPOR S.A.</title>
-      </Head>
-      <Flex className='gap-2 mb-5 max-sm:flex-col max-sm:items-end'>
-        <Title className='max-sm:w-full'>Solicitudes de mantenimiento</Title>
-        <Button color='rose'>Crear solicitud</Button>
-      </Flex>
-      <Card>
-        <Flex className='gap-2 mb-6' justifyContent='start'>
-          <Subtitle>Solicitudes pendientes</Subtitle>
-          <Badge color='gray'>{MAINTENANCE_REQUEST.length}</Badge>
-        </Flex>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeaderCell>Máquina</TableHeaderCell>
-              <TableHeaderCell>Descripción</TableHeaderCell>
-              <TableHeaderCell className='text-center'>Creado</TableHeaderCell>
-              <TableHeaderCell className='text-center'>
-                Acciones
-              </TableHeaderCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {MAINTENANCE_REQUEST.map(
-              ({ id, machine, description, createdAt }, index) => (
-                <TableRow
-                  key={id}
-                  className={index % 2 === 0 && 'bg-gray-200/60'}
-                >
-                  <TableCell>{machine.name}</TableCell>
-                  <TableCell className='whitespace-normal min-w-[320px]'>
-                    {description}
-                  </TableCell>
-                  <TableCell className='text-center'>
-                    {dateLocaleString(createdAt, true)}
-                  </TableCell>
-                  <TableCell className='text-center'>
-                    <Button color='amber'>
-                      <ClipboardDocumentCheck className='w-5 h-5' />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              )
-            )}
-          </TableBody>
-        </Table>
-      </Card>
-    </>
-  )
+export default function MaintenanceRequestPage({ allMaintenanceRequests }) {
+  return <MaintenanceRequests allMaintenanceRequests={allMaintenanceRequests} />
+}
+
+export async function getServerSideProps() {
+  return { props: { allMaintenanceRequests: MAINTENANCE_REQUESTS } }
 }
