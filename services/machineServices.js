@@ -1,5 +1,6 @@
 import { HTTP_METHODS } from '.'
 import { createMachineDto, updateMachineDto } from '../schemas/machine'
+import axios from 'redaxios'
 
 export const MACHINE_URL_REGULAR = '/machines'
 export function getMachineByCodeUrlRegular(machineCode) {
@@ -27,4 +28,9 @@ export const UPDATE_MACHINE_CONFIG = {
   method: HTTP_METHODS.PUT,
   url: UPDATE_MACHINE_URL,
   dtoValidation: updateMachineDto,
+}
+
+export async function getMachines() {
+  const { data } = await axios.get(MACHINE_URL_INTERNAL)
+  return data
 }

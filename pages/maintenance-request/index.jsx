@@ -1,3 +1,4 @@
+import CreateMaintenanceRequestModal from '../../components/maintenance-request/CreateMaintenanceRequestModal'
 import MaintenanceRequests from '../../components/maintenance-request/MaintenanceRequests'
 
 const MAINTENANCE_REQUESTS = [
@@ -72,7 +73,12 @@ const MAINTENANCE_REQUESTS = [
 ]
 
 export default function MaintenanceRequestPage({ allMaintenanceRequests }) {
-  return <MaintenanceRequests allMaintenanceRequests={allMaintenanceRequests} />
+  return (
+    <>
+      <MaintenanceRequests allMaintenanceRequests={allMaintenanceRequests} />
+      <CreateMaintenanceRequestModal />
+    </>
+  )
 }
 
 export async function getServerSideProps() {

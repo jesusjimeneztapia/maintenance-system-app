@@ -61,6 +61,7 @@ export default function Form({
   },
   validateOnMount = true,
   information,
+  full = false,
 }) {
   const [show, request, reset] = useToast((state) => [
     state.show,
@@ -144,7 +145,7 @@ export default function Form({
           <Card>{information}</Card>
         </Col>
       )}
-      <Col numColSpan={2} numColSpanLg={1}>
+      <Col numColSpan={2} numColSpanLg={full ? 2 : 1}>
         <Card>
           <FormProvider
             dtoValidation={dtoValidation}

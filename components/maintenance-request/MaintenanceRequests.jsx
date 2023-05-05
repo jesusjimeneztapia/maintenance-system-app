@@ -11,9 +11,12 @@ function useLoadMaintenanceRequests({ allMaintenanceRequests, message }) {
     title: 'Solicitudes de mantenimiento',
   })
 
-  const [setMaintenanceRequests, setLoading] = useMaintenanceRequest(
-    (state) => [state.setMaintenanceRequests, state.setLoading]
-  )
+  const [setMaintenanceRequests, setLoading, setShowModal] =
+    useMaintenanceRequest((state) => [
+      state.setMaintenanceRequests,
+      state.setLoading,
+      state.setShowModal,
+    ])
 
   useEffect(() => {
     if (allMaintenanceRequests != null) {
@@ -22,9 +25,14 @@ function useLoadMaintenanceRequests({ allMaintenanceRequests, message }) {
     setLoading(false)
   }, [allMaintenanceRequests, setMaintenanceRequests, setLoading])
 
+  const handleOpenModal = () => {
+    setShowModal(true)
+  }
+
   return {
     component,
     title,
+    handleOpenModal,
   }
 }
 
@@ -32,7 +40,7 @@ export default function MaintenanceRequests({
   allMaintenanceRequests,
   message,
 }) {
-  const { component, title } = useLoadMaintenanceRequests({
+  const { component, title, handleOpenModal } = useLoadMaintenanceRequests({
     allMaintenanceRequests,
     message,
   })
@@ -56,7 +64,9 @@ export default function MaintenanceRequests({
       </Head>
       <Flex className='gap-2 mb-5 max-sm:flex-col max-sm:items-end'>
         <Title className='max-sm:w-full'>Solicitudes de mantenimiento</Title>
-        <Button color='rose'>Crear solicitud</Button>
+        <Button color='rose' onClick={handleOpenModal}>
+          Crear solicitud
+        </Button>
       </Flex>
       <MaintenanceRequestContainer />
     </>
