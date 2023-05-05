@@ -90,7 +90,7 @@ export default function MaintenanceRequestTable() {
           <TableHeaderCell>Máquina</TableHeaderCell>
           <TableHeaderCell>Descripción</TableHeaderCell>
           <TableHeaderCell className='text-center'>Creado</TableHeaderCell>
-          <TableHeaderCell className='text-center'>Acciones</TableHeaderCell>
+          <TableHeaderCell className='text-center'>Verificar</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
