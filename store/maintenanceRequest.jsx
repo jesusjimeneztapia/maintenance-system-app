@@ -34,4 +34,10 @@ export const useMaintenanceRequest = create((set, get) => ({
     set({ maintenanceRequests: [maintenanceRequest, ...maintenanceRequests] })
     setShowModal(false)
   },
+  removeMaintenanceRequest: (id) => {
+    const { maintenanceRequests } = get()
+    set({
+      maintenanceRequests: maintenanceRequests.filter((mr) => mr.id !== id),
+    })
+  },
 }))

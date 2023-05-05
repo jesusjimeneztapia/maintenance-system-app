@@ -1,5 +1,7 @@
 import {
   Button,
+  Flex,
+  Subtitle,
   Table,
   TableBody,
   TableCell,
@@ -11,16 +13,74 @@ import {
 import ClipboardDocumentCheck from '../icons/ClipboardDocumentCheck'
 import { dateLocaleString } from '../../libs/date'
 import { useMaintenanceRequest } from '../../store/maintenanceRequest'
+import { useToast } from '../../store/toast'
+import { verifyMaintenanceRequest } from '../../services/maintenanceRequestService'
 
 export default function MaintenanceRequestTable() {
   const maintenanceRequests = useMaintenanceRequest(
     (state) => state.maintenanceRequests
   )
+  const removeMaintenanceRequest = useMaintenanceRequest(
+    (state) => state.removeMaintenanceRequest
+  )
+  const [request, reset, show] = useToast((state) => [
+    state.request,
+    state.reset,
+    state.show,
+  ])
 
   if (maintenanceRequests.length < 1) {
     return (
       <Text className='text-center'>No existen solicitudes pendientes</Text>
     )
+  }
+
+  const verify = async (id) => {
+    show({
+      autoClose: false,
+      close: true,
+      color: 'info',
+      position: 'center',
+      children: 'La solicitud está siendo verificada...',
+    })
+    const response = await request(async () => verifyMaintenanceRequest(id), {
+      autoClose: true,
+      close: true,
+      color: 'success',
+      children: 'La solicitud de mantenimiento fue verificada exitósamente',
+    })
+    if (response) {
+      const { id } = response
+      removeMaintenanceRequest(id)
+    }
+  }
+
+  const handleRemove = (id) => () => {
+    show({
+      autoClose: false,
+      close: false,
+      color: 'dark',
+      position: 'right',
+      children: (
+        <Flex className='gap-1' flexDirection='col' alignItems=''>
+          <Subtitle className='text-inherit'>
+            Verificación de la solicitud de manteniento
+          </Subtitle>
+          <Text className='text-inherit'>
+            ¿Está seguro de hacer la verificación? Se eliminará de la lista de
+            solicitudes pendientes.
+          </Text>
+          <Flex className='gap-4 pt-1' justifyContent='end'>
+            <Button onClick={() => verify(id)} color='amber'>
+              Si
+            </Button>
+            <Button onClick={reset} color='red'>
+              No
+            </Button>
+          </Flex>
+        </Flex>
+      ),
+    })
   }
 
   return (
@@ -45,7 +105,7 @@ export default function MaintenanceRequestTable() {
                 {dateLocaleString(createdAt, true)}
               </TableCell>
               <TableCell className='text-center'>
-                <Button color='amber'>
+                <Button color='amber' onClick={handleRemove(id)}>
                   <ClipboardDocumentCheck className='w-5 h-5' />
                 </Button>
               </TableCell>
