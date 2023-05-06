@@ -41,13 +41,13 @@ export default function MaintenanceRequestTable() {
       close: true,
       color: 'info',
       position: 'center',
-      children: 'La solicitud está siendo verificada...',
+      children: `La solicitud ${id} está siendo verificada...`,
     })
     const response = await request(async () => verifyMaintenanceRequest(id), {
       autoClose: true,
       close: true,
       color: 'success',
-      children: 'La solicitud de mantenimiento fue verificada exitósamente',
+      children: `La solicitud de mantenimiento ${id} fue verificada exitósamente`,
     })
     if (response) {
       const { id } = response
@@ -65,6 +65,7 @@ export default function MaintenanceRequestTable() {
         <Flex className='gap-1' flexDirection='col' alignItems=''>
           <Subtitle className='text-inherit'>
             Verificación de la solicitud de manteniento
+            <span className='font-medium'>{` ${id}`}</span>
           </Subtitle>
           <Text className='text-inherit'>
             ¿Está seguro de hacer la verificación? Se eliminará de la lista de
@@ -87,6 +88,7 @@ export default function MaintenanceRequestTable() {
     <Table>
       <TableHead>
         <TableRow>
+          <TableHeaderCell className='text-center'>Id</TableHeaderCell>
           <TableHeaderCell>Máquina</TableHeaderCell>
           <TableHeaderCell>Descripción</TableHeaderCell>
           <TableHeaderCell className='text-center'>Creado</TableHeaderCell>
@@ -97,8 +99,9 @@ export default function MaintenanceRequestTable() {
         {maintenanceRequests.map(
           ({ id, machine, description, createdAt }, index) => (
             <TableRow key={id} className={index % 2 === 0 && 'bg-gray-200/60'}>
+              <TableCell className='text-center'>{id}</TableCell>
               <TableCell>{machine.name}</TableCell>
-              <TableCell className='whitespace-normal min-w-[320px]'>
+              <TableCell className='whitespace-normal max-md:min-w-[320px] max-lg:min-w-[512px] max-xl:min-w-[576px] max-2xl:min-w-[672px]'>
                 {description}
               </TableCell>
               <TableCell className='text-center'>

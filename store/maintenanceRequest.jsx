@@ -26,7 +26,7 @@ export const useMaintenanceRequest = create((set, get) => ({
       })
       set({ formLoading: false })
     } else {
-      set({ machines: null, createDto: {} })
+      set({ machines: null })
     }
   },
   addMaintenanceRequest: (maintenanceRequest) => {
