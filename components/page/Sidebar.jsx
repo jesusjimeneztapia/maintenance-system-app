@@ -11,6 +11,7 @@ import MenuIcon from '../icons/MenuIcon'
 import CloseIcon from '../icons/CloseIcon'
 import PresentationChartBarIcon from '../icons/PresentationChartBarIcon'
 import WrenchScrewdriverSolidIcon from '../icons/WrenchScrewdriverSolidIcon'
+import ClipboardDocumentListSolidIcon from '../icons/ClipboardDocumentListSolidIcon'
 
 export default function Sidebar() {
   const [translate, setTranslate] = useState(false)
@@ -78,6 +79,11 @@ export default function Sidebar() {
               href='/work-orders'
               icon={TemplateSolidIcon}
               text='Órdenes de trabajo'
+            />
+            <NavLink
+              href='/failure-report'
+              icon={ClipboardDocumentListSolidIcon}
+              text='Reportes'
             />
             <NavLink
               href='/maintenance-request'

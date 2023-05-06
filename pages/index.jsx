@@ -9,6 +9,7 @@ import TemplateSolidIcon from '../components/icons/TemplateSolidIcon'
 import CalendarSolidIcon from '../components/icons/CalendarSolidIcon'
 import PresentationChartBarIcon from '../components/icons/PresentationChartBarIcon'
 import WrenchScrewdriverSolidIcon from '../components/icons/WrenchScrewdriverSolidIcon'
+import ClipboardDocumentListSolidIcon from '../components/icons/ClipboardDocumentListSolidIcon'
 
 export default function Home() {
   return (
@@ -37,6 +38,11 @@ export default function Home() {
           href='/work-orders'
           title='Órdenes de trabajo'
           icon={TemplateSolidIcon}
+        />
+        <HomeLink
+          href='/failure-report'
+          title='Reportes de falla'
+          icon={ClipboardDocumentListSolidIcon}
         />
         <HomeLink
           href='/maintenance-request'

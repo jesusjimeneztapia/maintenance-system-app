@@ -16,6 +16,10 @@ const ROUTES = {
     href: '/maintenance-request',
     name: 'Solicitudes de mantenimiento',
   },
+  'failure-report': {
+    href: '/failure-report',
+    name: 'Reportes de falla',
+  },
 }
 
 const ROUTES_NAME = {
