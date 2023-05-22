@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { AREA_VALUES_MAP, CRITICALITY_VALUES_MAP } from '../../schemas/machine'
+import { CRITICALITY_VALUES_MAP } from '../../schemas/machine'
 import { Flex, Icon, TableCell, TableRow, Text, Title } from '@tremor/react'
 import Image from 'next/image'
 import OneServerSolidIcon from '../icons/OneServerSolidIcon'
@@ -52,7 +52,7 @@ export default function MachineCard({
           <Text>{name}</Text>
         </TableCell>
         <TableCell className='text-center'>
-          {page === 'machines' ? location : AREA_VALUES_MAP[area]}
+          {page === 'machines' ? location : area.name}
         </TableCell>
         <TableCell className='text-center'>
           <Badge

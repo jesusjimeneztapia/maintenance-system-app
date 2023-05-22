@@ -1,8 +1,5 @@
 import { Badge } from 'flowbite-react'
-import {
-  AREA_VALUES_MAP,
-  CRITICALITY_VALUES_MAP,
-} from '../../../schemas/machine'
+import { CRITICALITY_VALUES_MAP } from '../../../schemas/machine'
 import {
   Card,
   Flex,
@@ -58,7 +55,7 @@ export default function GeneralInformationTable({
             <TableRow>
               <TableCell className='pl-0 py-2'>Área</TableCell>
               <TableCell className='pr-0 py-2 xl:text-right'>
-                {AREA_VALUES_MAP[area]}
+                {area.name}
               </TableCell>
             </TableRow>
             <TableRow>

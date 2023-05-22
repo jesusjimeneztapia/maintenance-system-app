@@ -2,13 +2,12 @@ import { Card, List, ListItem, Subtitle } from '@tremor/react'
 import { useIndicators } from '../../store/indicators'
 
 export default function Compliance() {
-  const { totalHours, groups } = useIndicators((state) => state.indicators)
-  const workOrdersDone = groups
-    ?.flatMap(({ workOrders }) => workOrders)
-    .filter(({ state }) => state === 'DONE').length
-  const workOrdersPlanned = groups?.flatMap(
-    ({ workOrders }) => workOrders
-  ).length
+  const workOrders = useIndicators((state) => state.indicators.workOrders)
+  const doneWorkOrders = workOrders.filter(({ done }) => done)
+  const totalHours = doneWorkOrders.reduce((acc, value) => {
+    const { totalHours } = value
+    return acc + totalHours
+  }, 0)
 
   return (
     <Card>
@@ -16,15 +15,17 @@ export default function Compliance() {
       <List>
         <ListItem>
           <span>Indicador de mantenimiento</span>
-          <span>{Math.round((workOrdersDone / workOrdersPlanned) * 100)}%</span>
+          <span>
+            {Math.round((doneWorkOrders.length / workOrders.length) * 100)}%
+          </span>
         </ListItem>
         <ListItem>
           <span>Órdenes de trabajo ejecutadas</span>
-          <span>{workOrdersDone}</span>
+          <span>{doneWorkOrders.length}</span>
         </ListItem>
         <ListItem>
           <span>Órdenes de trabajo planificadas</span>
-          <span>{workOrdersPlanned}</span>
+          <span>{workOrders.length}</span>
         </ListItem>
         <ListItem>
           <span>Horas trabajadas</span>

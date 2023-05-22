@@ -7,11 +7,11 @@ export default function useLoadIndicators({ indicators, message, date }) {
     message,
     title: 'Indicadores',
   })
-  const [setDate, setIndicators, groups, selectedDate] = useIndicators(
+  const [setDate, setIndicators, workOrders, selectedDate] = useIndicators(
     (state) => [
       state.setDate,
       state.setIndicators,
-      state.indicators.groups,
+      state.indicators.workOrders,
       state.date,
     ]
   )
@@ -23,5 +23,5 @@ export default function useLoadIndicators({ indicators, message, date }) {
     }
   }, [indicators, date, setIndicators, setDate])
 
-  return { component, title, groups, selectedDate }
+  return { component, title, workOrders, selectedDate }
 }

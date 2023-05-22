@@ -1,5 +1,4 @@
 import { useForm } from '../../../context/providers/FormContext'
-import { AREA_VALUES_MAP } from '../../../schemas/machine'
 import {
   WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP,
   WORK_ORDER_PRIORITY_VALUES_MAP,
@@ -27,7 +26,7 @@ export default function CreateWorkOrderForm({ machines }) {
       const {
         code: machineCode,
         name: machineName,
-        area: machineArea,
+        area,
         engines,
         activities,
       } = selectedMachine
@@ -35,7 +34,7 @@ export default function CreateWorkOrderForm({ machines }) {
         ...initialValues,
         machineCode,
         machineName,
-        machineArea,
+        machineArea: area?.name,
         engines,
         activities,
       }))
@@ -106,7 +105,7 @@ export default function CreateWorkOrderForm({ machines }) {
         id='machineArea'
         label='Área de máquina'
         placeholder='Primero elija una máquina'
-        value={AREA_VALUES_MAP[values.machineArea] ?? values.machineArea}
+        value={values.machineArea}
         disabled
       />
       <Select

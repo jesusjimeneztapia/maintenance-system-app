@@ -3,12 +3,20 @@ import { useIndicators } from '../../store/indicators'
 import ExcelExport from './ExcelExport'
 
 export default function WorkOrdersGraphic() {
-  const { groups } = useIndicators((state) => state.indicators)
-  const data = groups?.map(({ name, workOrders }) => ({
-    name,
-    Planificadas: workOrders.length,
-    Ejecutadas: workOrders.filter(({ state }) => state === 'DONE').length,
-  }))
+  const workOrders = useIndicators((state) => state.indicators.workOrders)
+  const groups = workOrders.reduce((acc, value) => {
+    const {
+      machine: { name },
+      done,
+    } = value
+    const machine = acc[name] || { Planificadas: 0, Ejecutadas: 0 }
+    machine.Planificadas += 1
+    if (done) {
+      machine.Ejecutadas += 1
+    }
+    return { ...acc, [name]: machine }
+  }, {})
+  const data = Object.entries(groups).map(([name, rest]) => ({ name, ...rest }))
 
   return (
     <Card>

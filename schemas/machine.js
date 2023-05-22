@@ -15,15 +15,14 @@ export const MACHINE_INITIAL_VALUES = {
 }
 
 export const AREA_VALUES_MAP = {
-  PRE_EXPANDED: 'PRE EXPANDIDO',
-  RECYCLED: 'RECICLADO',
-  LOCKED: 'BLOQUEADO',
-  CUTTING: 'CORTE',
-  JOISTS: 'VIGUETAS',
-  SERVICES: 'SERVICIOS',
-  GENERAL: 'GENERAL',
+  1: 'PRE EXPANDIDO',
+  2: 'RECICLADO',
+  3: 'BLOQUEADO',
+  4: 'CORTE',
+  5: 'VIGUETAS',
+  6: 'SERVICIOS',
+  7: 'GENERAL',
 }
-
 export const TECHNICAL_DOCUMENTATION_VALUES_MAP = {
   OPERATIONS_MANUAL: 'MANUAL DE OPERACIONES',
   MAINTENANCE_MANUAL: 'MANTENIMIENTO MANUAL',
@@ -60,28 +59,7 @@ const machineShapeUpdate = {
     .max(11, {
       message: 'La ubicación de la máquina debe tener máximo 11 caracteres',
     }),
-  area: z.enum(
-    [
-      'PRE_EXPANDED',
-      'RECYCLED',
-      'LOCKED',
-      'CUTTING',
-      'JOISTS',
-      'SERVICES',
-      'GENERAL',
-    ],
-    {
-      errorMap: () => {
-        return {
-          message: `El área de la máquina solo puede tener los valores: ${Object.keys(
-            AREA_VALUES_MAP
-          )
-            .map((t) => `'${t}'`)
-            .join(' | ')}`,
-        }
-      },
-    }
-  ),
+  areaId: z.number().min(1, 'El areaId debe ser mayor o igual que 1'),
   model: z
     .string({ required_error: 'El modelo de la máquina es requerido' })
     .min(1, {

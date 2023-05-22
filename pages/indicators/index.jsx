@@ -14,7 +14,7 @@ import { dateLocaleString } from '../../libs/date'
 import useLoadIndicators from '../../hooks/useLoadIndicators'
 
 export default function IndicatorsPage({ indicators, message, date }) {
-  const { component, title, groups, selectedDate } = useLoadIndicators({
+  const { component, title, workOrders, selectedDate } = useLoadIndicators({
     indicators,
     message,
     date,
@@ -32,14 +32,14 @@ export default function IndicatorsPage({ indicators, message, date }) {
       ) : (
         <>
           <IndicatorsHeader />
-          {groups?.length > 0 ? (
+          {workOrders?.length > 0 ? (
             <Flex className='gap-5' flexDirection='col'>
               <Flex className='gap-5 max-sm:flex-col' alignItems='start'>
                 <Compliance />
                 <WorkOrders />
               </Flex>
-              <HoursGraphic />
               <WorkOrdersGraphic />
+              <HoursGraphic />
             </Flex>
           ) : (
             <Card>

@@ -17,7 +17,6 @@ import {
   TableCell,
   TableRow,
 } from '@tremor/react'
-import { AREA_VALUES_MAP } from '../../../schemas/machine'
 import { Priority } from '../WorkOrderCard'
 
 export default function WorkOrderInformation({
@@ -251,7 +250,7 @@ export default function WorkOrderInformation({
                   <TableRow>
                     <TableCell className='pl-0 pt-2 pb-2'>Área</TableCell>
                     <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                      {AREA_VALUES_MAP[machine?.area]}
+                      {machine?.area?.name}
                     </TableCell>
                   </TableRow>
                 </TableBody>

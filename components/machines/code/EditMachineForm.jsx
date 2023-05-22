@@ -56,14 +56,16 @@ export default function EditMachineForm() {
         touched={touched.location}
       />
       <Select
-        id='area'
+        id='areaId'
         label='Área'
-        value={values.area}
+        value={values.areaId}
         placeholder='Seleccione el área de la máquina'
         optionsMap={AREA_VALUES_MAP}
-        onChange={handleChange}
-        error={errors.area}
-        touched={touched.area}
+        onChange={({ target: { value } }) =>
+          setValues((values) => ({ ...values, areaId: +value }))
+        }
+        error={errors.areaId}
+        touched={touched.areaId}
       />
       <Input
         id='model'

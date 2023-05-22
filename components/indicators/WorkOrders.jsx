@@ -13,12 +13,14 @@ import { useIndicators } from '../../store/indicators'
 import { WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP } from '../../schemas/workOrder'
 
 export default function WorkOrders() {
-  const { totalHours, groups } = useIndicators((state) => state.indicators)
+  const workOrders = useIndicators((state) => state.indicators.workOrders)
+  const doneWorkOrders = workOrders.filter(({ done }) => done)
+  const totalHours = doneWorkOrders.reduce((acc, value) => {
+    const { totalHours } = value
+    return acc + totalHours
+  }, 0)
 
-  const workOrdersDone = groups
-    ?.flatMap(({ workOrders }) => workOrders)
-    .filter(({ state }) => state === 'DONE')
-  const workOrderOrderByActivityType = workOrdersDone.reduce((acc, value) => {
+  const workOrderOrderByActivityType = doneWorkOrders.reduce((acc, value) => {
     const { activityType, totalHours } = value
     const { count, hours } = acc[activityType] || { count: 0, hours: 0 }
     if (totalHours != null) {
@@ -30,7 +32,7 @@ export default function WorkOrders() {
   return (
     <Card>
       <Subtitle className='text-slate-900 mb-3'>Órdenes de trabajo</Subtitle>
-      {workOrdersDone.length > 0 ? (
+      {doneWorkOrders.length > 0 ? (
         <Table>
           <TableHead>
             <TableRow>
@@ -63,7 +65,7 @@ export default function WorkOrders() {
                 {totalHours}
               </TableCell>
               <TableCell className='font-medium text-right pr-0 py-2'>
-                {workOrdersDone.length}
+                {doneWorkOrders.length}
               </TableCell>
             </TableRow>
           </TableBody>
