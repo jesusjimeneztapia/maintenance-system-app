@@ -1,4 +1,14 @@
-import { BarChart, Button, Card, Flex, Subtitle } from '@tremor/react'
+import {
+  BarChart,
+  Button,
+  Card,
+  Col,
+  Flex,
+  Grid,
+  List,
+  ListItem,
+  Subtitle,
+} from '@tremor/react'
 import { useIndicators } from '../../store/indicators'
 import { utils, writeFileXLSX } from 'xlsx'
 import { WORK_ORDER_ACTIVITY_TYPE_VALUES_MAP } from '../../schemas/workOrder'
@@ -186,30 +196,47 @@ export default function HoursGraphic() {
   }
 
   return (
-    <Card>
-      <Flex
-        className='mb-3 gap-3 max-sm:flex-col max-sm:items-end'
-        alignItems='center'
-      >
-        <Subtitle className='text-slate-900 w-full'>
-          Gráfica de Disponibilidad
-        </Subtitle>
-        <Button color='amber' onClick={handleExport}>
-          Ver más detalles
-        </Button>
-      </Flex>
+    <Grid className='gap-5 w-full' numCols={12}>
+      <Col className='col-span-12 xl:col-span-6 2xl:xl:col-span-4'>
+        <Card>
+          <Subtitle className='text-slate-900 mb-3'>Disponiblidad</Subtitle>
+          <List>
+            {availability.map(({ name, availability }) => (
+              <ListItem key={name}>
+                <span>{name}</span>
+                <span>{availability}%</span>
+              </ListItem>
+            ))}
+          </List>
+        </Card>
+      </Col>
+      <Col className='col-span-12 xl:col-span-6 2xl:xl:col-span-8'>
+        <Card>
+          <Flex
+            className='mb-3 gap-3 max-sm:flex-col max-sm:items-end'
+            alignItems='center'
+          >
+            <Subtitle className='text-slate-900 w-full'>
+              Gráfica de Disponibilidad
+            </Subtitle>
+            <Button color='amber' onClick={handleExport}>
+              Ver más detalles
+            </Button>
+          </Flex>
 
-      <BarChart
-        data={availability.map(({ name, availability }) => ({
-          name,
-          Disponibilidad: availability,
-        }))}
-        index='name'
-        categories={['Disponibilidad']}
-        colors={['amber']}
-        valueFormatter={dataFormatter}
-        yAxisWidth={38}
-      />
-    </Card>
+          <BarChart
+            data={availability.map(({ name, availability }) => ({
+              name,
+              Disponibilidad: availability,
+            }))}
+            index='name'
+            categories={['Disponibilidad']}
+            colors={['amber']}
+            valueFormatter={dataFormatter}
+            yAxisWidth={38}
+          />
+        </Card>
+      </Col>
+    </Grid>
   )
 }

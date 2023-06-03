@@ -34,7 +34,7 @@ export default function IndicatorsPage({ indicators, message, date }) {
           <IndicatorsHeader />
           {workOrders?.length > 0 ? (
             <Flex className='gap-5' flexDirection='col'>
-              <Flex className='gap-5 max-sm:flex-col' alignItems='start'>
+              <Flex className='gap-5 max-xl:flex-col' alignItems='start'>
                 <Compliance />
                 <WorkOrders />
               </Flex>

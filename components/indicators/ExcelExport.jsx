@@ -3,90 +3,116 @@ import { useIndicators } from '../../store/indicators'
 import { utils, writeFileXLSX } from 'xlsx'
 
 export default function ExcelExport() {
-  const [date, { totalHours, groups }] = useIndicators((state) => [
+  const [date, { workOrders }] = useIndicators((state) => [
     state.date,
     state.indicators,
   ])
 
-  const doneWorkOrders = groups
-    ?.map(({ workOrders, ...rest }) => {
-      return {
-        ...rest,
-        workOrders: workOrders.filter(({ state }) => state === 'DONE'),
-      }
-    })
-    .filter(({ workOrders }) => workOrders.length > 0)
-
   const handleExport = () => {
-    const allWorkOrders = groups?.flatMap(({ workOrders }) => workOrders)
-    const done = [
-      ...doneWorkOrders.flatMap(({ name, workOrders }) => {
-        const mappedWorkOrders = Object.entries(
-          workOrders.reduce((acc, value) => {
-            const { activityName, totalHours } = value
-            const group = acc[activityName] ?? {
-              'OT Ejecutadas': 0,
-              'Horas de trabajo': 0,
-            }
-            acc[activityName] = {
-              'OT Ejecutadas': group['OT Ejecutadas'] + 1,
-              'Horas de trabajo': group['Horas de trabajo'] + totalHours,
-            }
-            return acc
-          }, {})
-        ).map(([activityName, value]) => ({
-          Actividad: activityName,
-          ...value,
-        }))
-        return [{ Maquina: name }, ...mappedWorkOrders]
-      }),
-      {
-        Actividad: 'Total general',
-        'OT Ejecutadas': doneWorkOrders.flatMap(({ workOrders }) => workOrders)
-          .length,
-        'Horas de trabajo': totalHours,
-      },
-    ]
-    const planned = [
-      ...groups?.flatMap(({ name, workOrders }) => {
-        const mappedWorkOrders = Object.entries(
-          workOrders.reduce((acc, value) => {
-            const { activityName } = value
-            const group = acc[activityName] ?? {
-              'OT Planificadas': 0,
-            }
-            acc[activityName] = {
-              'OT Planificadas': group['OT Planificadas'] + 1,
-            }
-            return acc
-          }, {})
-        ).map(([activityName, value]) => ({
-          Actividad: activityName,
-          ...value,
-        }))
-        return [
-          {
-            Maquina: name,
-            Actividad: '',
-            'OT Planificadas': workOrders.length,
-          },
-          ...mappedWorkOrders,
+    let doneHours = 0
+    const doneWorkOrders = workOrders.filter(({ done }) => done)
+
+    const doneWorkOrdersByMachine = doneWorkOrders.reduce((acc, value) => {
+      const {
+        machineCode,
+        activityName,
+        totalHours,
+        machine: { name: machineName },
+      } = value
+      const machine = acc[machineCode] ?? { machineName, activities: {} }
+      const { activities } = machine
+      const activity = activities[activityName] ?? { count: 0, totalHours: 0 }
+      activity.count += 1
+      activity.totalHours += totalHours
+      doneHours += totalHours
+      return {
+        ...acc,
+        [machineCode]: {
+          ...machine,
+          activities: { ...activities, [activityName]: activity },
+        },
+      }
+    }, {})
+
+    let doneSheet = []
+    Object.values(doneWorkOrdersByMachine).forEach(
+      ({ machineName, activities }) => {
+        doneSheet = [
+          ...doneSheet,
+          { Máquina: machineName },
+          ...Object.entries(activities).map(
+            ([activityName, { count, totalHours }]) => ({
+              Actividad: activityName,
+              'OT Ejecutadas': count,
+              'Horas de trabajo': totalHours,
+            })
+          ),
         ]
-      }),
+      }
+    )
+    doneSheet = [
+      ...doneSheet,
       {
         Actividad: 'Total general',
-        'OT Planificadas': allWorkOrders.length,
+        'OT Ejecutadas': doneWorkOrders.length,
+        'Horas de trabajo': doneHours,
       },
     ]
+
+    const workOrdersByMachine = workOrders.reduce((acc, value) => {
+      const {
+        machineCode,
+        activityName,
+        machine: { name: machineName },
+      } = value
+
+      const machine = acc[machineCode] ?? {
+        machineName,
+        count: 0,
+        activities: {},
+      }
+      machine.count += 1
+      const { activities } = machine
+      const activity = activities[activityName] ?? { count: 0 }
+      activity.count += 1
+
+      return {
+        ...acc,
+        [machineCode]: {
+          ...machine,
+          activities: { ...activities, [activityName]: activity },
+        },
+      }
+    }, {})
+
+    let plannedSheet = []
+    Object.values(workOrdersByMachine).forEach(
+      ({ machineName, count, activities }) => {
+        plannedSheet = [
+          ...plannedSheet,
+          { Máquina: machineName, Actividad: '', 'OT Planificadas': count },
+          ...Object.entries(activities).map(([activityName, { count }]) => ({
+            Actividad: activityName,
+            'OT Planificadas': count,
+          })),
+        ]
+      }
+    )
+    plannedSheet = [
+      ...plannedSheet,
+      { Actividad: 'Total general', 'OT Planificadas': workOrders.length },
+    ]
+
+    const [year, month, day] = date.split('-')
     const bookType = 'xlsx'
-    const fileName = `Indicadores_${date}.${bookType}`
+    const fileName = `Indicadores_${+day}-${+month}-${+year}.${bookType}`
 
     writeFileXLSX(
       {
-        SheetNames: ['Ejecutadas', 'Planificadas'],
+        SheetNames: ['Planificadas', 'Ejecutadas'],
         Sheets: {
-          Ejecutadas: utils.json_to_sheet(done),
-          Planificadas: utils.json_to_sheet(planned),
+          Planificadas: utils.json_to_sheet(plannedSheet),
+          Ejecutadas: utils.json_to_sheet(doneSheet),
         },
       },
       fileName,
