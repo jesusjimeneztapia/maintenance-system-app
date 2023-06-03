@@ -12,6 +12,7 @@ import CloseIcon from '../icons/CloseIcon'
 import PresentationChartBarIcon from '../icons/PresentationChartBarIcon'
 import WrenchScrewdriverSolidIcon from '../icons/WrenchScrewdriverSolidIcon'
 import ClipboardDocumentListSolidIcon from '../icons/ClipboardDocumentListSolidIcon'
+import ClockSolidIcon from '../icons/ClockSolidIcon'
 
 export default function Sidebar() {
   const [translate, setTranslate] = useState(false)
@@ -94,6 +95,11 @@ export default function Sidebar() {
               href='/schedule'
               icon={CalendarSolidIcon}
               text='Planificación'
+            />
+            <NavLink
+              href='/historical'
+              icon={ClockSolidIcon}
+              text='Históricos'
             />
             <NavLink
               href='/indicators'

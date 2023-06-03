@@ -10,6 +10,7 @@ import CalendarSolidIcon from '../components/icons/CalendarSolidIcon'
 import PresentationChartBarIcon from '../components/icons/PresentationChartBarIcon'
 import WrenchScrewdriverSolidIcon from '../components/icons/WrenchScrewdriverSolidIcon'
 import ClipboardDocumentListSolidIcon from '../components/icons/ClipboardDocumentListSolidIcon'
+import ClockSolidIcon from '../components/icons/ClockSolidIcon'
 
 export default function Home() {
   return (
@@ -54,6 +55,7 @@ export default function Home() {
           title='Planificación'
           icon={CalendarSolidIcon}
         />
+        <HomeLink href='/historical' title='Históricos' icon={ClockSolidIcon} />
         <HomeLink
           href='/indicators'
           title='Indicadores'
