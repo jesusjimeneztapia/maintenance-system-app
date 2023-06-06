@@ -33,6 +33,7 @@ export function Priority({ priority, className }) {
 
 export default function WorkOrderCard({
   code,
+  state,
   activityName,
   priority,
   createdAt,
@@ -54,7 +55,9 @@ export default function WorkOrderCard({
       position: 'center',
       children: `Obteniendo todos los datos de la órden de trabajo #${code}`,
     })
-    const response = await request(async () => getWorkOrderById({ id: code }))
+    const response = await request(async () =>
+      getWorkOrderById({ id: code, state })
+    )
     if (response) {
       reset()
       selectWorkOrder(response)

@@ -63,12 +63,14 @@ export default function ExcelExport() {
       const {
         machineCode,
         activityName,
+        stores,
         machine: { name: machineName },
       } = value
 
       const machine = acc[machineCode] ?? {
         machineName,
         count: 0,
+        stores,
         activities: {},
       }
       machine.count += 1
@@ -103,16 +105,56 @@ export default function ExcelExport() {
       { Actividad: 'Total general', 'OT Planificadas': workOrders.length },
     ]
 
+    const stores = workOrders.reduce((acc, value) => {
+      const {
+        code,
+        activityName,
+        stores,
+        machine: { code: machineCode, name: machineName },
+      } = value
+      if (stores.length < 1) {
+        return { ...acc }
+      }
+      const machine = acc[machineCode] ?? { machineName, workOrders: [] }
+      const { workOrders } = machine
+      const workOrder = {
+        code,
+        activityName,
+        stores: stores.map(({ amount, store: { name } }) => ({ name, amount })),
+      }
+      return {
+        ...acc,
+        [machineCode]: { ...machine, workOrders: [...workOrders, workOrder] },
+      }
+    }, {})
+    const storesSheet = Object.values(stores).flatMap(
+      ({ machineName, workOrders }) => [
+        { Máquina: machineName, Nro: workOrders.length },
+        ...workOrders.flatMap(({ code, activityName, stores }) => [
+          {
+            Nro: code,
+            Actividad: activityName,
+            Repuesto: stores.length,
+          },
+          ...stores.map(({ name, amount }) => ({
+            Repuesto: name,
+            Cantidad: amount,
+          })),
+        ]),
+      ]
+    )
+
     const [year, month, day] = date.split('-')
     const bookType = 'xlsx'
     const fileName = `Indicadores_${+day}-${+month}-${+year}.${bookType}`
 
     writeFileXLSX(
       {
-        SheetNames: ['Planificadas', 'Ejecutadas'],
+        SheetNames: ['Planificadas', 'Ejecutadas', 'Repuestos'],
         Sheets: {
           Planificadas: utils.json_to_sheet(plannedSheet),
           Ejecutadas: utils.json_to_sheet(doneSheet),
+          Repuestos: utils.json_to_sheet(storesSheet),
         },
       },
       fileName,

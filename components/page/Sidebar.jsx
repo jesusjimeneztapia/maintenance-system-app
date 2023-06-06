@@ -13,6 +13,7 @@ import PresentationChartBarIcon from '../icons/PresentationChartBarIcon'
 import WrenchScrewdriverSolidIcon from '../icons/WrenchScrewdriverSolidIcon'
 import ClipboardDocumentListSolidIcon from '../icons/ClipboardDocumentListSolidIcon'
 import ClockSolidIcon from '../icons/ClockSolidIcon'
+import PuzzlePieceSolidIcon from '../icons/PuzzlePieceSolidIcon'
 
 export default function Sidebar() {
   const [translate, setTranslate] = useState(false)
@@ -75,6 +76,11 @@ export default function Sidebar() {
               href='/activities'
               icon={PresentationChartLineSolidIcon}
               text='Actividades'
+            />
+            <NavLink
+              href='/stores'
+              icon={PuzzlePieceSolidIcon}
+              text='Repuestos'
             />
             <NavLink
               href='/work-orders'

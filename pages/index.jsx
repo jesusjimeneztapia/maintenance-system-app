@@ -11,6 +11,7 @@ import PresentationChartBarIcon from '../components/icons/PresentationChartBarIc
 import WrenchScrewdriverSolidIcon from '../components/icons/WrenchScrewdriverSolidIcon'
 import ClipboardDocumentListSolidIcon from '../components/icons/ClipboardDocumentListSolidIcon'
 import ClockSolidIcon from '../components/icons/ClockSolidIcon'
+import PuzzlePieceSolidIcon from '../components/icons/PuzzlePieceSolidIcon'
 
 export default function Home() {
   return (
@@ -34,6 +35,11 @@ export default function Home() {
           href='/activities'
           title='Actividades'
           icon={PresentationChartLineSolidIcon}
+        />
+        <HomeLink
+          href='/stores'
+          title='Repuestos'
+          icon={PuzzlePieceSolidIcon}
         />
         <HomeLink
           href='/work-orders'

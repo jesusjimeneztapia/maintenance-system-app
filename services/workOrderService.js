@@ -36,7 +36,9 @@ export function getUpdateWorkOrderConfig(workOrderId) {
   }
 }
 
-export async function getWorkOrderById({ id }) {
-  const { data } = await axios.get(`${WORK_ORDER_URL_INTERNAL}/${id}`)
+export async function getWorkOrderById({ id, state }) {
+  const { data } = await axios.get(`${WORK_ORDER_URL_INTERNAL}/${id}`, {
+    params: { state },
+  })
   return data
 }

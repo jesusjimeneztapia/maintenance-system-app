@@ -6,7 +6,7 @@ import CheckboxList from '../../CheckboxList'
 import Input from '../../Input'
 import Textarea from '../../Textarea'
 import CheckListForm from './CheckListForm'
-import { Col, Grid, Text } from '@tremor/react'
+import SelectStoreForm from './SelectStoreForm'
 
 export default function DoingToDoneForm() {
   const {
@@ -66,34 +66,8 @@ export default function DoingToDoneForm() {
         touched={touched.activityDescription}
         required
       />
-      <Text className='text-slate-900 font-medium'>Repuestos</Text>
-      <Grid className='gap-4' numCols={5}>
-        <Col numColSpan={5} numColSpanSm={3}>
-          <Input
-            id='storeDescription'
-            label='Descripción (repuestos)'
-            placeholder='Descripción de los repuestos'
-            onChange={upperCaseHandleChange()}
-            value={values.storeDescription ?? ''}
-            error={errors.storeDescription}
-            touched={touched.storeDescription}
-            required
-          />
-        </Col>
-        <Col numColSpan={5} numColSpanLg={2}>
-          <Input
-            id='storeUnit'
-            label='Unidad (repuestos)'
-            placeholder='0'
-            onChange={handleChange}
-            type='number'
-            value={values.storeUnit ?? ''}
-            error={errors.storeUnit}
-            touched={touched.storeUnit}
-            required
-          />
-        </Col>
-      </Grid>
+
+      <SelectStoreForm />
 
       {values.activityType === 'CORRECTIVE' && (
         <Textarea

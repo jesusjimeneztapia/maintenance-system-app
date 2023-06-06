@@ -8,6 +8,7 @@ const ROUTES = {
   '/': { href: '/', name: 'Inicio' },
   machines: { href: '/machines', name: 'Máquinas' },
   activities: { href: '/activities', name: 'Actividades' },
+  stores: { href: '/stores', name: 'Repuestos' },
   register: { href: '/machines/register', name: 'Registro' },
   'work-orders': { href: '/work-orders', name: 'Órdenes de trabajo' },
   schedule: { href: '/schedule', name: 'Planificación' },
@@ -26,6 +27,7 @@ const ROUTES = {
 const ROUTES_NAME = {
   edit: { name: 'Editar' },
   activities: { name: 'Actividades' },
+  'add-store': { name: 'Añadir repuesto' },
   'add-engine': { name: 'Agregar motor' },
   'edit-engine': { name: 'Editar motor' },
   'create-activity': { name: 'Crear actividad' },

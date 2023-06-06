@@ -4,11 +4,12 @@ import { workOrderWithIdUrlExternal } from '../../../../services/workOrderServic
 
 export default async function getWorkOrderById(req, res) {
   const {
-    query: { id },
+    query: { id, state },
   } = req
   const { data, message, status } = await requestExternalApi({
     method: HTTP_METHODS.GET,
     url: workOrderWithIdUrlExternal(id),
+    params: { state },
   })
   return res.status(status).json(message ? { message } : data)
 }

@@ -30,6 +30,7 @@ export default function BoardColumn({ state, workOrders }) {
             {workOrders.map(
               ({
                 code,
+                state,
                 activityName,
                 priority,
                 createdAt,
@@ -38,6 +39,7 @@ export default function BoardColumn({ state, workOrders }) {
                 <WorkOrderCard
                   key={code}
                   code={code}
+                  state={state}
                   activityName={activityName}
                   priority={priority}
                   createdAt={createdAt}

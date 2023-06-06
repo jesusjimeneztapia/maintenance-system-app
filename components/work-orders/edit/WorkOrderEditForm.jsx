@@ -16,6 +16,11 @@ export default function WorkOrderEditForm({
     return { ...values, startDate: new Date() }
   }
 
+  const handleMutateValuesToDone = (values) => {
+    const { usedStores } = values
+    return { ...values, stores: usedStores }
+  }
+
   return (
     <>
       {state === 'VALIDATED' ? (
@@ -30,6 +35,8 @@ export default function WorkOrderEditForm({
             failureCause: failureCause ?? undefined,
             startDate: startDate ?? undefined,
             endDate: endDate ?? undefined,
+            securityMeasureStarts: [],
+            protectionEquipments: [],
           }}
           update={updateWorkOrder}
           mutateValues={handleMutateValuesToDoing}
@@ -49,8 +56,11 @@ export default function WorkOrderEditForm({
             failureCause: failureCause ?? undefined,
             startDate: startDate ?? undefined,
             endDate: endDate ?? undefined,
+            usedStores: [],
+            securityMeasureEnds: [],
           }}
           update={updateWorkOrder}
+          mutateValues={handleMutateValuesToDone}
           preSubmitQuestion='¿Seguro que quiere guardar los cambios? Se cerrará esta orden de trabajo.'
         >
           <DoingToDoneForm />

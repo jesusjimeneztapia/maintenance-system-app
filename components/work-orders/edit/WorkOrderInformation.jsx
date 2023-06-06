@@ -48,6 +48,7 @@ export default function WorkOrderInformation({
   observations,
   checkListVerified,
   machine,
+  stores,
 }) {
   return (
     <Card>
@@ -351,6 +352,25 @@ export default function WorkOrderInformation({
                     <TableCell className='pl-0 pt-2 pb-2'>{field}</TableCell>
                     <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
                       {value}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Col>
+        )}
+        {stores?.length > 0 && state === 'DONE' && (
+          <Col numColSpan={2} numColSpanMd={1}>
+            <Subtitle className='text-slate-900 font-medium'>
+              Repuestos utilizados
+            </Subtitle>
+            <Table>
+              <TableBody>
+                {stores.map(({ id, amount, store: { name } }) => (
+                  <TableRow key={id}>
+                    <TableCell className='pl-0 pt-2 pb-2'>{name}</TableCell>
+                    <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
+                      {amount}
                     </TableCell>
                   </TableRow>
                 ))}
