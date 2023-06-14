@@ -49,7 +49,7 @@ export async function getServerSideProps(context) {
     url: getMachineFieldsToUpdateUrlRegular(code),
   })
 
-  const { machine, fields } = data ?? {}
+  const { machine, fields } = data ?? { machine: null, fields: null }
 
   if (machine) {
     const { name } = machine

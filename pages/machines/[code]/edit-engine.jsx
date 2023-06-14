@@ -5,13 +5,13 @@ import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
 import {
   editEngineConfig,
-  getEngineUrlRegular,
+  engineGetFieldsToUpdateUrlRegular,
 } from '../../../services/engineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import EngineForm from '../../../components/machines/code/EngineForm'
 import { Title } from '@tremor/react'
 
-export default function EditEngine({ code, machineCode, engine, message }) {
+export default function EditEngine({ code, engine, fields, message }) {
   const { component, title } = useBeforeRenderPage({
     message,
     title: [`Motor ${code}`, 'Editar'],
@@ -27,12 +27,12 @@ export default function EditEngine({ code, machineCode, engine, message }) {
         <>{component}</>
       ) : (
         <EngineForm
-          {...editEngineConfig(machineCode, code)}
+          {...editEngineConfig(code)}
           code={code}
           initialValues={engine}
           title={`Editar motor ${code}`}
         >
-          <EditEngineForm />
+          <EditEngineForm fields={fields} />
         </EngineForm>
       )}
     </>
@@ -41,27 +41,15 @@ export default function EditEngine({ code, machineCode, engine, message }) {
 
 export async function getServerSideProps(context) {
   const {
-    query: { code: machineCode, engineCode },
+    query: { engineCode },
   } = context
 
   const { data, message } = await requestInternalApi(context, {
-    method: HTTP_METHODS.GET,
-    params: { engineCode },
-    url: getEngineUrlRegular(machineCode),
+    method: HTTP_METHODS.PUT,
+    url: engineGetFieldsToUpdateUrlRegular(engineCode),
   })
 
-  if (data) {
-    const { code, machineCode, ...engine } = data
-    return {
-      props: {
-        code,
-        machineCode,
-        engine,
-      },
-    }
-  }
+  const { engine, fields } = data ?? { engine: null, fields: null }
 
-  return {
-    props: { code: engineCode, message },
-  }
+  return { props: { code: engineCode, engine, fields, message } }
 }

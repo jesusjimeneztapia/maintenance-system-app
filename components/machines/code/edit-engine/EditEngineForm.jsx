@@ -1,9 +1,8 @@
 import { useForm } from '../../../../context/providers/FormContext'
-import { BOOT_VALUES_MAP } from '../../../../schemas/engine'
 import Input from '../../../Input'
 import Select from '../../../Select'
 
-export default function EditEngineForm() {
+export default function EditEngineForm({ fields }) {
   const {
     errors,
     handleChange,
@@ -11,15 +10,20 @@ export default function EditEngineForm() {
     touched,
     upperCaseHandleChange,
     values,
+    setValues,
   } = useForm()
+
+  const handleChangeBootId = ({ target: { value } }) => {
+    setValues((values) => ({ ...values, bootId: +value }))
+  }
 
   return (
     <>
       <Input
         id='function'
         label='Función'
-        placeholder={initialValues.function || 'MOTOR #1'}
-        value={values.function}
+        placeholder={initialValues.function || 'MOTOR VIBRADOR'}
+        value={values.function ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.function}
         touched={touched.function}
@@ -28,7 +32,7 @@ export default function EditEngineForm() {
         id='mark'
         label='Marca'
         placeholder={initialValues.mark || '-'}
-        value={values.mark}
+        value={values.mark ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.mark}
         touched={touched.mark}
@@ -37,7 +41,7 @@ export default function EditEngineForm() {
         id='type'
         label='Tipo'
         placeholder={initialValues.type || '-'}
-        value={values.type}
+        value={values.type ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.type}
         touched={touched.type}
@@ -45,8 +49,8 @@ export default function EditEngineForm() {
       <Input
         id='powerHp'
         label='Potencia [Hp]'
-        placeholder={initialValues.powerHp || '99.9'}
-        value={values.powerHp}
+        placeholder={initialValues.powerHp || '2'}
+        value={values.powerHp ?? ''}
         onChange={handleChange}
         error={errors.powerHp}
         touched={touched.powerHp}
@@ -55,8 +59,8 @@ export default function EditEngineForm() {
       <Input
         id='powerKw'
         label='Potencia [Kw]'
-        placeholder={initialValues.powerKw || '99.9'}
-        value={values.powerKw}
+        placeholder={initialValues.powerKw || '1.5'}
+        value={values.powerKw ?? ''}
         onChange={handleChange}
         error={errors.powerKw}
         touched={touched.powerKw}
@@ -65,8 +69,8 @@ export default function EditEngineForm() {
       <Input
         id='voltage'
         label='Tensión [V]'
-        placeholder={initialValues.voltage || '-'}
-        value={values.voltage}
+        placeholder={initialValues.voltage || '380'}
+        value={values.voltage ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.voltage}
         touched={touched.voltage}
@@ -74,8 +78,8 @@ export default function EditEngineForm() {
       <Input
         id='current'
         label='Corriente [A]'
-        placeholder={initialValues.current || '-'}
-        value={values.current}
+        placeholder={initialValues.current || '4.1'}
+        value={values.current ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.current}
         touched={touched.current}
@@ -83,8 +87,8 @@ export default function EditEngineForm() {
       <Input
         id='rpm'
         label='rpm'
-        placeholder={initialValues.rpm || '0'}
-        value={values.rpm}
+        placeholder={initialValues.rpm || '3415'}
+        value={values.rpm ?? ''}
         onChange={handleChange}
         error={errors.rpm}
         touched={touched.rpm}
@@ -93,8 +97,8 @@ export default function EditEngineForm() {
       <Input
         id='cosPhi'
         label='Cos ϕ'
-        placeholder={initialValues.cosPhi || '99.99'}
-        value={values.cosPhi}
+        placeholder={initialValues.cosPhi || '0.94'}
+        value={values.cosPhi ?? ''}
         onChange={handleChange}
         error={errors.cosPhi}
         touched={touched.cosPhi}
@@ -103,8 +107,8 @@ export default function EditEngineForm() {
       <Input
         id='performance'
         label='Rendimiento'
-        placeholder={initialValues.performance || '99.99'}
-        value={values.performance}
+        placeholder={initialValues.performance || '0.75'}
+        value={values.performance ?? ''}
         onChange={handleChange}
         error={errors.performance}
         touched={touched.performance}
@@ -112,9 +116,9 @@ export default function EditEngineForm() {
       />
       <Input
         id='frequency'
-        label='Frecuencia'
-        placeholder={initialValues.frequency || '0'}
-        value={values.frequency}
+        label='Frecuencia [Hz]'
+        placeholder={initialValues.frequency || '50'}
+        value={values.frequency ?? ''}
         onChange={handleChange}
         error={errors.frequency}
         touched={touched.frequency}
@@ -123,8 +127,8 @@ export default function EditEngineForm() {
       <Input
         id='poles'
         label='N° polos'
-        placeholder={initialValues.poles || '0'}
-        value={values.poles}
+        placeholder={initialValues.poles || '2'}
+        value={values.poles ?? ''}
         onChange={handleChange}
         error={errors.poles}
         touched={touched.poles}
@@ -133,22 +137,22 @@ export default function EditEngineForm() {
       <Input
         id='ip'
         label='Grado de protección'
-        placeholder={initialValues.ip || '0'}
-        value={values.ip}
+        placeholder={initialValues.ip || '44'}
+        value={values.ip ?? ''}
         onChange={handleChange}
         error={errors.ip}
         touched={touched.ip}
         type='number'
       />
       <Select
-        id='boot'
+        id='bootId'
         label='Arranque'
-        value={values.boot}
+        value={values.bootId ?? ''}
         placeholder='Seleccione el arranque del motor'
-        optionsMap={BOOT_VALUES_MAP}
-        onChange={handleChange}
-        error={errors.boot}
-        touched={touched.boot}
+        optionsMap={fields?.boots ?? {}}
+        onChange={handleChangeBootId}
+        error={errors.bootId}
+        touched={touched.bootId}
       />
     </>
   )

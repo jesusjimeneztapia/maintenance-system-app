@@ -3,17 +3,19 @@ import { engineInitialValues } from '../../../schemas/engine'
 import Head from 'next/head'
 import { createDocumentTitle } from '../../../libs/documentTitle'
 import EngineForm from '../../../components/machines/code/EngineForm'
-import { addEngineConfig } from '../../../services/engineServices'
+import {
+  ENGINE_GET_FIELDS_TO_CREATE_URL_REGULAR,
+  addEngineConfig,
+} from '../../../services/engineServices'
 import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
-import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import { Title } from '@tremor/react'
 
-export default function AddEngine({ name, machineCode, message }) {
+export default function AddEngine({ machine, fields, machineCode, message }) {
   const { component, title } = useBeforeRenderPage({
     message,
-    title: [`Máquina ${name ?? machineCode}`, 'Agregar motor'],
+    title: [`Máquina ${machine?.name ?? machineCode}`, 'Agregar motor'],
   })
 
   return (
@@ -21,7 +23,9 @@ export default function AddEngine({ name, machineCode, message }) {
       <Head>
         <title>{createDocumentTitle(title)}</title>
       </Head>
-      <Title className='mb-5'>{`Máquina ${name ?? machineCode}`}</Title>
+      <Title className='mb-5'>{`Máquina ${
+        machine?.name ?? machineCode
+      }`}</Title>
       {component ? (
         <>{component}</>
       ) : (
@@ -32,7 +36,7 @@ export default function AddEngine({ name, machineCode, message }) {
             initialValues={engineInitialValues(machineCode)}
             title='Motor a agregar'
           >
-            <AddEngineForm />
+            <AddEngineForm fields={fields} />
           </EngineForm>
         </>
       )}
@@ -46,11 +50,14 @@ export async function getServerSideProps(context) {
   } = context
 
   const { data, message } = await requestInternalApi(context, {
-    method: HTTP_METHODS.GET,
-    url: getMachineByCodeUrlRegular(machineCode),
+    method: HTTP_METHODS.POST,
+    url: ENGINE_GET_FIELDS_TO_CREATE_URL_REGULAR,
+    params: { machineCode },
   })
 
+  const { machine, fields } = data ?? { machine: null, fields: null }
+
   return {
-    props: { ...data, machineCode, message },
+    props: { machine, fields, machineCode, message },
   }
 }

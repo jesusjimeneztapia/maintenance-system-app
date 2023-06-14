@@ -13,6 +13,10 @@ function createMachineFormProps({
     title,
     dtoValidation,
     initialValues,
+    invalidMessage: {
+      title: `Fallo al ${code ? 'editar' : 'agregar'} el motor`,
+      message: 'Por favor verifique los campos.',
+    },
     onSubmit: {
       method,
       url,

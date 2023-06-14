@@ -41,17 +41,17 @@ export default function EnginesTable({ engines, machineCode }) {
                   P [Hp]
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>
-                  P [KW]
+                  P [Kw]
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>
                   Tensión [V]
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>I [A]</TableHeaderCell>
                 <TableHeaderCell className='text-center'>rpm</TableHeaderCell>
-                <TableHeaderCell className='text-center'>cos</TableHeaderCell>
+                <TableHeaderCell className='text-center'>cos ϕ</TableHeaderCell>
                 <TableHeaderCell className='text-center'>n</TableHeaderCell>
                 <TableHeaderCell className='text-center'>
-                  f [Hz]
+                  F [Hz]
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>
                   N° POLOS
@@ -61,7 +61,7 @@ export default function EnginesTable({ engines, machineCode }) {
                   Aranque
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>
-                  Acciones
+                  Editar
                 </TableHeaderCell>
               </TableRow>
             </TableHead>

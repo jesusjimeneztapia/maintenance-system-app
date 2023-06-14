@@ -3,7 +3,7 @@ import { useForm } from '../../../../context/providers/FormContext'
 import Input from '../../../Input'
 import EditEngineForm from '../edit-engine/EditEngineForm'
 
-export default function AddEngineForm() {
+export default function AddEngineForm({ fields }) {
   const { errors, initialValues, touched, upperCaseHandleChange, values } =
     useForm()
 
@@ -18,7 +18,7 @@ export default function AddEngineForm() {
         error={errors.code}
         touched={touched.code}
       />
-      <EditEngineForm />
+      <EditEngineForm fields={fields} />
     </>
   )
 }
