@@ -1,19 +1,13 @@
 import InputFile from '../../InputFile'
 import { useForm } from '../../../context/providers/FormContext'
-import {
-  AREA_VALUES_MAP,
-  CRITICALITY_VALUES_MAP,
-  TECHNICAL_DOCUMENTATION_VALUES_MAP,
-} from '../../../schemas/machine'
 import Input from '../../Input'
 import Select from '../../Select'
 import Textarea from '../../Textarea'
 import CheckboxList from '../../CheckboxList'
 
-export default function EditMachineForm() {
+export default function EditMachineForm({ fields }) {
   const {
     errors,
-    handleChange,
     setValues,
     touched,
     upperCaseHandleChange,
@@ -25,6 +19,17 @@ export default function EditMachineForm() {
     const [file] = files
     setValues((values) => ({ ...values, image: file }))
   }
+  const handleChangeField = ({ target: { name, value } }) => {
+    setValues((values) => ({ ...values, [name]: +value }))
+  }
+  const handleChangeFieldCheckbox = ({ target: { name, value } }) => {
+    setValues((values) => ({
+      ...values,
+      [name]: values[name].includes(+value)
+        ? values[name].filter((id) => id !== +value)
+        : [...values[name], +value],
+    }))
+  }
 
   return (
     <>
@@ -32,16 +37,16 @@ export default function EditMachineForm() {
         id='name'
         label='Nombre'
         placeholder={initialValues.name || 'PRE EXPANSORA'}
-        value={values.name}
+        value={values.name ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.name}
         touched={touched.name}
       />
       <Input
         id='maker'
-        label='Marca'
+        label='Fabricante'
         placeholder={initialValues.maker || '-'}
-        value={values.maker}
+        value={values.maker ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.maker}
         touched={touched.maker}
@@ -50,7 +55,7 @@ export default function EditMachineForm() {
         id='location'
         label='Ubicación'
         placeholder={initialValues.location || 'EPS'}
-        value={values.location}
+        value={values.location ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.location}
         touched={touched.location}
@@ -60,7 +65,7 @@ export default function EditMachineForm() {
         label='Área'
         value={values.areaId}
         placeholder='Seleccione el área de la máquina'
-        optionsMap={AREA_VALUES_MAP}
+        optionsMap={fields.areas ?? {}}
         onChange={({ target: { value } }) =>
           setValues((values) => ({ ...values, areaId: +value }))
         }
@@ -71,7 +76,7 @@ export default function EditMachineForm() {
         id='model'
         label='Modelo'
         placeholder={initialValues.model || '-'}
-        value={values.model}
+        value={values.model ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.model}
         touched={touched.model}
@@ -80,7 +85,7 @@ export default function EditMachineForm() {
         id='function'
         label='Función'
         placeholder={initialValues.function || '-'}
-        value={values.function}
+        value={values.function ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.function}
         touched={touched.function}
@@ -89,7 +94,7 @@ export default function EditMachineForm() {
         id='specificData'
         label='Datos específicos'
         placeholder={initialValues.specificData || '-'}
-        value={values.specificData}
+        value={values.specificData ?? ''}
         onChange={upperCaseHandleChange()}
         error={errors.specificData}
         touched={touched.specificData}
@@ -98,19 +103,19 @@ export default function EditMachineForm() {
       <CheckboxList
         id='technicalDocumentation'
         label='Documentación técnica'
-        onChange={handleChange}
-        optionsMap={TECHNICAL_DOCUMENTATION_VALUES_MAP}
+        onChange={handleChangeFieldCheckbox}
+        optionsMap={fields.technicalDocumentation ?? {}}
         values={values.technicalDocumentation}
       />
       <Select
-        id='criticality'
+        id='criticalityId'
         label='Criticidad'
-        value={values.criticality}
+        value={values.criticalityId}
         placeholder='Seleccione la criticidad de la máquina'
-        optionsMap={CRITICALITY_VALUES_MAP}
-        onChange={handleChange}
-        error={errors.criticality}
-        touched={touched.criticality}
+        optionsMap={fields.criticalities ?? {}}
+        onChange={handleChangeField}
+        error={errors.criticalityId}
+        touched={touched.criticalityId}
       />
       <InputFile
         id='image'

@@ -3,7 +3,7 @@ import EditMachineForm from '../../../components/machines/code/EditMachineForm'
 import MachineForm from '../../../components/machines/MachineForm'
 import { createDocumentTitle } from '../../../libs/documentTitle'
 import {
-  getMachineByCodeUrlRegular,
+  getMachineFieldsToUpdateUrlRegular,
   UPDATE_MACHINE_CONFIG,
 } from '../../../services/machineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
@@ -11,7 +11,7 @@ import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
 import { Title } from '@tremor/react'
 
-export default function EditMachine({ code, name, machine, message }) {
+export default function EditMachine({ code, name, machine, fields, message }) {
   const { component, title } = useBeforeRenderPage({
     message,
     title: [`Máquina ${name ?? code}`, 'Editar'],
@@ -32,7 +32,7 @@ export default function EditMachine({ code, name, machine, message }) {
           title={`Editar máquina ${code}`}
           code={code}
         >
-          <EditMachineForm />
+          <EditMachineForm fields={fields} />
         </MachineForm>
       )}
     </>
@@ -44,10 +44,12 @@ export async function getServerSideProps(context) {
     query: { code },
   } = context
 
-  const { data: machine, message } = await requestInternalApi(context, {
+  const { data, message } = await requestInternalApi(context, {
     method: HTTP_METHODS.GET,
-    url: getMachineByCodeUrlRegular(code),
+    url: getMachineFieldsToUpdateUrlRegular(code),
   })
+
+  const { machine, fields } = data ?? {}
 
   if (machine) {
     const { name } = machine
@@ -56,6 +58,7 @@ export async function getServerSideProps(context) {
         code,
         name,
         machine,
+        fields,
         message,
       },
     }

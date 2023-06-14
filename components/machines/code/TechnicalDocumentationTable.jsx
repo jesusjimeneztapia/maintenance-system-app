@@ -53,23 +53,23 @@ export default function TechnicalDocumentationTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
+            <TableRow className='bg-gray-100'>
               <TableCell className='pl-0 py-2'>Manual de Operaciones</TableCell>
-              {renderTechnicalDocumentation('OPERATIONS_MANUAL')}
+              {renderTechnicalDocumentation('MANUAL DE OPERACIONES')}
             </TableRow>
             <TableRow>
               <TableCell className='pl-0 py-2'>
                 Manual de Mantenimiento
               </TableCell>
-              {renderTechnicalDocumentation('MAINTENANCE_MANUAL')}
+              {renderTechnicalDocumentation('MANUAL DE MANTENIMIENTO')}
             </TableRow>
-            <TableRow>
+            <TableRow className='bg-gray-100'>
               <TableCell className='pl-0 py-2'>Planos Eléctricos</TableCell>
-              {renderTechnicalDocumentation('ELECTRICAL_PLANS')}
+              {renderTechnicalDocumentation('PLANOS ELÉCTRICOS')}
             </TableRow>
             <TableRow>
               <TableCell className='pl-0 py-2'>Planos Mecánicos</TableCell>
-              {renderTechnicalDocumentation('MECHANICAL_PLANS')}
+              {renderTechnicalDocumentation('PLANOS MECÁNICOS')}
             </TableRow>
           </TableBody>
         </Table>

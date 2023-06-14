@@ -1,15 +1,13 @@
-import Link from 'next/link'
 import EnginesTable from '../../../components/machines/code/EnginesTable'
-import GeneralInformationTable from '../../../components/machines/code/GeneralInformationTable'
-import TechnicalDocumentationTable from '../../../components/machines/code/TechnicalDocumentationTable'
-import ImageMachineTable from '../../../components/machines/code/ImageMachineTable'
 import Head from 'next/head'
 import { createDocumentTitle } from '../../../libs/documentTitle'
 import { requestInternalApi } from '../../../services/requestApi'
 import { HTTP_METHODS } from '../../../services'
 import { getMachineByCodeUrlRegular } from '../../../services/machineServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
-import { Card, Col, Flex, Grid, Subtitle, Title } from '@tremor/react'
+import { Flex, Title } from '@tremor/react'
+import AppLink from '../../../components/AppLink'
+import MachineInformation from '../../../components/machines/code/MachineInformation'
 
 export default function Machine({
   code,
@@ -42,48 +40,32 @@ export default function Machine({
               {name} ({code})
             </Title>
             <Flex className='gap-2' justifyContent='end'>
-              <Link
+              <AppLink
                 href={{ pathname: '/machines/[code]/edit', query: { code } }}
+                color='gray'
               >
-                <a className='inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
-                  <span className='w-full'>Editar máquina</span>
-                </a>
-              </Link>
-
-              <Link
+                Editar máquina
+              </AppLink>
+              <AppLink
                 href={{
                   pathname: '/activities/[machineCode]',
                   query: { machineCode: code },
                 }}
+                color='blue'
               >
-                <a className='inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-blue-500 rounded-lg bg-blue-100 hover:text-blue-900 hover:bg-blue-200'>
-                  <span className='w-full'>Ver actividades</span>
-                </a>
-              </Link>
+                Ver actividades
+              </AppLink>
             </Flex>
           </Flex>
-          <Flex className='gap-5 w-full' flexDirection='col'>
-            <Card>
-              <Subtitle className='mb-6'>Información de la máquina</Subtitle>
-              <Grid className='gap-4' numCols={9}>
-                <Col numColSpan={9} numColSpanLg={5}>
-                  <GeneralInformationTable
-                    code={code}
-                    {...generalInformation}
-                  />
-                </Col>
-                <Col
-                  className='flex flex-col justify-between gap-4'
-                  numColSpan={9}
-                  numColSpanLg={4}
-                >
-                  <ImageMachineTable code={code} image={image} />
-                  <TechnicalDocumentationTable
-                    technicalDocumentation={technicalDocumentation}
-                  />
-                </Col>
-              </Grid>
-            </Card>
+          <Flex className='gap-5' flexDirection='col' alignItems=''>
+            <div>
+              <MachineInformation
+                code={code}
+                generalInformation={generalInformation}
+                image={image}
+                technicalDocumentation={technicalDocumentation}
+              />
+            </div>
             <EnginesTable engines={engines} machineCode={code} />
           </Flex>
         </>

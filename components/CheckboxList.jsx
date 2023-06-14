@@ -22,7 +22,7 @@ export default function CheckboxList({
             name={name ?? id}
             value={value}
             onChange={onChange}
-            checked={values.technicalDocumentation?.includes(value)}
+            checked={values.some((element) => `${element}` === value)}
             disabled={disabled}
           />
           <Label htmlFor={value} value={text} />

@@ -3,7 +3,7 @@ import axios from 'redaxios'
 import { Button, Card, Col, Flex, Grid, Subtitle, Text } from '@tremor/react'
 import { useToast } from '../store/toast'
 
-function FormContainer({ children, message }) {
+function FormContainer({ children, message, invalidMessage }) {
   const show = useToast((state) => state.show)
 
   const { handleSubmit, resetForm, isValid } = useForm()
@@ -17,12 +17,8 @@ function FormContainer({ children, message }) {
         position: 'right',
         children: (
           <>
-            <Subtitle className='text-inherit'>
-              Fallo al registrar la máquina
-            </Subtitle>
-            <Text className='text-inherit'>
-              Por favor verifique los campos.
-            </Text>
+            <Subtitle className='text-inherit'>{invalidMessage.title}</Subtitle>
+            <Text className='text-inherit'>{invalidMessage.message}</Text>
           </>
         ),
       })
@@ -58,6 +54,10 @@ export default function Form({
     successSubmit: { message: '' },
     message: '',
     reset: true,
+  },
+  invalidMessage = {
+    title: 'Fallo en los campos',
+    message: 'Por favor verifique los campos.',
   },
   validateOnMount = true,
   information,
@@ -129,7 +129,7 @@ export default function Form({
             >
               Si
             </Button>
-            <Button onClick={reset} color='red'>
+            <Button onClick={reset} color='rose'>
               No
             </Button>
           </Flex>
@@ -156,7 +156,10 @@ export default function Form({
             {title && <Subtitle className='mb-6'>{title}</Subtitle>}
             <div>
               {/* {information && <Box>{information}</Box>} */}
-              <FormContainer message={onSubmit.message}>
+              <FormContainer
+                message={onSubmit.message}
+                invalidMessage={invalidMessage}
+              >
                 {children}
               </FormContainer>
             </div>

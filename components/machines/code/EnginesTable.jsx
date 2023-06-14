@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import EngineRow from './EngineRow'
 import {
   Card,
@@ -11,6 +10,7 @@ import {
   TableRow,
   Text,
 } from '@tremor/react'
+import AppLink from '../../AppLink'
 
 export default function EnginesTable({ engines, machineCode }) {
   return (
@@ -18,16 +18,16 @@ export default function EnginesTable({ engines, machineCode }) {
       <Flex className='gap-6' flexDirection='col' alignItems=''>
         <Flex className='max-sm:flex-col max-sm:items-start gap-2'>
           <Subtitle>Motores Eléctricos</Subtitle>
-          <Link
-            href={{
-              pathname: '/machines/[code]/add-engine',
-              query: { code: machineCode },
-            }}
-          >
-            <a className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
-              <span className='w-full'>Agregar motor</span>
-            </a>
-          </Link>
+          <div className='max-sm:self-end'>
+            <AppLink
+              href={{
+                pathname: '/machines/[code]/add-engine',
+                query: { code: machineCode },
+              }}
+            >
+              Agregar motor
+            </AppLink>
+          </div>
         </Flex>
         {engines.length > 0 ? (
           <Table>

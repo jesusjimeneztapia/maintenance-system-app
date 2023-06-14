@@ -1,15 +1,13 @@
 import Link from 'next/link'
-import { CRITICALITY_VALUES_MAP } from '../../schemas/machine'
-import { Flex, Icon, TableCell, TableRow, Text, Title } from '@tremor/react'
+import { Icon, TableCell, TableRow, Text, Title } from '@tremor/react'
 import Image from 'next/image'
 import OneServerSolidIcon from '../icons/OneServerSolidIcon'
 import EditIcon from '../icons/EditIcon'
 import PresentationChartLineIcon from '../icons/PresentationChartLineIcon'
-import { Badge } from 'flowbite-react'
-import ArrowDownIcon from '../icons/ArrowDownIcon'
-import ArrowUpIcon from '../icons/ArrowUpIcon'
-import ArrowRightIcon from '../icons/ArrowRightIcon'
 import { useMachineList } from '../../store/machines'
+import AppLink from '../AppLink'
+import EyeIcon from '../icons/EyeIcon'
+import Criticality from './Criticality'
 
 export default function MachineCard({
   image,
@@ -55,66 +53,30 @@ export default function MachineCard({
           {page === 'machines' ? location : area.name}
         </TableCell>
         <TableCell className='text-center'>
-          <Badge
-            className='w-fit m-auto'
-            icon={
-              criticality === 'HIGH'
-                ? ArrowUpIcon
-                : criticality === 'MEDIUM'
-                ? ArrowRightIcon
-                : ArrowDownIcon
-            }
-            color={
-              criticality === 'HIGH'
-                ? 'failure'
-                : criticality === 'MEDIUM'
-                ? 'warning'
-                : 'success'
-            }
-          >
-            {CRITICALITY_VALUES_MAP[criticality]}
-          </Badge>
+          <Criticality criticality={criticality} />
         </TableCell>
-        <TableCell>
-          <Flex className='gap-4' justifyContent='center'>
-            <Link
-              href={{
-                pathname:
-                  page === 'machines'
-                    ? '/machines/[code]/edit'
-                    : '/activities/[machineCode]',
-                query: page === 'machines' ? { code } : { machineCode: code },
-              }}
-            >
-              <a
-                className={`flex items-center gap-1 font-medium ${
-                  page === 'machines'
-                    ? 'text-slate-500 hover:text-slate-700'
-                    : 'text-blue-500 hover:text-blue-700'
-                }`}
-              >
-                {page === 'machines' ? (
-                  <>
-                    <EditIcon className='w-5 h-5' />
-                    Editar
-                  </>
-                ) : (
-                  <>
-                    <PresentationChartLineIcon className='w-5 h-5' />
-                    Ver actividades
-                  </>
-                )}
-              </a>
-            </Link>
-            <Link href={`/machines/${code}`}>
-              <a
-                className={`flex items-center gap-1 font-medium text-amber-500 hover:text-amber-700`}
-              >
-                Ver más
-                <ArrowRightIcon className='w-4 h-4' />
-              </a>
-            </Link>
-          </Flex>
+        <TableCell className='text-center'>
+          <AppLink
+            href={{
+              pathname:
+                page === 'machines'
+                  ? '/machines/[code]/edit'
+                  : '/activities/[machineCode]',
+              query: page === 'machines' ? { code } : { machineCode: code },
+            }}
+            color={page === 'machines' ? 'gray' : 'blue'}
+            icon={page === 'machines' ? EditIcon : PresentationChartLineIcon}
+          />
+        </TableCell>
+        <TableCell className='text-center'>
+          <AppLink
+            href={{
+              pathname: '/machines/[code]',
+              query: { code },
+            }}
+            color='amber'
+            icon={EyeIcon}
+          ></AppLink>
         </TableCell>
       </TableRow>
     </Link>

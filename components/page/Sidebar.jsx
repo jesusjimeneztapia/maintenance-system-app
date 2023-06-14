@@ -90,12 +90,12 @@ export default function Sidebar() {
             <NavLink
               href='/failure-report'
               icon={ClipboardDocumentListSolidIcon}
-              text='Reportes'
+              text='Reportes de falla'
             />
             <NavLink
               href='/maintenance-request'
               icon={WrenchScrewdriverSolidIcon}
-              text='Solicitudes'
+              text='Solicitudes de mantenimiento'
             />
             <NavLink
               href='/schedule'

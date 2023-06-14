@@ -1,14 +1,25 @@
 import Form from '../Form'
 
-function mutateValues(values) {
+const createMutateValues = (code) => (values) => {
   const { technicalDocumentation, image, ...rest } = values
-  const body = rest
+  const body =
+    code != null
+      ? rest
+      : Object.fromEntries(
+          Object.entries(rest).filter(
+            ([, value]) => value != null && value !== ''
+          )
+        )
   if (technicalDocumentation) {
     body.technicalDocumentation = JSON.stringify(technicalDocumentation)
   }
   const formData = new FormData()
   const keys = Object.keys(body)
   keys.forEach((key) => {
+    let value = body[key]
+    if (value == null || value === '') {
+      value = null
+    }
     formData.set(key, body[key])
   })
   if (image.size) {
@@ -29,16 +40,20 @@ function createMachineFormProps({
     title,
     dtoValidation,
     initialValues,
+    invalidMessage: {
+      title: `Fallo al ${code ? 'editar' : 'registrar'} la máquina`,
+      message: 'Por favor verifique los campos.',
+    },
     onSubmit: {
       method,
       url,
       message: code ? 'Guardar' : 'Registrar',
       preSubmit: {
-        title: `${code ? 'Editar' : 'Registro de la'} máquina`,
+        title: `${code ? 'Edición' : 'Registro'} de la máquina`,
         question: `¿Seguro que quiere ${
           code ? 'guardar los cambios' : 'registrar la máquina'
         }?`,
-        mutateValues,
+        mutateValues: createMutateValues(code),
       },
       duringSubmit: {
         message: `La máquina se está ${

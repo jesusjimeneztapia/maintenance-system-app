@@ -6,10 +6,18 @@ export const MACHINE_URL_REGULAR = '/machines'
 export function getMachineByCodeUrlRegular(machineCode) {
   return `${MACHINE_URL_REGULAR}/${machineCode}`
 }
+export const MACHINE_GET_FIELDS_TO_CREATE_URL_REGULAR = `${MACHINE_URL_REGULAR}/fields/create`
+export function getMachineFieldsToUpdateUrlRegular(machineCode) {
+  return `${MACHINE_URL_REGULAR}/${machineCode}/fields/update`
+}
 
 export const MACHINE_URL_EXTERNAL = `${MACHINE_URL_REGULAR}`
 export function getMachineByCodeUrlExternal(machineCode) {
   return `${MACHINE_URL_EXTERNAL}/${machineCode}`
+}
+export const MACHINE_GET_FIELDS_TO_CREATE_URL_EXTERNAL = `${MACHINE_URL_EXTERNAL}/fields/create`
+export function getMachineFieldsToUpdateUrlExternal(machineCode) {
+  return `${MACHINE_URL_EXTERNAL}/${machineCode}/fields/update`
 }
 
 const MACHINE_URL_INTERNAL = `/api${MACHINE_URL_EXTERNAL}`

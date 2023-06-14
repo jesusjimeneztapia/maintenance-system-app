@@ -22,7 +22,7 @@ export default function CustomTextarea({
         color={touched && error ? 'failure' : undefined}
       />
       <Textarea
-        className='resize-none'
+        className='resize-none text-sm'
         id={id}
         name={name ?? id}
         rows={rows}

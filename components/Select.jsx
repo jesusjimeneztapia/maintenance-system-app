@@ -16,11 +16,7 @@ export default function CustomSelect({
 }) {
   return (
     <Flex flexDirection='col' alignItems=''>
-      <Label
-        htmlFor={id}
-        value={label}
-        color={touched && error ? 'failure' : undefined}
-      />
+      <Label htmlFor={id} value={label} color={touched && error && 'failure'} />
       <Select
         id={id}
         name={name ?? id}

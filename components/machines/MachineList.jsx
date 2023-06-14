@@ -24,7 +24,10 @@ export default function MachineList({ machines }) {
             <TableHeaderCell className='text-center'>
               Criticidad
             </TableHeaderCell>
-            <TableHeaderCell className='text-center'>Acciones</TableHeaderCell>
+            <TableHeaderCell className='text-center'>
+              {page === 'machines' ? 'Editar' : 'Ver actividades'}
+            </TableHeaderCell>
+            <TableHeaderCell className='text-center'>Ver más</TableHeaderCell>
           </TableRow>
         </TableHead>
 

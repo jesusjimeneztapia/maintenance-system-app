@@ -1,135 +1,131 @@
 import { z } from 'zod'
+import { CRITICALITY_ID_INITIAL_VALUE, CRITICALITY_ID_ZOD } from './criticality'
+import { AREA_ID_INITIAL_VALUE, AREA_ID_ZOD } from './area'
+import {
+  TECHNICAL_DOCUMENTATION_ARRAY_ZOD,
+  TECHNICAL_DOCUMENTATION_INITIAL_VALUE,
+} from './technicalDocumentation'
+import {
+  cleanUnnecessarySpaces,
+  transformOptionalField,
+  validateOptionalField,
+} from '../libs/fields'
+import { generateImageZod } from './image'
 
 export const MACHINE_INITIAL_VALUES = {
-  code: '',
-  name: '',
-  maker: '',
-  model: '',
-  function: '',
-  location: '',
-  area: '',
-  specificData: '',
-  criticality: '',
-  technicalDocumentation: [],
+  code: undefined,
+  name: undefined,
+  maker: undefined,
+  model: undefined,
+  function: undefined,
+  location: undefined,
+  areaId: AREA_ID_INITIAL_VALUE,
+  specificData: undefined,
+  criticalityId: CRITICALITY_ID_INITIAL_VALUE,
+  technicalDocumentation: TECHNICAL_DOCUMENTATION_INITIAL_VALUE,
   image: undefined,
-}
-
-export const AREA_VALUES_MAP = {
-  1: 'PRE EXPANDIDO',
-  2: 'RECICLADO',
-  3: 'BLOQUEADO',
-  4: 'CORTE',
-  5: 'VIGUETAS',
-  6: 'SERVICIOS',
-  7: 'GENERAL',
-}
-export const TECHNICAL_DOCUMENTATION_VALUES_MAP = {
-  OPERATIONS_MANUAL: 'MANUAL DE OPERACIONES',
-  MAINTENANCE_MANUAL: 'MANTENIMIENTO MANUAL',
-  ELECTRICAL_PLANS: 'PLANOS ELÉCTRICOS',
-  MECHANICAL_PLANS: 'PLANOS MECÁNICOS',
-}
-
-export const CRITICALITY_VALUES_MAP = {
-  HIGH: 'ALTA',
-  MEDIUM: 'MEDIA',
-  LOW: 'BAJA',
 }
 
 const machineShapeUpdate = {
   name: z
-    .string({ required_error: 'El nombre de la máquina es requerido' })
-    .min(1, {
-      message: 'El nombre de la máquina debe tener al menos 1 caracter',
-    }),
+    .string({
+      required_error: 'El nombre de la máquina es requerido',
+      invalid_type_error: 'El nombre de la máquina debe ser un texto',
+    })
+    .transform((field) => cleanUnnecessarySpaces({ field }))
+    .refine(
+      (value) => value?.length >= 5,
+      (field) => ({
+        message:
+          field == null
+            ? 'El nombre de la máquina es requerido'
+            : 'El nombre de la máquina debe tener al menos 5 caracteres',
+      })
+    ),
   maker: z
     .string({
-      required_error: 'El fabricante de la máquina es requerido',
+      invalid_type_error: 'El fabricante de la máquina debe ser un texto',
     })
-    .min(1, {
-      message: 'El fabricante de la máquina debe tener al menos 1 caracter',
-    }),
+    .optional()
+    .transform((field) => transformOptionalField({ field }))
+    .refine(
+      validateOptionalField,
+      "El fabricante de la máquina debe tener por lo menos 1 carácter o tener '-' para no definir el fabricante"
+    ),
   location: z
     .string({
-      required_error: 'La ubicación de la máquina es requerido',
+      required_error: 'La ubicación de la máquina es requerida',
+      invalid_type_error: 'La ubicación de la máquina debe ser un texto',
     })
-    .min(3, {
-      message: 'La ubicación de la máquina debe tener al menos 3 caracteres',
-    })
-    .max(11, {
-      message: 'La ubicación de la máquina debe tener máximo 11 caracteres',
-    }),
-  areaId: z.number().min(1, 'El areaId debe ser mayor o igual que 1'),
+    .transform((field) => cleanUnnecessarySpaces({ field }))
+    .refine(
+      (value) => value?.length >= 3 && value?.length <= 11,
+      (field) => ({
+        message:
+          field == null
+            ? 'La ubicación de la máquina es requerida'
+            : field.length < 3
+            ? 'La ubicación de la máquina debe tener al menos 3 caracteres'
+            : 'La ubicación de la máquina debe tener máximo 11 caracteres',
+      })
+    ),
+  areaId: AREA_ID_ZOD,
   model: z
-    .string({ required_error: 'El modelo de la máquina es requerido' })
-    .min(1, {
-      message: 'El modelo de la máquina debe tener al menos 1 caracter',
-    }),
+    .string({
+      invalid_type_error: 'El modelo de la máquina debe ser un texto',
+    })
+    .optional()
+    .transform((field) => transformOptionalField({ field }))
+    .refine(
+      validateOptionalField,
+      "El modelo de la máquina debe tener por lo menos 1 carácter o tener '-' para no definir el modelo"
+    ),
   specificData: z
     .string({
-      required_error: 'Los datos específicos de la máquina son requeridos',
+      invalid_type_error:
+        'Los datos específicos de la máquina debe ser un texto',
     })
-    .min(1, {
-      message:
-        'Los datos específicos de la máquina debe tener al menos 1 caracter',
-    }),
+    .optional()
+    .transform((field) => transformOptionalField({ field }))
+    .refine(
+      validateOptionalField,
+      "Los datos específicos de la máquina debe tener por lo menos 1 carácter o tener '-' para no definir los datos específicos"
+    ),
   function: z
     .string({
-      required_error: 'La función de la máquina es requerido',
+      invalid_type_error: 'La función de la máquina debe ser un texto',
     })
-    .min(1, {
-      message: 'La función de la máquina debe tener al menos 1 caracter',
-    }),
-  technicalDocumentation: z
-    .array(
-      z.enum(
-        [
-          'OPERATIONS_MANUAL',
-          'MAINTENANCE_MANUAL',
-          'ELECTRICAL_PLANS',
-          'MECHANICAL_PLANS',
-        ],
-        {
-          errorMap: () => {
-            return {
-              message: `La documentación técnica de la máquina solo puede tener los valores: ${Object.keys(
-                TECHNICAL_DOCUMENTATION_VALUES_MAP
-              )
-                .map((t) => `'${t}'`)
-                .join(' | ')}`,
-            }
-          },
-        }
-      )
-    )
-    .max(4, {
-      message:
-        'La documentación técnica de la máquina debe tener máximo 4 valores',
-    }),
-  criticality: z.enum(['HIGH', 'MEDIUM', 'LOW'], {
-    errorMap: () => {
-      return {
-        message: `La criticidad de la máquina solo puede tener los valores: ${Object.keys(
-          CRITICALITY_VALUES_MAP
-        )
-          .map((t) => `'${t}'`)
-          .join(' | ')}`,
-      }
-    },
+    .optional()
+    .transform((field) => transformOptionalField({ field }))
+    .refine(
+      validateOptionalField,
+      "La función de la máquina debe tener por lo menos 1 carácter o tener '-' para no definir la función"
+    ),
+  technicalDocumentation: TECHNICAL_DOCUMENTATION_ARRAY_ZOD,
+  criticalityId: CRITICALITY_ID_ZOD,
+  image: generateImageZod({
+    required_error: 'La imagen de la máquina es requerida',
+    invalid_type_error:
+      'La imagen de la máquina debe ser un solo archivo de tipo imagen',
   }),
-  image: z.any().refine((val) => {
-    return val ? !!val.name : false
-  }, 'La imagen de la máquina es requerido'),
 }
 
 const machineShapeCreate = {
   ...machineShapeUpdate,
   code: z
-    .string({ required_error: 'El código de la máquina es requerido' })
-    .regex(/^[A-Z]{2}-[0-9]{2}-[A-Z]{3}-[0-9]{2}$/, {
-      message:
-        "El código de la máquina debe tener el formato: LL-NN-LLL-NN (donde 'L' es letra mayúscula y 'N' es número)",
-    }),
+    .string({
+      required_error: 'El código de la máquina es requerido',
+      invalid_type_error: 'El código de la máquina de ser un texto',
+    })
+    .refine(
+      (field) => /^[A-Z]{2}-[0-9]{2}-[A-Z]{3}-[0-9]{2}$/.test(field ?? ''),
+      (field) => ({
+        message:
+          field === ''
+            ? 'El código de la máquina es requerido'
+            : "El código de la máquina debe tener el formato: LL-NN-LLL-NN (donde 'L' es letra mayúscula y 'N' es número)",
+      })
+    ),
 }
 
 export const createMachineDto = z.object(machineShapeCreate)
