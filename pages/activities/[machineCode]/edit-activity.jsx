@@ -11,7 +11,13 @@ import ActivityForm from '../../../components/activities/ActivityForm'
 import EditActivityForm from '../../../components/activities/machine/edit-activity/EditActivityForm'
 import { Title } from '@tremor/react'
 
-export default function EditActivity({ code, machineCode, message, ...props }) {
+export default function EditActivity({
+  code,
+  machineCode,
+  activity,
+  message,
+  fields,
+}) {
   const { component, title } = useBeforeRenderPage({
     message,
     title: [`Actividad ${code}`, 'Editar'],
@@ -33,10 +39,10 @@ export default function EditActivity({ code, machineCode, message, ...props }) {
           <ActivityForm
             {...editActivityConfig(code)}
             code={code}
-            initialValues={{ ...props, machineCode }}
+            initialValues={{ ...activity, machineCode }}
             title='Editar actividad'
           >
-            <EditActivityForm />
+            <EditActivityForm fields={fields} />
           </ActivityForm>
         </>
       )}

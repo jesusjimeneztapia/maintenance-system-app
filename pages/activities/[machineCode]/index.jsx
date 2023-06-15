@@ -1,5 +1,4 @@
 import TableActivities from '../../../components/activities/machine/TableActivities'
-import Link from 'next/link'
 import { useState } from 'react'
 import Head from 'next/head'
 import { createDocumentTitle } from '../../../libs/documentTitle'
@@ -8,46 +7,33 @@ import { HTTP_METHODS } from '../../../services'
 import { ACTIVITY_URL_REGULAR } from '../../../services/activityServices'
 import useBeforeRenderPage from '../../../hooks/useBeforeRenderPage'
 import { Flex, Title } from '@tremor/react'
+import AppLink from '../../../components/AppLink'
 
-function useMachineActivities({
-  CONDITION_CHECK,
-  VISUAL_INSPECTIONS,
-  LUBRICATION,
-  AUTONOMOUS_MAINTENANCE,
-  PERIODIC_MAINTENANCE,
-  CORRECTIVE_MAINTENANCE,
-}) {
-  const [activities, setActivities] = useState({
-    CONDITION_CHECK,
-    VISUAL_INSPECTIONS,
-    LUBRICATION,
-    AUTONOMOUS_MAINTENANCE,
-    PERIODIC_MAINTENANCE,
-    CORRECTIVE_MAINTENANCE,
-  })
+function useMachineActivities({ activities }) {
+  const [groups, setGroups] = useState(activities)
 
   const deleteActivity = ({ code, activityType }) => {
-    setActivities((values) => {
-      const activities = values[activityType]
-      return {
-        ...values,
-        [activityType]: activities.filter((activity) => activity.code !== code),
+    setGroups((values) => {
+      const index = values.findIndex(({ name }) => name === activityType)
+      if (index >= 0) {
+        const { activities } = values[index]
+        values[index] = {
+          ...values[index],
+          activities: activities.filter((activity) => activity.code !== code),
+        }
+        return [...values]
       }
+      return values
     })
   }
 
-  return { activities, deleteActivity }
+  return { groups, deleteActivity }
 }
 
 export default function MachineActivities({
   machineCode,
   machineName,
-  CONDITION_CHECK,
-  VISUAL_INSPECTIONS,
-  LUBRICATION,
-  AUTONOMOUS_MAINTENANCE,
-  PERIODIC_MAINTENANCE,
-  CORRECTIVE_MAINTENANCE,
+  activities,
   message,
 }) {
   const { component, title } = useBeforeRenderPage({
@@ -55,14 +41,7 @@ export default function MachineActivities({
     title: ['Actividades', `Máquina ${machineName ?? machineCode}`],
   })
 
-  const { activities, deleteActivity } = useMachineActivities({
-    CONDITION_CHECK,
-    VISUAL_INSPECTIONS,
-    LUBRICATION,
-    AUTONOMOUS_MAINTENANCE,
-    PERIODIC_MAINTENANCE,
-    CORRECTIVE_MAINTENANCE,
-  })
+  const { groups, deleteActivity } = useMachineActivities({ activities })
 
   return (
     <>
@@ -80,54 +59,25 @@ export default function MachineActivities({
         <>
           <Flex className='mb-5 max-sm:flex-col max-sm:items-start max-sm:gap-3'>
             <Title>Actividades ({machineName ?? machineCode})</Title>
-            <Link
+            <AppLink
               href={{
                 pathname: '/activities/[machineCode]/create-activity',
                 query: { machineCode },
               }}
             >
-              <a className='max-sm:self-end inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
-                <span className='w-full'>Crear actividad</span>
-              </a>
-            </Link>
+              Crear actividad
+            </AppLink>
           </Flex>
           <Flex className='gap-5' flexDirection='col' alignItems=''>
-            <TableActivities
-              title='Verificación de condición'
-              activities={activities.CONDITION_CHECK}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
-            <TableActivities
-              title='Inspecciones visuales'
-              activities={activities.VISUAL_INSPECTIONS}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
-            <TableActivities
-              title='Lubricación'
-              activities={activities.LUBRICATION}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
-            <TableActivities
-              title='Mantenimiento autónomo'
-              activities={activities.AUTONOMOUS_MAINTENANCE}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
-            <TableActivities
-              title='Mantenimiento periódico'
-              activities={activities.PERIODIC_MAINTENANCE}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
-            <TableActivities
-              title='Mantenimiento correctivo'
-              activities={activities.CORRECTIVE_MAINTENANCE}
-              machineCode={machineCode}
-              deleteActivity={deleteActivity}
-            />
+            {groups.map(({ id, name, activities }) => (
+              <TableActivities
+                key={id}
+                title={name}
+                activities={activities}
+                machineCode={machineCode}
+                deleteActivity={deleteActivity}
+              />
+            ))}
           </Flex>
         </>
       )}

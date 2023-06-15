@@ -1,0 +1,12 @@
+import { z } from 'zod'
+
+const MIN_ACTIVITY_TYPE_ID = 1
+const MAX_ACTIVITY_TYPE_ID = 6
+const INVALID_RANGE_ERROR = `El tipo de actividad solo puede ser INSPECCIONES VISUALES, LUBRIACIÓN, MANTENIMIENTO AUTÓNOMO, MANTENIMIENTO CORRECTIVO, MANTENIMIENTO PERIÓDICO o VERIFICACIÓN DE CONDICIÓN`
+
+export const ACTIVITY_TYPE_ID_ZOD = z
+  .number({
+    required_error: 'El tipo de actividad es requerido',
+  })
+  .min(MIN_ACTIVITY_TYPE_ID, INVALID_RANGE_ERROR)
+  .max(MAX_ACTIVITY_TYPE_ID, INVALID_RANGE_ERROR)

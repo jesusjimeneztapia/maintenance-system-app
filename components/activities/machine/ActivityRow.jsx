@@ -1,5 +1,4 @@
 import axios from 'redaxios'
-import { getFrequencyName } from '../../../schemas/activity'
 import { deleteActivityByCodeUrlInternal } from '../../../services/activityServices'
 import {
   Button,
@@ -9,10 +8,10 @@ import {
   TableRow,
   Text,
 } from '@tremor/react'
-import Link from 'next/link'
 import EditIcon from '../../icons/EditIcon'
 import TrashSolidIcon from '../../icons/TrashSolidIcon'
 import { useToast } from '../../../store/toast'
+import AppLink from '../../AppLink'
 
 export default function ActivityRow({
   code,
@@ -20,6 +19,8 @@ export default function ActivityRow({
   frequency,
   machineCode,
   activityType,
+  pem,
+  paint,
   deleteActivity,
 }) {
   const [show, request, reset] = useToast((state) => [
@@ -77,31 +78,27 @@ export default function ActivityRow({
   }
 
   return (
-    <TableRow>
+    <TableRow className={paint && 'bg-gray-100'}>
+      <TableCell className='text-center'>{pem ?? '-'}</TableCell>
       <TableCell>{code}</TableCell>
       <TableCell>{name}</TableCell>
+      <TableCell className='text-center'>{frequency}</TableCell>
       <TableCell className='text-center'>
-        {getFrequencyName(frequency)}
+        <AppLink
+          href={{
+            pathname: '/activities/[machineCode]/edit-activity',
+            query: { machineCode, code },
+          }}
+          color='gray'
+          icon={EditIcon}
+        />
       </TableCell>
-      <TableCell>
-        <Flex className='gap-4' justifyContent='center' alignItems='center'>
-          <Link
-            href={{
-              pathname: '/activities/[machineCode]/edit-activity',
-              query: { machineCode, code },
-            }}
-          >
-            <a className='flex items-center gap-1 font-medium text-slate-500 hover:text-slate-700'>
-              <EditIcon className='w-5 h-5' />
-              Editar
-            </a>
-          </Link>
-          <Button
-            icon={() => <TrashSolidIcon className='w-4 h-4 text-inherit' />}
-            color='red'
-            onClick={handleDelete}
-          />
-        </Flex>
+      <TableCell className='text-center'>
+        <Button
+          icon={() => <TrashSolidIcon className='w-5 h-5 text-inherit' />}
+          color='red'
+          onClick={handleDelete}
+        />
       </TableCell>
     </TableRow>
   )

@@ -1,20 +1,19 @@
-import { HTTP_METHODS } from '../../../../services'
-import { getActivityByCodeUrlExternal } from '../../../../services/activityServices'
+import nc from 'next-connect'
+import { ACTIVITY_GET_FIELDS_TO_CREATE_URL_EXTERNAL } from '../../../../services/activityServices'
 import { requestExternalApi } from '../../../../services/requestApi'
 
-export default async function getActivityByCode(req, res) {
-  const {
-    query: { code, machineCode },
-  } = req
+const fieldsToCreateActivity = nc()
 
+fieldsToCreateActivity.post(async (req, res) => {
+  const { method } = req
+  const { machineCode } = req.query
   const { data, message, status } = await requestExternalApi({
-    method: HTTP_METHODS.GET,
+    method,
+    url: ACTIVITY_GET_FIELDS_TO_CREATE_URL_EXTERNAL,
     params: { machineCode },
-    url: getActivityByCodeUrlExternal(code),
   })
-
   if (data != null) {
-    const { activity } = data
+    const { machine } = data
     const fields = Object.entries(data.fields).reduce((acc, [key, array]) => {
       return {
         ...acc,
@@ -24,8 +23,9 @@ export default async function getActivityByCode(req, res) {
         }, {}),
       }
     }, {})
-    return res.json({ fields, activity })
+    return res.json({ fields, machine })
   }
-
   return res.status(status).json({ message })
-}
+})
+
+export default fieldsToCreateActivity

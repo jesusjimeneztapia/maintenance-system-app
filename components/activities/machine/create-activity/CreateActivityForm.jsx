@@ -2,7 +2,7 @@ import { useForm } from '../../../../context/providers/FormContext'
 import Input from '../../../Input'
 import EditActivityForm from '../edit-activity/EditActivityForm'
 
-export default function CreateActivityForm() {
+export default function CreateActivityForm({ fields }) {
   const { errors, initialValues, touched, upperCaseHandleChange, values } =
     useForm()
 
@@ -17,7 +17,7 @@ export default function CreateActivityForm() {
         error={errors.code}
         touched={touched.code}
       />
-      <EditActivityForm />
+      <EditActivityForm fields={fields} />
     </>
   )
 }

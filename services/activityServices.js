@@ -6,6 +6,9 @@ export function getActivityByCodeUrlRegular(activityCode) {
   return `${ACTIVITY_URL_REGULAR}/${activityCode}`
 }
 
+export const ACTIVITY_GET_FIELDS_TO_CREATE_URL_REGULAR = `${ACTIVITY_URL_REGULAR}/fields/create`
+export const ACTIVITY_GET_FIELDS_TO_CREATE_URL_EXTERNAL = `${ACTIVITY_URL_REGULAR}/fields/create`
+
 export const ACTIVITY_URL_EXTERNAL = ACTIVITY_URL_REGULAR
 export function getActivityByCodeUrlExternal(activityCode) {
   return `${ACTIVITY_URL_EXTERNAL}/${activityCode}`

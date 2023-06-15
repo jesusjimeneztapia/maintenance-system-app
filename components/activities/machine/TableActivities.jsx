@@ -25,28 +25,36 @@ export default function TableActivities({
           <Table>
             <TableHead>
               <TableRow>
+                <TableHeaderCell className='text-center'>PEM</TableHeaderCell>
                 <TableHeaderCell>Código</TableHeaderCell>
                 <TableHeaderCell>Nombre</TableHeaderCell>
                 <TableHeaderCell className='text-center'>
                   Frecuencia
                 </TableHeaderCell>
                 <TableHeaderCell className='text-center'>
-                  Acciones
+                  Editar
+                </TableHeaderCell>
+                <TableHeaderCell className='text-center'>
+                  Eliminar
                 </TableHeaderCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {activities.map(({ code, name, frequency, activityType }) => (
-                <ActivityRow
-                  key={code}
-                  code={code}
-                  name={name}
-                  frequency={frequency}
-                  machineCode={machineCode}
-                  activityType={activityType}
-                  deleteActivity={deleteActivity}
-                />
-              ))}
+              {activities.map(
+                ({ code, name, frequency, activityType, pem }, index) => (
+                  <ActivityRow
+                    key={code}
+                    code={code}
+                    name={name}
+                    frequency={frequency}
+                    machineCode={machineCode}
+                    activityType={activityType}
+                    pem={pem}
+                    paint={index % 2 === 0}
+                    deleteActivity={deleteActivity}
+                  />
+                )
+              )}
             </TableBody>
           </Table>
         ) : (
