@@ -155,7 +155,6 @@ export default function Form({
           >
             {title && <Subtitle className='mb-6'>{title}</Subtitle>}
             <div>
-              {/* {information && <Box>{information}</Box>} */}
               <FormContainer
                 message={onSubmit.message}
                 invalidMessage={invalidMessage}

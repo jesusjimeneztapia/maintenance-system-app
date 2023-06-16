@@ -67,16 +67,17 @@ export default function WorkOrderCard({
   return (
     <>
       <article className='flex flex-col gap-4 w-full p-2 bg-white rounded shadow'>
-        <Flex className='gap-2' alignItems='start'>
-          <Text className='text-slate-900 font-medium flex flex-col gap-1'>
-            {activityName}
-            <span className='text-slate-400 font-normal'>{machineName}</span>
-          </Text>
+        <Flex>
+          <Text className='text-slate-900 font-bold'>OT #{code}</Text>
           <Button
             icon={() => <InfoIcon className='w-5 h-5' />}
             variant='light'
             onClick={handleSelectWorkOrder}
           />
+        </Flex>
+        <Flex className='gap-1' flexDirection='col' alignItems='start'>
+          <Text className='text-slate-900 font-medium'>{activityName}</Text>
+          <Text className='text-gray-400 font-normal'>{machineName}</Text>
         </Flex>
         <Flex className='gap-2' justifyContent='start'>
           <Priority priority={priority} />

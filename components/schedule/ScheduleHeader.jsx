@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { Flex, Title } from '@tremor/react'
 import FilterScheduleForm from './FilterScheduleForm'
+import AppLink from '../AppLink'
 
 export default function ScheduleHeader({
   title,
@@ -20,17 +20,13 @@ export default function ScheduleHeader({
         />
       </Flex>
       <Flex className='gap-3 flex-wrap' justifyContent='end'>
-        <Link href='/work-orders/create-work-order'>
-          <a className='inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-slate-500 rounded-lg bg-slate-100 hover:text-slate-900 hover:bg-slate-200'>
-            <span className='w-full'>Crear órden de trabajo</span>
-          </a>
-        </Link>
+        <AppLink href='/work-orders/create-work-order'>
+          Crear órden de trabajo
+        </AppLink>
         {showDraft && (
-          <Link href='/schedule/draft'>
-            <a className='inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-blue-500 rounded-lg bg-blue-100 hover:text-blue-900 hover:bg-blue-200'>
-              <span className='w-full'>Ver borradores</span>
-            </a>
-          </Link>
+          <AppLink href='/schedule/draft' color='blue'>
+            Ver borradores
+          </AppLink>
         )}
       </Flex>
     </Flex>

@@ -19,9 +19,6 @@ export default function Notification() {
         onClick={handleToggle}
       >
         <NotificationIcon className='w-6 h-6' />
-        {/* <div className='relative flex'>
-          <div className='relative inline-flex w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-2 right-3'></div>
-        </div> */}
       </button>
 
       <div

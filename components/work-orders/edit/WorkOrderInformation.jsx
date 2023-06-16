@@ -21,8 +21,8 @@ import { Priority } from '../WorkOrderCard'
 
 export default function WorkOrderInformation({
   code,
-  engineCode,
-  activityCode,
+  engine,
+  activity,
   failureCause,
   startDate,
   endDate,
@@ -166,7 +166,7 @@ export default function WorkOrderInformation({
                       {new Date(startDate).toLocaleTimeString('es-ES', {
                         hour: '2-digit',
                         minute: '2-digit',
-                        hour12: true,
+                        hourCycle: 'h12',
                       })}
                     </TableCell>
                   </TableRow>
@@ -186,7 +186,7 @@ export default function WorkOrderInformation({
                       {new Date(endDate).toLocaleTimeString('es-ES', {
                         hour: '2-digit',
                         minute: '2-digit',
-                        hour12: true,
+                        hourCycle: 'h12',
                       })}
                     </TableCell>
                   </TableRow>
@@ -213,11 +213,11 @@ export default function WorkOrderInformation({
               </Subtitle>
               <Table>
                 <TableBody>
-                  {activityCode && (
+                  {activity && (
                     <TableRow>
                       <TableCell className='pl-0 pt-2 pb-2'>Código</TableCell>
                       <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                        {activityCode}
+                        {activity.code}
                       </TableCell>
                     </TableRow>
                   )}
@@ -257,7 +257,7 @@ export default function WorkOrderInformation({
                 </TableBody>
               </Table>
             </Flex>
-            {engineCode && (
+            {engine && (
               <Flex flexDirection='col' alignItems=''>
                 <Subtitle className='text-slate-900 font-medium'>
                   Información del motor
@@ -267,13 +267,13 @@ export default function WorkOrderInformation({
                     <TableRow>
                       <TableCell className='pl-0 pt-2 pb-2'>Código</TableCell>
                       <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                        {engineCode}
+                        {engine.code}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className='pl-0 pt-2 pb-2'>Función</TableCell>
                       <TableCell className='pr-0 pt-2 pb-2 xl:text-right'>
-                        {engineFunction}
+                        {engine.function}
                       </TableCell>
                     </TableRow>
                   </TableBody>

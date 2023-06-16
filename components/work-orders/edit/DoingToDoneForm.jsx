@@ -1,12 +1,35 @@
 import { useEffect } from 'react'
 import { useForm } from '../../../context/providers/FormContext'
-import { getDateValue } from '../../../libs/date'
 import { WORK_ORDER_SECURITY_MEASURE_END_VALUES } from '../../../schemas/workOrder'
 import CheckboxList from '../../CheckboxList'
 import Input from '../../Input'
 import Textarea from '../../Textarea'
 import CheckListForm from './CheckListForm'
 import SelectStoreForm from './SelectStoreForm'
+import { Flex, Text } from '@tremor/react'
+
+function showDate(stringData) {
+  const date = new Date(stringData)
+  if (date.toString() === 'Invalid Date') {
+    return '-'
+  }
+  return date.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+function showHour(stringData) {
+  const date = new Date(stringData)
+  if (date.toString() === 'Invalid Date') {
+    return '-'
+  }
+  return date.toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h12',
+  })
+}
 
 export default function DoingToDoneForm() {
   const {
@@ -44,7 +67,7 @@ export default function DoingToDoneForm() {
     })
   }, [setValues])
 
-  if (values.machine.checkList) {
+  if (values.machine.checkList?.length > 0) {
     return (
       <CheckListForm
         checkList={values.machine.checkList}
@@ -81,29 +104,26 @@ export default function DoingToDoneForm() {
           required
         />
       )}
-      <Input
-        id='startDate'
-        label='Fecha inicio'
-        placeholder='Seleccione la fecha inicio'
-        type='date'
-        value={getDateValue(values.startDate)}
-        disabled
-      />
-      <Input
-        id='endDate'
-        label='Fecha final'
-        placeholder='Seleccione la fecha final'
-        type='date'
-        value={getDateValue(values.endDate)}
-        disabled
-      />
-      <Input
-        label='Hora inicio'
-        type='time'
-        value={values.startHour}
-        disabled
-      />
-      <Input label='Hora fin' type='time' value={values.endHour} disabled />
+      <Flex className='max-sm:flex-col gap-4'>
+        <Flex flexDirection='col' alignItems='start'>
+          <Text className='text-slate-900 font-medium'>Fecha inicio</Text>
+          <Text className='text-slate-900'>{showDate(values.startDate)}</Text>
+        </Flex>
+        <Flex flexDirection='col' alignItems='start'>
+          <Text className='text-slate-900 font-medium'>Hora inicio</Text>
+          <Text className='text-slate-900'>{showHour(values.startDate)}</Text>
+        </Flex>
+      </Flex>
+      <Flex className='max-sm:flex-col gap-4'>
+        <Flex flexDirection='col' alignItems='start'>
+          <Text className='text-slate-900 font-medium'>Fecha fin</Text>
+          <Text className='text-slate-900'>{showDate(values.endDate)}</Text>
+        </Flex>
+        <Flex flexDirection='col' alignItems='start'>
+          <Text className='text-slate-900 font-medium'>Hora fin</Text>
+          <Text className='text-slate-900'>{showHour(values.endDate)}</Text>
+        </Flex>
+      </Flex>
 
       <Input
         id='totalHours'

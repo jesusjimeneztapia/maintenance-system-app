@@ -54,7 +54,7 @@ export default function WorkOrderEditForm({
             state,
             code,
             failureCause: failureCause ?? undefined,
-            startDate: startDate ?? undefined,
+            startDate,
             endDate: endDate ?? undefined,
             usedStores: [],
             securityMeasureEnds: [],

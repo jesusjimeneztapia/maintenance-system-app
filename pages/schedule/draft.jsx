@@ -54,7 +54,7 @@ function Header({ title, defaultDate }) {
 export default function DraftWorkOrderPage({ draftWorkOrders, message, date }) {
   const { component, title } = useBeforeRenderPage({
     message,
-    title: 'Planificación',
+    title: ['Planificación', 'Órdenes de trabajo en borrador'],
   })
 
   return (
@@ -64,12 +64,12 @@ export default function DraftWorkOrderPage({ draftWorkOrders, message, date }) {
       </Head>
       {component ? (
         <>
-          <Title className='mb-5'>{title}</Title>
+          <Title className='mb-5'>Órdenes de trabajo en borrador</Title>
           {component}
         </>
       ) : (
         <ScheduleProvider date={date} draftWorkOrders={draftWorkOrders}>
-          <Header title={title} defaultDate={date} />
+          <Header title='Órdenes de trabajo en borrador' defaultDate={date} />
           <DraftWorkOrdersList />
         </ScheduleProvider>
       )}

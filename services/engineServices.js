@@ -14,9 +14,6 @@ export const ENGINE_GET_FIELDS_TO_CREATE_URL_REGULAR = `${ENGINE_URL_REGULAR}/fi
 export function engineGetFieldsToUpdateUrlRegular(engineCode) {
   return `${ENGINE_URL_REGULAR}/${engineCode}/fields/update`
 }
-// export function getEngineByCodeUrlRegular(engineCode) {
-//   return `${ENGINE_URL_REGULAR}/${engineCode}`
-// }
 
 export const ENGINE_GET_FIELDS_TO_CREATE_URL_EXTERNAL =
   ENGINE_GET_FIELDS_TO_CREATE_URL_REGULAR
@@ -33,20 +30,12 @@ export function getEngineUrlExternal(machineCode, complete) {
     complete ? ENGINE_URL_REGULAR : ''
   }`
 }
-// export function getEngineByCodeUrlExternal(machineCode, engineCode) {
-//   return `${getEngineUrlExternal(machineCode, true)}/${engineCode}`
-// }
 
 const ENGINE_URL_INTERNAL = `/api${ENGINE_URL_REGULAR}`
 
 function addEngineUrlInternal(machineCode) {
   return `${getMachineByCodeUrlInternal(machineCode)}/add-engine`
 }
-// function editEngineUrlInternal(machineCode, engineCode) {
-//   return `${getMachineByCodeUrlInternal(
-//     machineCode
-//   )}/edit-engine?engineCode=${engineCode}`
-// }
 
 export function addEngineConfig(machineCode) {
   return {
