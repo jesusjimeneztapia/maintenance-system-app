@@ -67,7 +67,12 @@ export default function DoingToDoneForm() {
     })
   }, [setValues])
 
-  if (values.machine.checkList?.length > 0) {
+  if (
+    values.activityType === 'INSPECTION' &&
+    (values.activityName === 'INSPECCION' ||
+      values.activityName === 'INSPECCIÓN') &&
+    values.machine.checkList?.length > 0
+  ) {
     return (
       <CheckListForm
         checkList={values.machine.checkList}
