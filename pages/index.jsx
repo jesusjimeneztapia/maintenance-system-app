@@ -12,8 +12,9 @@ import WrenchScrewdriverSolidIcon from '../components/icons/WrenchScrewdriverSol
 import ClipboardDocumentListSolidIcon from '../components/icons/ClipboardDocumentListSolidIcon'
 import ClockSolidIcon from '../components/icons/ClockSolidIcon'
 import PuzzlePieceSolidIcon from '../components/icons/PuzzlePieceSolidIcon'
+import { parse } from 'cookie'
 
-export default function Home() {
+export default function Home({ role }) {
   return (
     <>
       <Head>
@@ -25,27 +26,35 @@ export default function Home() {
         className='gap-5 flex-wrap max-w-5xl w-full m-auto pt-5'
         justifyContent='center'
       >
-        <HomeLink href='/machines' title='Máquinas' icon={ServerSolidIcon} />
-        <HomeLink
-          href='/machines/register'
-          title='Registrar Máquina'
-          icon={OneServerSolidIcon}
-        />
-        <HomeLink
-          href='/activities'
-          title='Actividades'
-          icon={PresentationChartLineSolidIcon}
-        />
-        <HomeLink
-          href='/stores'
-          title='Repuestos'
-          icon={PuzzlePieceSolidIcon}
-        />
-        <HomeLink
-          href='/work-orders'
-          title='Órdenes de trabajo'
-          icon={TemplateSolidIcon}
-        />
+        {role === 'admin' && (
+          <>
+            <HomeLink
+              href='/machines'
+              title='Máquinas'
+              icon={ServerSolidIcon}
+            />
+            <HomeLink
+              href='/machines/register'
+              title='Registrar Máquina'
+              icon={OneServerSolidIcon}
+            />
+            <HomeLink
+              href='/activities'
+              title='Actividades'
+              icon={PresentationChartLineSolidIcon}
+            />
+            <HomeLink
+              href='/stores'
+              title='Repuestos'
+              icon={PuzzlePieceSolidIcon}
+            />
+            <HomeLink
+              href='/work-orders'
+              title='Órdenes de trabajo'
+              icon={TemplateSolidIcon}
+            />
+          </>
+        )}
         <HomeLink
           href='/failure-report'
           title='Reportes de falla'
@@ -56,18 +65,32 @@ export default function Home() {
           title='Solicitudes de mantenimiento'
           icon={WrenchScrewdriverSolidIcon}
         />
-        <HomeLink
-          href='/schedule'
-          title='Planificación'
-          icon={CalendarSolidIcon}
-        />
-        <HomeLink href='/historical' title='Históricos' icon={ClockSolidIcon} />
-        <HomeLink
-          href='/indicators'
-          title='Indicadores'
-          icon={PresentationChartBarIcon}
-        />
+        {role === 'admin' && (
+          <>
+            <HomeLink
+              href='/schedule'
+              title='Planificación'
+              icon={CalendarSolidIcon}
+            />
+            <HomeLink
+              href='/historical'
+              title='Históricos'
+              icon={ClockSolidIcon}
+            />
+            <HomeLink
+              href='/indicators'
+              title='Indicadores'
+              icon={PresentationChartBarIcon}
+            />
+          </>
+        )}
       </Flex>
     </>
   )
+}
+
+export function getServerSideProps(context) {
+  const cookies = parse(context.req.headers.cookie || '')
+  const { role } = cookies
+  return { props: { role } }
 }

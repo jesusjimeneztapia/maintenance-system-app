@@ -16,7 +16,12 @@ import ClockSolidIcon from '../icons/ClockSolidIcon'
 import PuzzlePieceSolidIcon from '../icons/PuzzlePieceSolidIcon'
 
 export default function Sidebar() {
+  const role = global.localStorage?.getItem('role')
   const [translate, setTranslate] = useState(false)
+
+  if (role == null) {
+    return <></>
+  }
 
   const handleToggle = () => {
     setTranslate((translate) => !translate)
@@ -71,22 +76,30 @@ export default function Sidebar() {
             />
           </Flex>
           <ul className='space-y-2 font-medium'>
-            <NavLink href='/machines' icon={ServerSolidIcon} text='Máquinas' />
-            <NavLink
-              href='/activities'
-              icon={PresentationChartLineSolidIcon}
-              text='Actividades'
-            />
-            <NavLink
-              href='/stores'
-              icon={PuzzlePieceSolidIcon}
-              text='Repuestos'
-            />
-            <NavLink
-              href='/work-orders'
-              icon={TemplateSolidIcon}
-              text='Órdenes de trabajo'
-            />
+            {role === 'admin' && (
+              <>
+                <NavLink
+                  href='/machines'
+                  icon={ServerSolidIcon}
+                  text='Máquinas'
+                />
+                <NavLink
+                  href='/activities'
+                  icon={PresentationChartLineSolidIcon}
+                  text='Actividades'
+                />
+                <NavLink
+                  href='/stores'
+                  icon={PuzzlePieceSolidIcon}
+                  text='Repuestos'
+                />
+                <NavLink
+                  href='/work-orders'
+                  icon={TemplateSolidIcon}
+                  text='Órdenes de trabajo'
+                />
+              </>
+            )}
             <NavLink
               href='/failure-report'
               icon={ClipboardDocumentListSolidIcon}
@@ -97,21 +110,25 @@ export default function Sidebar() {
               icon={WrenchScrewdriverSolidIcon}
               text='Solicitudes de mantenimiento'
             />
-            <NavLink
-              href='/schedule'
-              icon={CalendarSolidIcon}
-              text='Planificación'
-            />
-            <NavLink
-              href='/historical'
-              icon={ClockSolidIcon}
-              text='Históricos'
-            />
-            <NavLink
-              href='/indicators'
-              icon={PresentationChartBarIcon}
-              text='Indicadores'
-            />
+            {role === 'admin' && (
+              <>
+                <NavLink
+                  href='/schedule'
+                  icon={CalendarSolidIcon}
+                  text='Planificación'
+                />
+                <NavLink
+                  href='/historical'
+                  icon={ClockSolidIcon}
+                  text='Históricos'
+                />
+                <NavLink
+                  href='/indicators'
+                  icon={PresentationChartBarIcon}
+                  text='Indicadores'
+                />
+              </>
+            )}
           </ul>
         </div>
       </aside>

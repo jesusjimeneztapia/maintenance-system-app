@@ -22,6 +22,7 @@ import { verifyFailureReport } from '../../services/failureReportServices'
 import { SYSTEM_FAILED_STATE_VALUES_MAP } from '../../schemas/failureReport'
 
 export default function FailureReportTable() {
+  const role = global.localStorage?.getItem('role')
   const failureReports = useFailureReport((state) => state.failureReports)
   const removeFailureReport = useFailureReport(
     (state) => state.removeFailureReport
@@ -99,7 +100,9 @@ export default function FailureReportTable() {
           <TableHeaderCell className='text-center'>
             Reportado por
           </TableHeaderCell>
-          <TableHeaderCell className='text-center'>Verificar</TableHeaderCell>
+          {role === 'admin' && (
+            <TableHeaderCell className='text-center'>Verificar</TableHeaderCell>
+          )}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -157,11 +160,13 @@ export default function FailureReportTable() {
                   <span>{dateLocaleString(createdAt, true)}</span>
                 </Flex>
               </TableCell>
-              <TableCell className='text-center'>
-                <Button color='amber' onClick={handleRemove(id)}>
-                  <ClipboardDocumentCheck className='w-5 h-5' />
-                </Button>
-              </TableCell>
+              {role === 'admin' && (
+                <TableCell className='text-center'>
+                  <Button color='amber' onClick={handleRemove(id)}>
+                    <ClipboardDocumentCheck className='w-5 h-5' />
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           )
         )}

@@ -17,6 +17,7 @@ import { useToast } from '../../store/toast'
 import { verifyMaintenanceRequest } from '../../services/maintenanceRequestService'
 
 export default function MaintenanceRequestTable() {
+  const role = global.localStorage?.getItem('role')
   const maintenanceRequests = useMaintenanceRequest(
     (state) => state.maintenanceRequests
   )
@@ -92,7 +93,9 @@ export default function MaintenanceRequestTable() {
           <TableHeaderCell>Máquina</TableHeaderCell>
           <TableHeaderCell>Descripción</TableHeaderCell>
           <TableHeaderCell className='text-center'>Creado</TableHeaderCell>
-          <TableHeaderCell className='text-center'>Verificar</TableHeaderCell>
+          {role === 'admin' && (
+            <TableHeaderCell className='text-center'>Verificar</TableHeaderCell>
+          )}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -107,11 +110,13 @@ export default function MaintenanceRequestTable() {
               <TableCell className='text-center'>
                 {dateLocaleString(createdAt, true)}
               </TableCell>
-              <TableCell className='text-center'>
-                <Button color='amber' onClick={handleRemove(id)}>
-                  <ClipboardDocumentCheck className='w-5 h-5' />
-                </Button>
-              </TableCell>
+              {role === 'admin' && (
+                <TableCell className='text-center'>
+                  <Button color='amber' onClick={handleRemove(id)}>
+                    <ClipboardDocumentCheck className='w-5 h-5' />
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           )
         )}
