@@ -23,7 +23,7 @@ export default function ScheduleTable({
   strict,
 }) {
   const [month, day, year] = firstWeekDay
-    ?.toLocaleDateString()
+    ?.toLocaleDateString('en-US')
     .split('/')
     .map(Number)
   return (
@@ -38,7 +38,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 1}/{year}
+                {new Date(year, month - 1, day + 1).toLocaleDateString()}
               </span>
               LUNES
             </Flex>
@@ -46,7 +46,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 2}/{year}
+                {new Date(year, month - 1, day + 2).toLocaleDateString()}
               </span>
               MARTES
             </Flex>
@@ -54,7 +54,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 3}/{year}
+                {new Date(year, month - 1, day + 3).toLocaleDateString()}
               </span>
               MIERCOLES
             </Flex>
@@ -62,7 +62,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 4}/{year}
+                {new Date(year, month - 1, day + 4).toLocaleDateString()}
               </span>
               JUEVES
             </Flex>
@@ -70,7 +70,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 5}/{year}
+                {new Date(year, month - 1, day + 5).toLocaleDateString()}
               </span>
               VIERNES
             </Flex>
@@ -78,7 +78,7 @@ export default function ScheduleTable({
           <TableHeaderCell className='text-center'>
             <Flex flexDirection='col'>
               <span>
-                {month}/{day + 6}/{year}
+                {new Date(year, month - 1, day + 6).toLocaleDateString()}
               </span>
               SABADO
             </Flex>
